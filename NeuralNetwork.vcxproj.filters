@@ -48,6 +48,9 @@
     <ClCompile Include="IConnections.cpp">
       <Filter>Source Files\Neurons\Connections</Filter>
     </ClCompile>
+    <ClCompile Include="DenseConnections.cpp">
+      <Filter>Source Files\Neurons\Connections</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files\Static</Filter>
     </ClInclude>
     <ClInclude Include="IConnections.h">
+      <Filter>Header Files\Neurons\Connections</Filter>
+    </ClInclude>
+    <ClInclude Include="DenseConnections.h">
       <Filter>Header Files\Neurons\Connections</Filter>
     </ClInclude>
   </ItemGroup>
