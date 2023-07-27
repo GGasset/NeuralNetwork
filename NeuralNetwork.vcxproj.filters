@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Neurons">
       <UniqueIdentifier>{f166673b-fc82-4df2-9449-b27a8a588cd4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Neurons\Connections">
+      <UniqueIdentifier>{dc37c130-9f89-4185-b03a-2de21742cd88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Neurons\Connections">
+      <UniqueIdentifier>{8b9cafe0-2f3e-41da-8b9a-3013ad104e96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NeuralNetwork.cpp">
@@ -39,6 +45,9 @@
     <ClCompile Include="ActivationFunctions.cpp">
       <Filter>Source Files\Static</Filter>
     </ClCompile>
+    <ClCompile Include="IConnections.cpp">
+      <Filter>Source Files\Neurons\Connections</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -49,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="ActivationFunctions.h">
       <Filter>Header Files\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="IConnections.h">
+      <Filter>Header Files\Neurons\Connections</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
