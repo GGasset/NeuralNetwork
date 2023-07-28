@@ -1,5 +1,6 @@
 #include "INeuron.h"
 # include "ActivationFunctions.h"
+#include "Derivatives.h"
 
 #pragma once
 class Neuron : public INeuron
@@ -15,20 +16,19 @@ class Neuron : public INeuron
 
 	double* INeuron::ExecuteStore(double** networkActivations)
 	{
-		double* output = new double[3];
+		double* output = new double[2];
 		double linear_function = connections->LinearFunction(networkActivations);
-		output[0] = linear_function;
 
 		linear_function += bias;
-		output[1] = linear_function;
+		output[0] = linear_function;
 
-		output[2] = ActivationFunctions::Activate(linear_function, this->activation_function);
+		output[1] = ActivationFunctions::Activate(linear_function, this->activation_function);
 		return output;
 	}
 
 	double INeuron::GetOutput(double* execute_store_output)
 	{
-		return execute_store_output[2];
+		return execute_store_output[1];
 	}
 
 	double INeuron::Execute(double** network_activations)
@@ -37,6 +37,18 @@ class Neuron : public INeuron
 		double output = GetOutput(full_output);
 		free(full_output);
 		return output;
+	}
+
+	double* INeuron::GetGradients(double* execution_results, double neuron_cost, double** network_costs, double** network_activations)
+	{
+		double* gradients = new double[1 + connections->GetWeightCount()];
+
+		double linear_function_gradient = neuron_cost * Derivatives::DerivativeOf(execution_results[0], this->activation_function);
+		gradients[0] = linear_function_gradient;
+
+		connections->GetGradients(1, gradients, network_activations, network_costs, gradients[0]);
+
+		return gradients;
 	}
 };
 
