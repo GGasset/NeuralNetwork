@@ -60,5 +60,21 @@ class Neuron : public INeuron
 			output[t][layer_i][neuron_i] = GetGradients(execution_results[t][layer_i][neuron_i], network_costs[t][layer_i][neuron_i], network_costs[t], network_activations[t]);
 		}
 	}
+
+	void INeuron::SubtractGradients(double* neuron_gradients, double learning_rate)
+	{
+		bias -= neuron_gradients[0];
+		connections->SubtractGradients(neuron_gradients, 1, learning_rate);
+	}
+
+	void SubtractGradients(double**** network_gradients_over_t, size_t calculated_steps, double learning_rate)
+	{
+		size_t layer_i = this->connections->GetLayerI();
+		size_t neuron_i = this->connections->GetNeuronI();
+		for (size_t t = 0; t < calculated_steps; t++)
+		{
+			SubtractGradients(network_gradients_over_t[t][layer_i][neuron_i], learning_rate);
+		}
+	}
 };
 
