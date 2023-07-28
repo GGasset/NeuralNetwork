@@ -7,10 +7,10 @@ protected:
 	/// <summary>
 	/// Input layer is included although it isn't instantiated
 	/// </summary>
-	size_t layer_i;
-	size_t neuron_i;
-	size_t weight_count;
-	double* weights;
+	size_t layer_i = -1;
+	size_t neuron_i = -1;
+	size_t weight_count = -1;
+	double* weights = 0;
 	
 public:
 
