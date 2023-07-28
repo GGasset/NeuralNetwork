@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Neurons\Connections">
       <UniqueIdentifier>{8b9cafe0-2f3e-41da-8b9a-3013ad104e96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Layers">
+      <UniqueIdentifier>{e2b5e154-1712-48ef-a9cc-6f0f40cc3aea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Layers">
+      <UniqueIdentifier>{2e5d5861-3cc8-4360-9b90-33e09ef39049}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NeuralNetwork.cpp">
@@ -51,6 +57,9 @@
     <ClCompile Include="DenseConnections.cpp">
       <Filter>Source Files\Neurons\Connections</Filter>
     </ClCompile>
+    <ClCompile Include="ValueGeneration.cpp">
+      <Filter>Source Files\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -67,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="DenseConnections.h">
       <Filter>Header Files\Neurons\Connections</Filter>
+    </ClInclude>
+    <ClInclude Include="ValueGeneration.h">
+      <Filter>Header Files\Static</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

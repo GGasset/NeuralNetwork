@@ -133,6 +133,7 @@
     <ClCompile Include="INeuron.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="Neuron.cpp" />
+    <ClCompile Include="ValueGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActivationFunctions.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="IConnections.h" />
     <ClInclude Include="INeuron.h" />
     <ClInclude Include="Neuron.h" />
+    <ClInclude Include="ValueGeneration.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
