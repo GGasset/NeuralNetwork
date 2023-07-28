@@ -23,6 +23,11 @@ public:
 	///		Third-second dimension layer-neuron.
 	///		First dimension: gradients calculated at GetGradients.
 	/// </param>
+	/// <param name="execution_results">
+	///		Fourth dimension: t.
+	///		Third-second dimension layer-neuron.
+	///		First dimension: values calculated at ExecuteStore().
+	/// </param>
 	virtual void GetGradients(double**** execution_results, size_t calculated_steps, double**** output, double*** network_costs, double*** network_activations) = 0;
 
 	virtual void SubtractGradients(double* neuronGradients) = 0;
