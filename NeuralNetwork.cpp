@@ -2,10 +2,48 @@
 //
 
 #include <iostream>
+#include "Derivatives.h"
+#include "DenseConnections.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    size_t shape_length = 2;
+    int *networkShape = new int[shape_length];
+    networkShape[0] = 1;
+    networkShape[1] = 1;
+
+    size_t layer_i = 1;
+    size_t neuron_i = 0;
+    DenseConnections* connections = new DenseConnections(layer_i, neuron_i, networkShape);
+
+    double* X = new double[1];
+    X[0] = 3;
+
+    double *Y = new double[1];
+    Y[0] = 5.555;
+
+    for (size_t i = 0; i < 25; i++)
+    {
+        double** activations = new double*[shape_length];
+        double** costs = new double* [shape_length];
+        activations[0] = X;
+        for (size_t i = 0; i < shape_length; i++)
+        {
+            costs[i] = new double[networkShape[i]];
+            if (i == 0)
+                continue;
+            activations[i] = new double[networkShape[i]];
+        }
+        double linear_function = connections->LinearFunction(activations);
+        activations[1][0] = linear_function;
+        double cost_derivative = Derivatives::SquaredMeanDerivative(linear_function, Y[0]);
+        costs[1][0] = cost_derivative;
+        
+        double* gradients = new double[connections->GetWeightCount()];
+        connections->GetGradients(0, gradients, activations, costs, cost_derivative);
+        connections->SubtractGradients(gradients, 0, 0.01);
+        std::cout << linear_function << "\n";
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
