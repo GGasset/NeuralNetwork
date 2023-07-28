@@ -13,7 +13,11 @@ public:
 
 	virtual double GetOutput(double*);
 
-	virtual double* GetGradients(double neuron_cost, double** networkCosts, double** network_activations, double* neuronActivations);
+protected:
+	virtual double* GetGradients(double neuron_cost, double** networkCosts, double** network_activations);
+
+public:
+	virtual double** GetGradients(double*** network_costs, double*** network_activations);
 
 	virtual void SubtractGradients(double* neuronGradients);
 
