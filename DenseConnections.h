@@ -56,7 +56,10 @@ public:
 
     void IConnections::SubtractGradients(double**** network_gradients, size_t t_count, size_t input_read_start, double learning_rate)
     {
-
+        for (size_t t = 0; t < t_count; t++)
+        {
+            SubtractGradients(network_gradients[t][layer_i][neuron_i], input_read_start, learning_rate);
+        }
     }
 };
 
