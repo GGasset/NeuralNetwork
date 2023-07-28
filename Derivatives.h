@@ -3,6 +3,7 @@
 #pragma once
 class Derivatives
 {
+public:
 	//Cost derivatives
 
 	static double* DerivativeOf(size_t networkOutputLength, double* networkOutput, double* Y, Cost::CostFunction costFunction)
