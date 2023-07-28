@@ -12,7 +12,7 @@ public:
 
 	virtual double Execute(double** network_activations) = 0;
 
-	virtual double GetOutput(double* network_activations) = 0;
+	virtual double GetOutput(double* execute_store_output) = 0;
 
 protected:
 	virtual double* GetGradients(double neuron_cost, double** networkCosts, double** network_activations) = 0;
