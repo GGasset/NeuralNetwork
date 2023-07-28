@@ -7,8 +7,9 @@
 
 int main()
 {
+    // Singleton prototype based on linear function
     size_t shape_length = 2;
-    int *networkShape = new int[shape_length];
+    size_t *networkShape = new size_t[shape_length];
     networkShape[0] = 1;
     networkShape[1] = 1;
 
