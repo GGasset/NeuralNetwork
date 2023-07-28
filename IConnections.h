@@ -5,7 +5,7 @@ class IConnections
 {
 protected:
 	/// <summary>
-	/// Input layer not included as its activations are the input
+	/// Input layer is included although it isn't instantiated
 	/// </summary>
 	size_t layer_i;
 	size_t neuron_i;
@@ -35,9 +35,23 @@ public:
 			free(weights);
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="network_activations">Must include input neurons activations altough they aren't included</param>
+	/// <returns></returns>
 	virtual double LinearFunction(double** network_activations) = 0;
-	virtual double* GetGradients(size_t output_write_start, double** network_activations, double** network_costs, double linear_function_gradient) = 0;
+	virtual void GetGradients(size_t output_write_start, double* output, double** network_activations, double** network_costs, double linear_function_gradient) = 0;
 	virtual void SubtractGradients(double* gradients, size_t input_read_start) = 0;
-	virtual void SubtractGradients(double** gradients, size_t input_read_start) = 0;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="network_gradients_over_t">
+	///		Fourth dimension: t.
+	///		Third-second dimension layer-neuron.
+	///		First dimension: gradients calculated at GetGradients.
+	/// </param>
+	virtual void SubtractGradients(double**** network_gradients_over_t, size_t input_read_start) = 0;
 };
 
