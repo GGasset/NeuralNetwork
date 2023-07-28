@@ -1,3 +1,4 @@
+#include "ActivationFunctions.h"
 #include "Cost.h"
 
 #pragma once
