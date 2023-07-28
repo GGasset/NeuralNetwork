@@ -30,7 +30,7 @@ public:
         double* previous_layer_activations = network_activations[layer_i - 1];
         for (size_t i = 0; i < weight_count; i++)
         {
-            output += previous_layer_activations[i];
+            output += previous_layer_activations[i] * weights[i];
         };
         return output;
     }
