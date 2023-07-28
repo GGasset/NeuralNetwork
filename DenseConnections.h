@@ -53,5 +53,10 @@ public:
             weights[i] -= gradients[input_read_start + i];
         }
     }
+
+    void IConnections::SubtractGradients(double**** network_gradients, size_t input_read_start)
+    {
+
+    }
 };
 
