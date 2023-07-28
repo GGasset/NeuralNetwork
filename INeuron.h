@@ -30,7 +30,9 @@ public:
 	/// </param>
 	virtual void GetGradients(double**** execution_results, size_t calculated_steps, double**** output, double*** network_costs, double*** network_activations) = 0;
 
-	virtual void SubtractGradients(double* neuronGradients) = 0;
+	virtual void SubtractGradients(double* neuronGradients, double learning_rate) = 0;
+
+	virtual void SubtractGradients(double**** network_gradients_over_t, double learning_rate) = 0;
 
 	virtual void DeleteMemory() = 0;
 
