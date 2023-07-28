@@ -12,7 +12,7 @@ public:
         this->layer_i = layer_i;
         this->neuron_i = neuron_i;
         
-        size_t previous_layer_length = network_shape[layer_i];
+        size_t previous_layer_length = network_shape[layer_i + 1];
         this->weight_count = previous_layer_length;
 
         this->weights = new double[previous_layer_length];
