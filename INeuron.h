@@ -14,8 +14,8 @@ public:
 
 	virtual double GetOutput(double* execute_store_output) = 0;
 
-protected:
-	virtual double* GetGradients(double neuron_cost, double** networkCosts, double** network_activations) = 0;
+public:
+	virtual double* GetGradients(double neuron_cost, double** network_costs, double** network_activations) = 0;
 
 public:
 	/// <param name="network_gradients_over_t">
