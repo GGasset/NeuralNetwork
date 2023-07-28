@@ -2,7 +2,7 @@
 #include <math.h>
 
 #pragma once
-static class ValueGeneration
+class ValueGeneration
 {
 public:
 	static double GenerateWeight(double minValue, double valueClosestTo0, double maxValue)
