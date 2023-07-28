@@ -32,7 +32,7 @@ public:
 
 	virtual void SubtractGradients(double* neuron_gradients, double learning_rate) = 0;
 
-	virtual void SubtractGradients(double**** network_gradients_over_t, double learning_rate) = 0;
+	virtual void SubtractGradients(double**** network_gradients_over_t, size_t calculated_steps, double learning_rate) = 0;
 
 	virtual void DeleteMemory() = 0;
 
