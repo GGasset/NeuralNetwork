@@ -68,7 +68,7 @@ int main()
     double* Y1 = new double(0.6);
     double* Y2 = new double(0.4);
 
-    for (size_t i = 0; i < 5000; i++)
+    for (size_t i = 0; i < 50; i++)
     {
         double** network_activations = new double*[shape_length];
         bool Y_option = ValueGeneration::NextDouble() >= 0.5;
@@ -77,7 +77,7 @@ int main()
 
         double* execution_results = singleton->ExecuteStore(network_activations);
         double output = singleton->GetOutput(execution_results);
-        std::cout << Y_option << " | " << output << "\n";
+        std::cout << i << " | " << Y_option << " | " << output << "\n";
 
         network_activations[0] = Y_option ? X1 : X2;
 
@@ -114,8 +114,8 @@ int main()
     delete[] X1;
     delete[] X2;
 
-    delete[] Y1;
-    delete[] Y2;
+    delete Y1;
+    delete Y2;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
