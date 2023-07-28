@@ -7,7 +7,7 @@ class DenseConnections :
     public IConnections
 {
 public:
-    DenseConnections(size_t layer_i, size_t neuron_i, int* network_shape)
+    DenseConnections(size_t layer_i, size_t neuron_i, size_t* network_shape)
     {
         this->layer_i = layer_i;
         this->neuron_i = neuron_i;
@@ -54,7 +54,7 @@ public:
         }
     }
 
-    void IConnections::SubtractGradients(double**** network_gradients, size_t input_read_start, double learning_rate)
+    void IConnections::SubtractGradients(double**** network_gradients, size_t t_count, size_t input_read_start, double learning_rate)
     {
 
     }

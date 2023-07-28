@@ -54,6 +54,6 @@ public:
 	///		Third-second dimension layer-neuron.
 	///		First dimension: gradients calculated at GetGradients.
 	/// </param>
-	virtual void SubtractGradients(double**** network_gradients_over_t, size_t input_read_start, double learning_rate) = 0;
+	virtual void SubtractGradients(double**** network_gradients_over_t, size_t t_count, size_t input_read_start, double learning_rate) = 0;
 };
 
