@@ -35,9 +35,9 @@ public:
 			free(weights);
 	}
 
-	virtual double LinearFunction(double** network_activations);
-	virtual double* GetGradients(size_t output_write_start, double** network_activations, double** network_costs, double linear_function_gradient);
-	virtual void SubtractGradients(double* gradients, size_t input_read_start);
-	virtual void SubtractGradients(double** gradients, size_t input_read_start);
+	virtual double LinearFunction(double** network_activations) = 0;
+	virtual double* GetGradients(size_t output_write_start, double** network_activations, double** network_costs, double linear_function_gradient) = 0;
+	virtual void SubtractGradients(double* gradients, size_t input_read_start) = 0;
+	virtual void SubtractGradients(double** gradients, size_t input_read_start) = 0;
 };
 
