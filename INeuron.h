@@ -28,5 +28,7 @@ public:
 	virtual void SubtractGradients(double* neuronGradients) = 0;
 
 	virtual void DeleteMemory() = 0;
+
+	virtual void Free() = 0;
 };
 
