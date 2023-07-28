@@ -25,5 +25,18 @@ class Neuron : public INeuron
 		output[2] = ActivationFunctions::Activate(linear_function, this->activation_function);
 		return output;
 	}
+
+	double INeuron::GetOutput(double* execute_store_output)
+	{
+		return execute_store_output[2];
+	}
+
+	double INeuron::Execute(double** network_activations)
+	{
+		double* full_output = ExecuteStore(network_activations);
+		double output = GetOutput(full_output);
+		free(full_output);
+		return output;
+	}
 };
 
