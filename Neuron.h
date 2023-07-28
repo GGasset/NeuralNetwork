@@ -76,5 +76,15 @@ class Neuron : public INeuron
 			SubtractGradients(network_gradients_over_t[t][layer_i][neuron_i], learning_rate);
 		}
 	}
+
+	void DeleteMemory()
+	{
+
+	}
+
+	void Free()
+	{
+		connections->Free();
+	}
 };
 
