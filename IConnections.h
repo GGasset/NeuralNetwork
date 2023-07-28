@@ -43,7 +43,6 @@ public:
 	virtual double LinearFunction(double** network_activations) = 0;
 	virtual void GetGradients(size_t output_write_start, double* output, double** network_activations, double** network_costs, double linear_function_gradient) = 0;
 	
-	// TODO: add LearningRate
 	virtual void SubtractGradients(double* gradients, size_t input_read_start, double learning_rate) = 0;
 
 	/// <summary>
