@@ -31,17 +31,17 @@ public:
 		}
 	}
 
-	static float RELUActivation(float x)
+	static double RELUActivation(double x)
 	{
 		return fmax(0, x);
 	}
 
-	static float SigmoidActivation(float x)
+	static double SigmoidActivation(double x)
 	{
 		return 1 / (1 + exp(-x));
 	}
 
-	static float TanhActivation(float x)
+	static float TanhActivation(double x)
 	{
 		return (2 / (1 + exp(-2 * x))) - 1;
 	}
