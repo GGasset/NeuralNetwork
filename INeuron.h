@@ -4,8 +4,8 @@
 class INeuron
 {
 protected:
-	IConnections* connections;
-	double bias;
+	IConnections* connections = 0;
+	double bias = 0;
 
 public:
 	virtual double* ExecuteStore(double** networkActivations) = 0;
