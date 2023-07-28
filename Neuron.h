@@ -5,6 +5,7 @@
 #pragma once
 class Neuron : public INeuron
 {
+public:
 	ActivationFunctions::ActivationFunction activation_function;
 
 	Neuron(IConnections* connections, double bias, ActivationFunctions::ActivationFunction activation_function)
