@@ -50,5 +50,15 @@ class Neuron : public INeuron
 
 		return gradients;
 	}
+
+	void INeuron::GetGradients(double**** execution_results, size_t calculated_steps, double**** output, double*** network_costs, double*** network_activations)
+	{
+		size_t layer_i = connections->GetLayerI();
+		size_t neuron_i = connections->GetNeuronI();
+		for (size_t t = 0; t < calculated_steps; t++)
+		{
+			output[t][layer_i][neuron_i] = GetGradients(execution_results[t][layer_i][neuron_i], network_costs[t][layer_i][neuron_i], network_costs[t], network_activations[t]);
+		}
+	}
 };
 
