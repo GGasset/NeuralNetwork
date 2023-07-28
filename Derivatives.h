@@ -1,7 +1,7 @@
 #include "Cost.h"
 
 #pragma once
-class Derivatives
+static class Derivatives
 {
 public:
 	//Cost derivatives
