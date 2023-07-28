@@ -46,15 +46,15 @@ public:
         }
     }
 
-    void IConnections::SubtractGradients(double* gradients, size_t input_read_start)
+    void IConnections::SubtractGradients(double* gradients, size_t input_read_start, double learning_rate)
     {
         for (size_t i = 0; i < weight_count; i++)
         {
-            weights[i] -= gradients[input_read_start + i];
+            weights[i] -= gradients[input_read_start + i] * learning_rate;
         }
     }
 
-    void IConnections::SubtractGradients(double**** network_gradients, size_t input_read_start)
+    void IConnections::SubtractGradients(double**** network_gradients, size_t input_read_start, double learning_rate)
     {
 
     }
