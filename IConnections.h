@@ -32,7 +32,7 @@ public:
 	void Free()
 	{
 		if (weights)
-			free(weights);
+			delete[] weights;
 	}
 
 	/// <summary>
