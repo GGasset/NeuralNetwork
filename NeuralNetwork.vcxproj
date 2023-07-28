@@ -128,7 +128,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ActivationFunctions.cpp" />
+    <ClCompile Include="Cost.cpp" />
     <ClCompile Include="DenseConnections.cpp" />
+    <ClCompile Include="Derivatives.cpp" />
     <ClCompile Include="IConnections.cpp" />
     <ClCompile Include="INeuron.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
@@ -137,7 +139,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActivationFunctions.h" />
+    <ClInclude Include="Cost.h" />
     <ClInclude Include="DenseConnections.h" />
+    <ClInclude Include="Derivatives.h" />
     <ClInclude Include="IConnections.h" />
     <ClInclude Include="INeuron.h" />
     <ClInclude Include="Neuron.h" />

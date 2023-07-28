@@ -60,6 +60,12 @@
     <ClCompile Include="ValueGeneration.cpp">
       <Filter>Source Files\Static</Filter>
     </ClCompile>
+    <ClCompile Include="Cost.cpp">
+      <Filter>Source Files\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="Derivatives.cpp">
+      <Filter>Source Files\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -78,6 +84,12 @@
       <Filter>Header Files\Neurons\Connections</Filter>
     </ClInclude>
     <ClInclude Include="ValueGeneration.h">
+      <Filter>Header Files\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="Cost.h">
+      <Filter>Header Files\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="Derivatives.h">
       <Filter>Header Files\Static</Filter>
     </ClInclude>
   </ItemGroup>
