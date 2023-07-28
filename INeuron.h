@@ -4,7 +4,7 @@
 class INeuron
 {
 protected:
-	IConnections connections;
+	IConnections* connections;
 
 public:
 	virtual double* ExecuteStore(double**);
