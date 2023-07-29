@@ -67,7 +67,7 @@ private:
 		double*** network_costs = new double** [t_count];
 		for (size_t j = 0; j < shape_length; j++)
 		{
-			size_t layer_length = shape[j];
+			size_t layer_length = shape[j + 1];
 			for (size_t t = 0; t < t_count; t++)
 			{
 				gradients[t] = new double** [shape_length];
