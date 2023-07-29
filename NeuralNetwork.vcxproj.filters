@@ -66,6 +66,9 @@
     <ClCompile Include="Derivatives.cpp">
       <Filter>Source Files\Static</Filter>
     </ClCompile>
+    <ClCompile Include="ILayer.cpp">
+      <Filter>Source Files\Layers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="Derivatives.h">
       <Filter>Header Files\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="ILayer.h">
+      <Filter>Header Files\Layers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
