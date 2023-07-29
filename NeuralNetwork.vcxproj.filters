@@ -69,6 +69,9 @@
     <ClCompile Include="ILayer.cpp">
       <Filter>Source Files\Layers</Filter>
     </ClCompile>
+    <ClCompile Include="DenseNeuronLayer.cpp">
+      <Filter>Source Files\Layers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files\Static</Filter>
     </ClInclude>
     <ClInclude Include="ILayer.h">
+      <Filter>Header Files\Layers</Filter>
+    </ClInclude>
+    <ClInclude Include="DenseNeuronLayer.h">
       <Filter>Header Files\Layers</Filter>
     </ClInclude>
   </ItemGroup>
