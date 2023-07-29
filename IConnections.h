@@ -33,6 +33,7 @@ public:
 	{
 		if (weights)
 			delete[] weights;
+		delete this;
 	}
 
 	/// <summary>
