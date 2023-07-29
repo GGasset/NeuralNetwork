@@ -2,7 +2,7 @@
 
 #pragma once
 /// <summary>
-/// The purpose of a layer is a easy instantiation of layer and connection, not functions.
+/// The purpose of a layer is a easy instantiation of layer and connection, not made for implementing functions.
 /// </summary>
 class ILayer
 {
