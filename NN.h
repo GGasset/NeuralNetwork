@@ -109,7 +109,35 @@ public:
 	/// </summary>
 	void Supervised_Train(size_t t_count, double** X, double** Y, Cost::CostFunction cost_function, size_t starting_i = 0)
 	{
+		size_t real_t_count = t_count - starting_i;
+		double**** execution_results = new double*** [real_t_count];
+		double*** network_activations = new double** [real_t_count];
+		for (size_t t = 0; t < real_t_count; t++)
+		{
+			std::tuple<double***, double**> inference_execution_results = ExecuteStore(X[t]);
 
+			execution_results[t] = std::get<0>(inference_execution_results);
+			network_activations[t] = std::get<1>(inference_execution_results);
+	}
+
+		auto training_allocation = allocate_gradients_and_costs(real_t_count);
+		double**** gradients = std::get<0>(training_allocation);
+		double*** network_costs = std::get<1>(training_allocation);
+		std::list<ILayer*>::iterator it;
+		int j = 0;
+		for (it = layers.begin(); it != layers.end() && j < shape_length; it++, j++)
+		{
+			size_t layer_length = shape[j + 1];
+
+			for (size_t i = 0; i < layer_length; i++)
+			{
+				INeuron* current_neuron = (*it)->neurons[i];
+
+				current_neuron->GetGradients(execution_results, real_t_count, gradients, network_costs, network_activations);
+			}
+		}
+
+		deallocate_gradients_and_costs(real_t_count, gradients, network_costs);
 	}
 
 	/// <summary>
