@@ -110,9 +110,6 @@
     <ClInclude Include="DenseNeuronLayer.h">
       <Filter>Header Files\Layers</Filter>
     </ClInclude>
-    <ClInclude Include="NeuralNetwork.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LayerLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>

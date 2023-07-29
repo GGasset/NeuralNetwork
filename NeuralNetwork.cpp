@@ -2,9 +2,8 @@
 //
 
 #include <iostream>
-#include "Derivatives.h"
-#include "DenseConnections.h"
-#include "Neuron.h"
+
+#include "NN.h"
 //#include "ValueGeneration.h"
 
 int main()

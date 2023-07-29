@@ -151,7 +151,6 @@
     <ClInclude Include="ILayer.h" />
     <ClInclude Include="INeuron.h" />
     <ClInclude Include="LayerLibrary.h" />
-    <ClInclude Include="NeuralNetwork.h" />
     <ClInclude Include="Neuron.h" />
     <ClInclude Include="NN.h" />
     <ClInclude Include="ValueGeneration.h" />
