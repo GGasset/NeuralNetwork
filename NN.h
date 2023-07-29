@@ -50,6 +50,49 @@ public:
 		return 0;
 	}
 
+private:
+	std::tuple<double****, double***> allocate_gradients_and_costs(size_t t_count)
+	{
+		double**** gradients = new double*** [t_count];
+		double*** network_costs = new double** [t_count];
+		for (size_t j = 0; j < shape_length; j++)
+		{
+			size_t layer_length = shape[j];
+			for (size_t t = 0; t < t_count; t++)
+			{
+				gradients[t] = new double** [shape_length];
+				network_costs[t] = new double* [shape_length];
+
+				gradients[t][j] = new double* [layer_length];
+				network_costs[t][j] = new double[layer_length];
+			}
+		}
+
+		return std::tuple<double****, double***>(gradients, network_costs);
+	}
+
+	void deallocate_gradients_and_costs(size_t t_count, double**** gradients, double*** network_costs)
+	{
+		for (size_t j = 0; j < shape_length; j++)
+		{
+			size_t layer_length = shape[j];
+			for (size_t t = 0; t < t_count; t++)
+			{
+				for (size_t k = 0; k < layer_length; k++)
+				{
+					delete[] gradients[t][j][k];
+				}
+				delete[] gradients[t][j];
+				delete[] network_costs[t][j];
+
+				delete[] gradients[t];
+				delete[] network_costs[t];
+			}
+		}
+		delete[] gradients;
+		delete[] network_costs;
+	}
+
 public:
 	/// <summary>
 	/// Also recommended for recurrent layers_not_including_input_layer, if there are none recurrent layers_not_including_input_layer this will function as a batch
