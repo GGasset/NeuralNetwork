@@ -125,7 +125,7 @@ public:
 		double*** network_costs = std::get<1>(training_allocation);
 		std::list<ILayer*>::iterator it;
 		int j = 0;
-		for (it = layers.begin(); it != layers.end() && j < shape_length; it++, j++)
+		for (it = layers.begin(); it != layers.end(); it++, j++)
 		{
 			size_t layer_length = shape[j + 1];
 
