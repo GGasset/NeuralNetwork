@@ -26,7 +26,7 @@ public:
 	}
 
 private:
-	double*** ExecuteStore(double* X)
+	std::tuple<double***, double**> ExecuteStore(double* X)
 	{
 		double*** execution_results = new double** [shape_length - 1];
 		double** network_activations = new double* [shape_length];
@@ -37,12 +37,21 @@ private:
 		{
 			size_t layer_length = shape[i];
 
-			execution_results[i - 1] = new double* [layer_length];
+			double* current_layer_network_activations;
+			current_layer_network_activations = network_activations[i] = new double[layer_length];
+
+			double** current_layer_execution_results;
+			current_layer_execution_results = execution_results[i - 1] = new double* [layer_length];
 			for (size_t j = 0; j < layer_length; j++)
 			{
-				execution_results[i - 1][j] = (*it)->neurons[j]->ExecuteStore(network_activations);
+				INeuron* current_neuron = (*it)->neurons[j];
+				double* output;
+				output = current_layer_execution_results[j] = current_neuron->ExecuteStore(network_activations);
+				current_layer_network_activations[j] = current_neuron->GetOutput(output);
 			}
 		}
+
+		return std::tuple<double***, double**>(execution_results, network_activations);
 	}
 
 public:
