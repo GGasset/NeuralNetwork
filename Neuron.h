@@ -15,6 +15,11 @@ public:
 		this->activation_function = activation_function;
 	}
 
+	Neuron()
+	{
+		this->activation_function = ActivationFunctions::None;
+	}
+
 	double* INeuron::ExecuteStore(double** networkActivations)
 	{
 		double* output = new double[2];
