@@ -6,7 +6,7 @@
 /// </summary>
 class ILayer
 {
-private:
+protected:
 	size_t layer_length = -1;
 public:
 	INeuron* neurons = 0;
