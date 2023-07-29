@@ -107,7 +107,7 @@ public:
 	/// <summary>
 	/// Also recommended for recurrent layers_not_including_input_layer, if there are none recurrent layers_not_including_input_layer this will function as a batch
 	/// </summary>
-	void Supervised_Train(size_t t_count, double** X, double** Y, Cost::CostFunction cost_function, size_t starting_i = 0)
+	void Supervised_Train(size_t t_count, double** X, double** Y, Cost::CostFunction cost_function, double learning_rate, size_t starting_i = 0)
 	{
 		size_t real_t_count = t_count - starting_i;
 		double**** execution_results = new double*** [real_t_count];
@@ -137,13 +137,26 @@ public:
 			}
 		}
 
+		// Subtract Gradients
+		j = 0;
+		for (it = layers.begin(); it != layers.end(); it++, j++)
+		{
+			size_t layer_length = shape[j + 1];
+			for (size_t k = 0; k < layer_length; k++)
+			{
+				INeuron* current_neuron = (*it)->neurons[k];
+
+				current_neuron->SubtractGradients(gradients, real_t_count, learning_rate);
+			}
+		}
+
 		deallocate_gradients_and_costs(real_t_count, gradients, network_costs);
 	}
 
 	/// <summary>
 	/// Perfect for making batches without recurrent layers_not_including_input_layer
 	/// </summary>
-	void Supervised_Train(double** X, double** Y, size_t step_count, size_t batch_size)
+	void Supervised_Train(double** X, double** Y, size_t step_count, size_t batch_size, double learning_rate)
 	{
 
 	}
@@ -151,7 +164,7 @@ public:
 	/// <summary>
 	/// Perfect for making batches with recurrent layers_not_including_input_layer
 	/// </summary>
-	void Supervised_Train(double*** X, double*** Y, size_t step_count, size_t* t_count_per_step, size_t batch_size = 1)
+	void Supervised_Train(double*** X, double*** Y, size_t step_count, size_t* t_count_per_step, double learning_rate, size_t batch_size = 1)
 	{
 
 	}
