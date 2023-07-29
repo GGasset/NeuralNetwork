@@ -110,6 +110,7 @@ int main()
 
     delete[] network_shape;
     singleton->Free();
+    delete singleton;
 
     delete[] X1;
     delete[] X2;
