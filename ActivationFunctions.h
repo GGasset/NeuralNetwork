@@ -41,7 +41,7 @@ public:
 		return 1 / (1 + exp(-x));
 	}
 
-	static float TanhActivation(double x)
+	static double TanhActivation(double x)
 	{
 		return (2 / (1 + exp(-2 * x))) - 1;
 	}
