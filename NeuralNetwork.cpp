@@ -70,6 +70,7 @@ int main()
 
     for (size_t i = 0; i < 200; i++)
     {
+        // Inference
         double** network_activations = new double*[shape_length];
         bool Y_option = ValueGeneration::NextDouble() >= 0.5;
         network_activations[0] = Y_option ? X1 : X2;
@@ -79,8 +80,7 @@ int main()
         double output = singleton->GetOutput(execution_results);
         std::cout << i + 1 << " | " << Y_option << " | " << output << "\n";
 
-        network_activations[0] = Y_option ? X1 : X2;
-
+        // Training
         double output_cost = Derivatives::SquaredMeanDerivative(output, Y_option ? *Y1 : *Y2);
         double** network_costs = new double* [shape_length];
         network_costs[0] = new double[network_shape[0]];
