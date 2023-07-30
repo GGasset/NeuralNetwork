@@ -57,7 +57,23 @@ private:
 public:
 	double* Execute(double* X)
 	{
-		return 0;
+		double** network_activations = new double* [shape_length];
+		network_activations[0] = X;
+
+		std::list<ILayer*>::iterator it = layers.begin();
+		for (size_t i = 1; it != layers.end() && i < shape_length; i++, it++)
+		{
+			size_t layer_length = shape[i];
+
+			double* current_layer_network_activations;
+			current_layer_network_activations = network_activations[i] = new double[layer_length];			
+			for (size_t j = 0; j < layer_length; j++)
+			{
+				INeuron* current_neuron = (*it)->neurons[j];
+				
+				network_activations[i][j] = current_neuron->Execute(network_activations);
+			}
+		}
 	}
 
 private:
