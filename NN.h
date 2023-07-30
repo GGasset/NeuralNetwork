@@ -74,6 +74,15 @@ public:
 				network_activations[i][j] = current_neuron->Execute(network_activations);
 			}
 		}
+
+		for (size_t i = 0; i < shape_length - 1; i++)
+		{
+			delete[] network_activations[i];
+		}
+		double* output = network_activations[shape_length - 1];
+		delete[] network_activations;
+
+		return output;
 	}
 
 private:
