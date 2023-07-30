@@ -118,7 +118,7 @@ public:
 
 			execution_results[t] = std::get<0>(inference_execution_results);
 			network_activations[t] = std::get<1>(inference_execution_results);
-	}
+		}
 
 		auto training_allocation = allocate_gradients_and_costs(real_t_count);
 		double**** gradients = std::get<0>(training_allocation);
@@ -136,7 +136,7 @@ public:
 				current_neuron->GetGradients(execution_results, real_t_count, gradients, network_costs, network_activations);
 			}
 		}
-
+		
 		// Subtract Gradients
 		j = 0;
 		for (it = layers.begin(); it != layers.end(); it++, j++)
@@ -160,13 +160,22 @@ public:
 	{
 
 	}
-	
+
 	/// <summary>
 	/// Perfect for making batches with recurrent layers_not_including_input_layer
 	/// </summary>
 	void Supervised_Train(double*** X, double*** Y, size_t step_count, size_t* t_count_per_step, double learning_rate, size_t batch_size = 1)
 	{
 
+	}
+
+	void free()
+	{
+		std::list<ILayer*>::iterator it;
+		for (it = layers.begin(); it != layers.end(); it++)
+		{
+			(*it)->free();
+		}
 	}
 };
 
