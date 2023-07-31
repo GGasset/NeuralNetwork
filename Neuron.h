@@ -63,7 +63,11 @@ public:
 		size_t neuron_i = connections->GetNeuronI();
 		for (size_t t = 0; t < calculated_steps; t++)
 		{
-			output[t][layer_i][neuron_i] = GetGradients(execution_results[t][layer_i][neuron_i], network_costs[t][layer_i][neuron_i], network_costs[t], network_activations[t]);
+			double* neuron_execution_results = execution_results[t][layer_i][neuron_i];
+			double** current_costs = network_costs[t];
+			double neuron_cost = current_costs[layer_i][neuron_i];
+			double** current_activations = network_activations[t];
+			output[t][layer_i][neuron_i] = GetGradients(neuron_execution_results, neuron_cost, current_costs, current_activations);
 		}
 	}
 
