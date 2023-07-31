@@ -3,8 +3,11 @@
 
 #include <iostream>
 
+#include "ActivationFunctions.h"
+#include "ILayer.h"
 #include "NN.h"
-//#include "ValueGeneration.h"
+#include "ValueGeneration.h"
+#include "LayerLibrary.h"
 
 int main()
 {
@@ -48,7 +51,7 @@ int main()
     }*/
 
     // Singleton
-    size_t shape_length = 2;
+    /*size_t shape_length = 2;
     size_t* network_shape = new size_t[shape_length];
     network_shape[0] = 3;
     network_shape[1] = 1;
@@ -115,7 +118,56 @@ int main()
     delete[] X2;
 
     delete Y1;
-    delete Y2;
+    delete Y2;*/
+
+
+    // Fake low res images classification
+    size_t image_resolution = 2;
+    size_t fake_image_count = 3;
+
+    double** fake_images = new double* [fake_image_count];
+    double** Y = new double*[fake_image_count];
+    for (size_t i = 0; i < fake_image_count; i++)
+    {
+        Y[i] = new double[image_resolution * image_resolution];
+        fake_images[i] = new double[image_resolution * image_resolution];
+        for (size_t j = 0; j < image_resolution * image_resolution; j++)
+        {
+            fake_images[i][j] = rand() % 255;
+            Y[i][j] = j;
+        }
+    }
+
+    size_t shape_length = 7;
+    size_t* shape = new size_t[shape_length];
+    shape[0] = image_resolution * image_resolution;
+    /*shape[1] = 2;
+    shape[2] = 1;*/
+    shape[1] = image_resolution * image_resolution * fake_image_count;
+    shape[2] = (image_resolution * image_resolution * fake_image_count) / 1.2;
+    shape[3] = 128;
+    shape[4] = (image_resolution * image_resolution * fake_image_count) / 1.5;
+    shape[5] = fake_image_count;
+    shape[6] = 1;
+
+    ILayer** layers = new ILayer* [shape_length - 1];
+    for (size_t i = 1; i < shape_length; i++)
+    {
+        layers[i - 1] = (ILayer*)new DenseNeuronLayer(shape, i, ActivationFunctions::Sigmoid);
+    }
+
+    NN* n = new NN(layers, shape, shape_length);
+    for (size_t i = 0; i < 5000; i++)
+    {
+        for (size_t j = 0; j < fake_image_count; j++)
+        {
+            std::cout << (n->Execute(fake_images[j])[0] * fake_image_count) << " | " << j << "\n";
+        }
+        std::cout << "\n\n-----------------------\n\n";
+        n->Supervised_Train(fake_image_count, fake_images, Y, Cost::SquaredMean, 0.1);
+    }
+
+    n->free();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
