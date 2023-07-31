@@ -16,7 +16,7 @@ public:
 		for (size_t i = 0; i < layer_length; i++)
 		{
 			neurons[i]->Free();
-			delete (neurons + i);
+			delete neurons[i];
 		}
 		delete[] neurons;
 	}
