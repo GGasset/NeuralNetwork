@@ -1,7 +1,6 @@
-#include <iostream>
+#include "ValueGeneration.h"
 
 #pragma once
-#include <tuple>
 
 /// <summary>
 /// You must implement where the connections are connected when using this class as base
@@ -17,7 +16,16 @@ protected:
 	size_t neuron_written_gradient_count = -1;
 	size_t weight_count = -1;
 	double* weights = 0;
-	
+
+	void GenerateWeights()
+	{
+		weights = new double[weight_count];
+		for (size_t i = 0; i < weight_count; i++)
+		{
+			weights[i] = ValueGeneration::GenerateWeight(-2, 0.7, 2);
+		}
+	}
+
 public:
 	size_t GetWeightCount()
 	{
