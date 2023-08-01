@@ -10,11 +10,6 @@ class IConnections
 {
 protected:
 	/// <summary>
-	/// Input layer is included although it isn't instantiated
-	/// </summary>
-	size_t neuron_i = -1;
-
-	/// <summary>
 	/// Execution results must have the same values per neuron as gradients per neuron
 	/// </summary>
 	size_t self_gradients_start_i = -1;
