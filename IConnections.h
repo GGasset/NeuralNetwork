@@ -27,6 +27,7 @@ protected:
 	}
 
 public:
+	// Value will be automatically instantiated by NN
 	size_t network_execution_results_value_count = -1;
 
 	size_t GetWeightCount()
