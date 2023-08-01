@@ -6,13 +6,40 @@
 class DenseConnections :
     public IConnections
 {
+protected:
     size_t previous_layer_start_i = -1;
     size_t previous_layer_length = -1;
 
 public:
-    double IConnections::LinearFunction(double* network_activations) = 0;
-    void IConnections::CalculateGradients(double* gradients, double* execution_results) = 0;
-    void IConnections::SubtractGradients(double* gradients) = 0;
-    void IConnections::SubtractGradients(double* gradients) = 0;
+	DenseConnections(size_t previous_layer_start_i, size_t previous_layer_length, 
+		size_t self_gradients_start_i, size_t self_gradients_length, size_t neuron_written_gradient_count)
+	{
+		this->self_gradients_start_i = self_gradients_start_i;
+		this->self_gradients_length = self_gradients_length;
+		this->neuron_written_gradient_count = neuron_written_gradient_count;
+		weight_count = previous_layer_length;
+		GenerateWeights();
+
+		this->previous_layer_start_i = previous_layer_start_i;
+		this->previous_layer_length = previous_layer_length;
+	}
+
+	double IConnections::LinearFunction(double* network_activations)
+	{
+		for (size_t i = 0; i < previous_layer_length; i++)
+		{
+
+		}
+	}
+
+	void IConnections::CalculateGradients(double* gradients, double* neuron_activations, double* costs)
+	{
+
+	}
+
+	void IConnections::SubtractGradients(double* gradients)
+	{
+
+	}
 };
 
