@@ -21,11 +21,6 @@ public:
 	/// </summary>
 	size_t self_execution_results_start_i = -1;
 
-	/// <summary>
-	/// Value will be automatically asigned by NN
-	/// </summary>
-	size_t self_execution_results_length = -1;
-
 	IConnections* connections = 0;
 
 	/// <summary>
