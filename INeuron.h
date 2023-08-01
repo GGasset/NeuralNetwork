@@ -11,12 +11,16 @@ protected:
 	/// </summary>
 	size_t self_execution_results_start_i = -1;
 	size_t self_execution_results_length = -1;
-	size_t neuron_gradients_written_value_count = -1;
 
 	IConnections* connections = 0;
 	double bias = 0;
 
 public:
+	size_t GetExecutionResultsLength()
+	{
+		return self_execution_results_length;
+	}
+
 	virtual void ExecuteStore(double* activations, double* execution_results) = 0;
 	virtual void Execute(double* activations) = 0;
 	virtual void GetGradients(double* gradients, double* costs, double* execution_results) = 0;
