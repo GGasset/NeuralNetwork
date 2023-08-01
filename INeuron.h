@@ -12,10 +12,11 @@ protected:
 	size_t self_execution_results_start_i = -1;
 	size_t self_execution_results_length = -1;
 
-	IConnections* connections = 0;
 	double bias = 0;
 
 public:
+	IConnections* connections = 0;
+
 	size_t GetExecutionResultsLength()
 	{
 		return self_execution_results_length;
