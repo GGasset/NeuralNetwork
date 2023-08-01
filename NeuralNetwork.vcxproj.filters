@@ -60,9 +60,6 @@
     <ClCompile Include="Derivatives.cpp">
       <Filter>Source Files\Static</Filter>
     </ClCompile>
-    <ClCompile Include="LayerLibrary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
     </ClInclude>
     <ClInclude Include="Derivatives.h">
       <Filter>Header Files\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="LayerLibrary.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NN.h">
       <Filter>Header Files</Filter>
