@@ -7,7 +7,7 @@ protected:
 	size_t neuron_i = -1;
 	size_t neuron_written_gradient_count = -1;
 
-	double bias = 0;
+	double bias = 1;
 
 public:
 	size_t GetNeuronWrittenGradientCount()
