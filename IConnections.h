@@ -8,11 +8,6 @@
 class IConnections
 {
 protected:
-	/// <summary>
-	/// Execution results must have the same values per neuron as gradients per neuron
-	/// </summary>
-	size_t self_gradients_start_i = -1;
-	size_t self_gradients_length = -1;
 	size_t neuron_written_gradient_count = -1;
 	size_t weight_count = -1;
 	double* weights = 0;
@@ -32,6 +27,18 @@ protected:
 	}
 
 public:
+	/// <summary>
+	/// Execution results must have the same values per neuron as gradients per neuron
+	/// Value intialized by NN
+	/// </summary>
+	size_t self_gradients_start_i = -1;
+
+	/// <summary>
+	/// Value initialized by NN
+	/// </summary>
+	size_t self_gradients_length = -1;
+
+
 	/// <summary>
 	/// Value will be automatically initialized by NN
 	/// </summary>
