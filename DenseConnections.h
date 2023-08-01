@@ -46,10 +46,12 @@ public:
 		for (size_t t = 0; t < t_count; t++)
 		{
 			double current_linear_function_gradient = linear_function_gradients[t];
+
+			size_t first_neuron_execution_results_i = network_execution_results_value_count * t;
 			size_t current_t_first_network_neuron_i = t * network_neuron_count;
 			for (size_t i = 0; i < weight_count; i++)
 			{
-				size_t gradient_i = network_execution_results_value_count * t + previous_layer_start_i + i + neuron_written_gradient_count;
+				size_t gradient_i = first_neuron_execution_results_i + previous_layer_start_i + i + neuron_written_gradient_count;
 				size_t connected_activation_i = current_t_first_network_neuron_i + previous_layer_start_i;
 
 				gradients[gradient_i] = current_linear_function_gradient * neuron_activations[connected_activation_i];
