@@ -1,32 +1,40 @@
 #include <iostream>
 
 #pragma once
+#include <tuple>
+
 class IConnections
 {
 protected:
 	/// <summary>
 	/// Input layer is included although it isn't instantiated
 	/// </summary>
-	size_t layer_i = -1;
 	size_t neuron_i = -1;
+
+	/// <summary>
+	/// Execution results must have the same values per neuron as gradients per neuron
+	/// </summary>
+	size_t self_execution_results_start_i = -1;
+	size_t self_execution_results_length = -1;
+	size_t neuron_gradients_written_value_count = -1;
 	size_t weight_count = -1;
 	double* weights = 0;
 	
 public:
-
-	size_t GetLayerI()
-	{
-		return layer_i;
-	}
 
 	size_t GetNeuronI()
 	{
 		return neuron_i;
 	}
 
-	size_t GetWeightCount()
+	size_t GetExecutionResultsStart()
 	{
-		return weight_count;
+		return self_execution_results_start_i;
+	}
+
+	size_t GetExecutionResultsLength()
+	{
+		return self_execution_results_length;
 	}
 
 	void Free()
@@ -36,24 +44,9 @@ public:
 		delete this;
 	}
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="network_activations">Must include input neurons activations altough they aren't instantiated as a layer</param>
-	/// <returns></returns>
-	virtual double LinearFunction(double** network_activations) = 0;
-	virtual void GetGradients(size_t output_write_start, double* output, double** network_activations, double** network_costs, double linear_function_gradient) = 0;
-	
-	virtual void SubtractGradients(double* gradients, size_t input_read_start, double learning_rate) = 0;
-
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="network_gradients_over_t">
-	///		Fourth dimension: t.
-	///		Third-second dimension layer-neuron.
-	///		First dimension: gradients calculated at GetGradients.
-	/// </param>
-	virtual void SubtractGradients(double**** network_gradients_over_t, size_t t_count, size_t input_read_start, double learning_rate) = 0;
+	virtual double LinearFunction(double* network_activations) = 0;
+	virtual void CalculateGradients(double* gradients, double* execution_results) = 0;
+	virtual void SubtractGradients(double* gradients) = 0;
+	virtual void SubtractGradients(double* gradients) = 0;
 };
 

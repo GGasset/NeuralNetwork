@@ -158,8 +158,12 @@ public:
 		for (int layer_i = shape_length - 1; layer_i >= 1; layer_i--)
 		{
 			// current layer having not allocated neurons when layer_i == 2 - layers[1] == NULL
+			// execution_results[0][2][0] not having stored data
+			//					[t][l][n]
 			size_t layer_length = shape[layer_i];
 			ILayer* current_layer = layers[layer_i - 1];
+			if (layer_i == 3)
+				int x = 0;
 			if (layer_i == 2)
 				int x = 0;
 			for (size_t i = 0; i < layer_length; i++)

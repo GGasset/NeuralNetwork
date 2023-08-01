@@ -34,8 +34,8 @@ public:
 
 	virtual void SubtractGradients(double**** network_gradients_over_t, size_t calculated_steps, double learning_rate) = 0;
 
+	virtual void ExecuteStore(double* activations, double* execution_results) = 0;
 	virtual void DeleteMemory() = 0;
-
 	virtual void Free() = 0;
 };
 
