@@ -26,7 +26,10 @@ public:
 	
 	double INeuron::Execute(double* activations)
 	{
-
+		double linear_function = connections->LinearFunction(activations) + bias;
+		double activation = ActivationFunctions::Activate(linear_function, activation_function);
+		activations[neuron_i] = activation;
+		return activation;
 	}
 	
 	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results)
