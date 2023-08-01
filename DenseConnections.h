@@ -34,7 +34,7 @@ public:
 		return linear_function;
 	}
 
-	void IConnections::CalculateGradients(double* gradients, double* neuron_activations, double* costs)
+	void IConnections::CalculateGradients(double* gradients, double* neuron_activations, double* costs, double linear_function_gradient)
 	{
 
 	}
