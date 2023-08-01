@@ -39,7 +39,17 @@ public:
 
 	}
 
+	void IConnections::CalculateGradients(double* gradients, double* neuron_activations, double* costs, double* linear_function_gradients, size_t t_count)
+	{
+
+	}
+
 	void IConnections::SubtractGradients(double* gradients)
+	{
+
+	}
+
+	void IConnections::SubtractGradients(double* gradients, size_t t_count)
 	{
 
 	}
