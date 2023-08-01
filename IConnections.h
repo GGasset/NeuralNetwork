@@ -3,6 +3,9 @@
 #pragma once
 #include <tuple>
 
+/// <summary>
+/// You must implement where the connections are connected when using this class as base
+/// </summary>
 class IConnections
 {
 protected:
@@ -30,7 +33,7 @@ public:
 	}
 
 	virtual double LinearFunction(double* network_activations) = 0;
-	virtual void CalculateGradients(double* gradients, double* neuron_activations) = 0;
+	virtual void CalculateGradients(double* gradients, double* neuron_activations, double* costs) = 0;
 	virtual void SubtractGradients(double* gradients) = 0;
 	virtual void SubtractGradients(double* gradients) = 0;
 };
