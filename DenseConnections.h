@@ -59,12 +59,22 @@ public:
 
 	void IConnections::SubtractGradients(double* gradients)
 	{
-
+		for (size_t i = 0; i < weight_count; i++)
+		{
+			weights[i] -= gradients[previous_layer_start_i + i];
+		}
 	}
 
 	void IConnections::SubtractGradients(double* gradients, size_t t_count)
 	{
-
+		for (size_t t = 0; t < t_count; t++)
+		{
+			size_t first_neuron_gradients_start_i = network_execution_results_value_count * t;
+			for (size_t i = 0; i < weight_count; i++)
+			{
+				weights[i] -= gradients[first_neuron_gradients_start_i + self_gradients_start_i + neuron_written_gradient_count + i];
+			}
+		}
 	}
 };
 
