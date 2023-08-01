@@ -19,6 +19,11 @@ protected:
 
 	void GenerateWeights()
 	{
+		if (weights)
+		{
+			delete[] weights;
+			weights = 0;
+		}
 		weights = new double[weight_count];
 		for (size_t i = 0; i < weight_count; i++)
 		{
