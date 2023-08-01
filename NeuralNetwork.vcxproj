@@ -137,7 +137,7 @@
     <ClCompile Include="INeuron.cpp" />
     <ClCompile Include="LayerLibrary.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
-    <ClCompile Include="Neuron.cpp" />
+    <ClCompile Include="DenseNeuron.cpp" />
     <ClCompile Include="NN.cpp" />
     <ClCompile Include="ValueGeneration.cpp" />
   </ItemGroup>
@@ -151,7 +151,7 @@
     <ClInclude Include="ILayer.h" />
     <ClInclude Include="INeuron.h" />
     <ClInclude Include="LayerLibrary.h" />
-    <ClInclude Include="Neuron.h" />
+    <ClInclude Include="DenseNeuron.h" />
     <ClInclude Include="NN.h" />
     <ClInclude Include="ValueGeneration.h" />
   </ItemGroup>

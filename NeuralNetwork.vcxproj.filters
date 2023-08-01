@@ -45,7 +45,7 @@
     <ClCompile Include="INeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
-    <ClCompile Include="Neuron.cpp">
+    <ClCompile Include="DenseNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
     <ClCompile Include="ActivationFunctions.cpp">
@@ -83,7 +83,7 @@
     <ClInclude Include="INeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
-    <ClInclude Include="Neuron.h">
+    <ClInclude Include="DenseNeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
     <ClInclude Include="ActivationFunctions.h">

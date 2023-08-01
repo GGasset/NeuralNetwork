@@ -3,7 +3,7 @@
 #include "Derivatives.h"
 
 #pragma once
-class Neuron : public INeuron
+class DenseNeuron : public INeuron
 {
 public:
 	ActivationFunctions::ActivationFunction activation_function;
