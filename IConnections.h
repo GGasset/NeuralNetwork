@@ -19,6 +19,10 @@ protected:
 	double* weights = 0;
 	
 public:
+	size_t GetWeightCount()
+	{
+		return weight_count;
+	}
 
 	void Free()
 	{
