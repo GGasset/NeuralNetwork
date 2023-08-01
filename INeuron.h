@@ -27,9 +27,15 @@ public:
 
 	IConnections* connections = 0;
 
-
+	/// <summary>
+	/// Modify activations and execution results
+	/// </summary>
 	virtual void ExecuteStore(double* activations, double* execution_results) = 0;
-	virtual void Execute(double* activations) = 0;
+
+	/// <summary>
+	/// Modify activations
+	/// </summary>
+	virtual double Execute(double* activations) = 0;
 	virtual void GetGradients(double* gradients, double* costs, double* execution_results) = 0;
 	virtual void GetGradients(double* gradients, double* costs, size_t t_length, size_t t_count) = 0;
 	virtual void SubtractGradients(double* gradients, double learning_rate) = 0;
