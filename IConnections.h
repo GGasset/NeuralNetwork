@@ -32,8 +32,15 @@ protected:
 	}
 
 public:
-	// Value will be automatically initialized by NN
+	/// <summary>
+	/// Value will be automatically initialized by NN
+	/// </summary>
 	size_t network_execution_results_value_count = -1;
+
+	/// <summary>
+	/// Value will be automatically initialized by NN
+	/// </summary>
+	size_t network_neuron_count = -1;
 
 	size_t GetWeightCount()
 	{
