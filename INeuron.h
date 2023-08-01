@@ -5,10 +5,16 @@ class INeuron
 {
 protected:
 	size_t neuron_i = -1;
+	size_t neuron_written_gradient_count = -1;
 
 	double bias = 0;
 
 public:
+	size_t GetNeuronWrittenGradientCount()
+	{
+		return neuron_written_gradient_count;
+	}
+
 	/// <summary>
 	/// Execution results must have the same values per neuron as gradients per neuron.
 	/// Value will be automatically asigned by NN
