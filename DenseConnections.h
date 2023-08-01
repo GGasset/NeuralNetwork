@@ -10,11 +10,8 @@ protected:
     size_t previous_layer_start_i = -1;
 
 public:
-	DenseConnections(size_t previous_layer_start_i, size_t previous_layer_length, 
-		size_t self_gradients_start_i, size_t self_gradients_length, size_t neuron_written_gradient_count)
+	DenseConnections(size_t previous_layer_start_i, size_t previous_layer_length, size_t neuron_written_gradient_count)
 	{
-		this->self_gradients_start_i = self_gradients_start_i;
-		this->self_gradients_length = self_gradients_length;
 		this->neuron_written_gradient_count = neuron_written_gradient_count;
 		weight_count = previous_layer_length;
 		GenerateWeights();
