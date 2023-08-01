@@ -130,10 +130,8 @@
     <ClCompile Include="ActivationFunctions.cpp" />
     <ClCompile Include="Cost.cpp" />
     <ClCompile Include="DenseConnections.cpp" />
-    <ClCompile Include="DenseNeuronLayer.cpp" />
     <ClCompile Include="Derivatives.cpp" />
     <ClCompile Include="IConnections.cpp" />
-    <ClCompile Include="ILayer.cpp" />
     <ClCompile Include="INeuron.cpp" />
     <ClCompile Include="LayerLibrary.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
@@ -145,10 +143,8 @@
     <ClInclude Include="ActivationFunctions.h" />
     <ClInclude Include="Cost.h" />
     <ClInclude Include="DenseConnections.h" />
-    <ClInclude Include="DenseNeuronLayer.h" />
     <ClInclude Include="Derivatives.h" />
     <ClInclude Include="IConnections.h" />
-    <ClInclude Include="ILayer.h" />
     <ClInclude Include="INeuron.h" />
     <ClInclude Include="LayerLibrary.h" />
     <ClInclude Include="DenseNeuron.h" />

@@ -31,12 +31,6 @@
     <Filter Include="Source Files\Neurons\Connections">
       <UniqueIdentifier>{8b9cafe0-2f3e-41da-8b9a-3013ad104e96}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Layers">
-      <UniqueIdentifier>{e2b5e154-1712-48ef-a9cc-6f0f40cc3aea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Layers">
-      <UniqueIdentifier>{2e5d5861-3cc8-4360-9b90-33e09ef39049}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NeuralNetwork.cpp">
@@ -65,12 +59,6 @@
     </ClCompile>
     <ClCompile Include="Derivatives.cpp">
       <Filter>Source Files\Static</Filter>
-    </ClCompile>
-    <ClCompile Include="ILayer.cpp">
-      <Filter>Source Files\Layers</Filter>
-    </ClCompile>
-    <ClCompile Include="DenseNeuronLayer.cpp">
-      <Filter>Source Files\Layers</Filter>
     </ClCompile>
     <ClCompile Include="LayerLibrary.cpp">
       <Filter>Source Files</Filter>
@@ -103,12 +91,6 @@
     </ClInclude>
     <ClInclude Include="Derivatives.h">
       <Filter>Header Files\Static</Filter>
-    </ClInclude>
-    <ClInclude Include="ILayer.h">
-      <Filter>Header Files\Layers</Filter>
-    </ClInclude>
-    <ClInclude Include="DenseNeuronLayer.h">
-      <Filter>Header Files\Layers</Filter>
     </ClInclude>
     <ClInclude Include="LayerLibrary.h">
       <Filter>Header Files</Filter>
