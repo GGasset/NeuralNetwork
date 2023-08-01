@@ -12,7 +12,7 @@ public:
 	DenseNeuron(size_t neuron_i, size_t previous_layer_start_i, size_t previous_layer_length, ActivationFunctions::ActivationFunction activation_function)
 	{
 		this->activation_function = activation_function;
-		neuron_written_gradient_count = 2;
+		neuron_written_gradient_count = 1;
 		connections = new DenseConnections(previous_layer_start_i, previous_layer_length, neuron_written_gradient_count);
 	}
 
@@ -20,8 +20,6 @@ public:
 	{
 		double linear_function = connections->LinearFunction(activations) + bias;
 		execution_results[self_execution_results_start_i] = linear_function;
-		double activation = ActivationFunctions::Activate(linear_function, activation_function);
-		execution_results[self_execution_results_start_i + 1] = activations[neuron_i] = activation;
 	}
 	
 	double INeuron::Execute(double* activations)
@@ -34,7 +32,9 @@ public:
 	
 	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results)
 	{
-
+		double current_cost = costs[neuron_i];
+		double linear_function = execution_results[self_execution_results_start_i];
+		gradients[self_execution_results_start_i] = current_cost * Derivatives::DerivativeOf(linear_function, activation_function);
 	}
 	
 	void INeuron::GetGradients(double* gradients, double* costs, size_t t_length, size_t t_count)
