@@ -8,7 +8,6 @@ class DenseConnections :
 {
 protected:
     size_t previous_layer_start_i = -1;
-    size_t previous_layer_length = -1;
 
 public:
 	DenseConnections(size_t previous_layer_start_i, size_t previous_layer_length, 
@@ -21,13 +20,12 @@ public:
 		GenerateWeights();
 
 		this->previous_layer_start_i = previous_layer_start_i;
-		this->previous_layer_length = previous_layer_length;
 	}
 
 	double IConnections::LinearFunction(double* network_activations)
 	{
 		double linear_function = 0;
-		for (size_t i = 0; i < previous_layer_length; i++)
+		for (size_t i = 0; i < weight_count; i++)
 		{
 			linear_function += network_activations[previous_layer_start_i + i] * weights[i];
 		}
