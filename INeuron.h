@@ -20,6 +20,7 @@ public:
 	/// Value will be automatically asigned by NN
 	/// </summary>
 	size_t self_execution_results_start_i = -1;
+
 	/// <summary>
 	/// Value will be automatically asigned by NN
 	/// </summary>
