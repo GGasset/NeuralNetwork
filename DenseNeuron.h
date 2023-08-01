@@ -18,7 +18,10 @@ public:
 
 	void INeuron::ExecuteStore(double* activations, double* execution_results)
 	{
-
+		double linear_function = connections->LinearFunction(activations) + bias;
+		execution_results[self_execution_results_start_i] = linear_function;
+		double activation = ActivationFunctions::Activate(linear_function, activation_function);
+		execution_results[self_execution_results_start_i + 1] = activations[neuron_i] = activation;
 	}
 	
 	double INeuron::Execute(double* activations)
