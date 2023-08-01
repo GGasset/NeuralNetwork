@@ -21,7 +21,7 @@ public:
 
 	}
 	
-	void INeuron::Execute(double* activations)
+	double INeuron::Execute(double* activations)
 	{
 
 	}
