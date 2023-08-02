@@ -84,6 +84,7 @@ public:
 			}
 		}
 		delete[] network_activations;
+		return output;
 	}
 
 	/// <summary>
