@@ -9,9 +9,14 @@ class NN
 {
 private:
 	INeuron** neurons = 0;
+	size_t neuron_count = -1;
+	size_t execution_results_value_count = -1;
+	size_t input_length = -1;
+	size_t output_length = -1;
 
 public:
-	NN(INeuron** neurons, size_t neuron_count)
+	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
+	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length)
 	{
 		size_t network_execution_results_value_count = 0;
 		for (size_t i = 0; i < neuron_count; i++)
@@ -33,6 +38,11 @@ public:
 		{
 			neurons[i]->connections->network_execution_results_value_count = network_execution_results_value_count;
 		}
+
+		this->neuron_count = neuron_count;
+		this->execution_results_value_count = network_execution_results_value_count;
+		input_layer_length = input_layer_length;
+		output_length = output_layer_length;
 	}
 
 private:
