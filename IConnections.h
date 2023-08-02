@@ -33,11 +33,6 @@ public:
 	/// </summary>
 	size_t self_gradients_start_i = -1;
 
-	/// <summary>
-	/// Value initialized by NN
-	/// </summary>
-	size_t self_gradients_length = -1;
-
 
 	/// <summary>
 	/// Value will be automatically initialized by NN
