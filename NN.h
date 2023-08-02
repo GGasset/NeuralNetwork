@@ -19,6 +19,7 @@ public:
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length)
 	{
+		this->neurons = neurons;
 		size_t network_execution_results_value_count = 0;
 		for (size_t i = 0; i < neuron_count; i++)
 		{
