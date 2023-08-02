@@ -76,6 +76,8 @@ public:
 				current_neuron->ExecuteStore(network_activations, execution_results, t);
 			}
 		}
+		delete[] network_activations;
+		delete[] execution_results;
 	}
 
 	/// <summary>
