@@ -25,11 +25,11 @@ public:
 		activations[t_activation_adition] = ActivationFunctions::Activate(linear_function, activation_function);
 	}
 	
-	double INeuron::Execute(double* activations)
+	double INeuron::Execute(double* activations, size_t t_index)
 	{
-		double linear_function = connections->LinearFunction(activations) + bias;
+		double linear_function = connections->LinearFunction(activations, t_index) + bias;
 		double activation = ActivationFunctions::Activate(linear_function, activation_function);
-		activations[neuron_i] = activation;
+		activations[connections->network_neuron_count * t_index + neuron_i] = activation;
 		return activation;
 	}
 	
