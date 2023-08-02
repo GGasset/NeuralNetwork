@@ -16,7 +16,7 @@ public:
 	}
 
 	/// <summary>
-	/// Execution results must have the same values per neuron as gradients per neuron.
+	/// Execution results must have the same values per neuron as gradients per neuron
 	/// Value will be automatically asigned by NN
 	/// </summary>
 	size_t self_execution_results_start_i = -1;
@@ -33,7 +33,7 @@ public:
 	/// </summary>
 	virtual double Execute(double* activations) = 0;
 	virtual void GetGradients(double* gradients, double* costs, double* execution_results) = 0;
-	virtual void GetGradients(double* gradients, double* costs, size_t t_count) = 0;
+	virtual void GetGradients(double* gradients, double* costs, double* execution_results, size_t t_count) = 0;
 	virtual void SubtractGradients(double* gradients, double learning_rate) = 0;
 	virtual void SubtractGradients(double* gradients, double learning_rate, size_t t_count) = 0;
 	virtual void DeleteMemory() = 0;
