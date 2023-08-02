@@ -18,11 +18,11 @@ public:
 
 	void INeuron::ExecuteStore(double* activations, double* execution_results, size_t t_index = 0)
 	{
-		size_t t_activation_adittion = t_index * connections->network_neuron_count;
-		size_t t_execution_results_adittion = t_index * connections->network_execution_results_value_count;
+		size_t t_activation_adition = t_index * connections->network_neuron_count;
+		size_t t_execution_results_adition = t_index * connections->network_execution_results_value_count;
 		double linear_function = connections->LinearFunction(activations, t_index) + bias;
-		execution_results[t_execution_results_adittion + self_execution_results_start_i] = linear_function;
-		activations[t_activation_adittion] = ActivationFunctions::Activate(linear_function, activation_function);
+		execution_results[t_execution_results_adition + self_execution_results_start_i] = linear_function;
+		activations[t_activation_adition] = ActivationFunctions::Activate(linear_function, activation_function);
 	}
 	
 	double INeuron::Execute(double* activations)
