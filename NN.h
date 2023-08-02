@@ -12,7 +12,7 @@ public:
 	}
 
 private:
-	std::tuple<double***, double**> ExecuteStore(double* X)
+	std::tuple<double*, double*> ExecuteStore(double* X)
 	{
 	}
 
