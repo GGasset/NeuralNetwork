@@ -37,11 +37,19 @@ public:
 		gradients[self_execution_results_start_i] = current_cost * Derivatives::DerivativeOf(linear_function, activation_function);
 	}
 	
-	void INeuron::GetGradients(double* gradients, double* costs, size_t t_count)
+	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results, size_t t_count)
 	{
 		for (size_t t = 0; t < t_count; t++)
 		{
-			double current_cost = costs[];
+			double current_cost = costs[connections->network_neuron_count * t + neuron_i];
+			size_t current_gradient_start_i = connections->network_execution_results_value_count * t + self_execution_results_start_i;
+			
+			double linear_function_gradient =
+				gradients[current_gradient_start_i] = 
+					Derivatives::DerivativeOf(execution_results[current_gradient_start_i], activation_function);
+
+			connections->CalculateGradients()
+
 		}
 	}
 	
