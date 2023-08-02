@@ -33,9 +33,9 @@ public:
 	/// </summary>
 	virtual double Execute(double* activations) = 0;
 	virtual void GetGradients(double* gradients, double* costs, double* execution_results) = 0;
-	virtual void GetGradients(double* gradients, double* costs, size_t t_length, size_t t_count) = 0;
+	virtual void GetGradients(double* gradients, double* costs, size_t t_count) = 0;
 	virtual void SubtractGradients(double* gradients, double learning_rate) = 0;
-	virtual void SubtractGradients(double* gradients, double learning_rate, size_t t_length, size_t t_count) = 0;
+	virtual void SubtractGradients(double* gradients, double learning_rate, size_t t_count) = 0;
 	virtual void DeleteMemory() = 0;
 	virtual void Free() = 0;
 };
