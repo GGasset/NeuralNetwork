@@ -10,6 +10,10 @@ protected:
 	double bias = 1;
 
 public:
+	/// <summary>
+	/// This is made to be accessed by NN
+	/// </summary>
+	/// <returns></returns>
 	size_t GetNeuronWrittenGradientCount()
 	{
 		return neuron_written_gradient_count;
