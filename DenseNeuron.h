@@ -58,12 +58,18 @@ public:
 	
 	void INeuron::SubtractGradients(double* gradients, double learning_rate)
 	{
-
+		bias -= gradients[self_execution_results_start_i] * learning_rate;
+		connections->SubtractGradients(gradients);
 	}
 	
 	void INeuron::SubtractGradients(double* gradients, double learning_rate, size_t t_count)
 	{
-
+		for (size_t t = 0; t < t_count; t++)
+		{
+			size_t gradients_start_i = connections->network_execution_results_value_count * t + self_execution_results_start_i;
+			bias -= gradients[gradients_start_i] * learning_rate;
+		}
+		connections->SubtractGradients(gradients, t_count);
 	}
 
 	void INeuron::DeleteMemory()
