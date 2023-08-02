@@ -51,7 +51,7 @@ public:
 			size_t current_gradient_start_i = connections->network_execution_results_value_count * t + self_execution_results_start_i;
 			
 			linear_function_gradients[t] =
-				gradients[current_gradient_start_i] = 
+				gradients[current_gradient_start_i] =
 					Derivatives::DerivativeOf(execution_results[current_gradient_start_i], activation_function);
 		}
 
