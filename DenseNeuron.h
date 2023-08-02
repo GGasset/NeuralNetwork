@@ -16,10 +16,13 @@ public:
 		connections = new DenseConnections(previous_layer_start_i, previous_layer_length, neuron_written_gradient_count);
 	}
 
-	void INeuron::ExecuteStore(double* activations, double* execution_results)
+	void INeuron::ExecuteStore(double* activations, double* execution_results, size_t t_index = 0)
 	{
-		double linear_function = connections->LinearFunction(activations) + bias;
-		execution_results[self_execution_results_start_i] = linear_function;
+		size_t t_activation_adittion = t_index * connections->network_neuron_count;
+		size_t t_execution_results_adittion = t_index * connections->network_execution_results_value_count;
+		double linear_function = connections->LinearFunction(activations, t_index) + bias;
+		execution_results[t_execution_results_adittion + self_execution_results_start_i] = linear_function;
+		activations[t_activation_adittion] = ActivationFunctions::Activate(linear_function, activation_function);
 	}
 	
 	double INeuron::Execute(double* activations)

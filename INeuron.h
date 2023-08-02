@@ -30,7 +30,7 @@ public:
 	/// <summary>
 	/// Modify activations and execution results
 	/// </summary>
-	virtual void ExecuteStore(double* activations, double* execution_results) = 0;
+	virtual void ExecuteStore(double* activations, double* execution_results, size_t t_index = 0) = 0;
 
 	/// <summary>
 	/// Modify activations

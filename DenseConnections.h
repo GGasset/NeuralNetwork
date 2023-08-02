@@ -19,12 +19,13 @@ public:
 		this->previous_layer_start_i = previous_layer_start_i;
 	}
 
-	double IConnections::LinearFunction(double* network_activations)
+	double IConnections::LinearFunction(double* network_activations, size_t t_index = 0)
 	{
+		size_t t_addition = t_index * network_neuron_count;
 		double linear_function = 0;
 		for (size_t i = 0; i < weight_count; i++)
 		{
-			linear_function += network_activations[previous_layer_start_i + i] * weights[i];
+			linear_function += network_activations[t_addition + previous_layer_start_i + i] * weights[i];
 		}
 		return linear_function;
 	}
