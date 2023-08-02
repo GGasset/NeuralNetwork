@@ -89,7 +89,7 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t
 	/// </summary>
-	void Supervised_batch(double* X, double* Y, size_t t_count, Cost::CostFunction cost_function)
+	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function)
 	{
 		double* costs = new double[t_count * (neuron_count + input_length)];
 		double* gradients = new double[t_count * execution_results_value_count];
@@ -111,6 +111,22 @@ public:
 				costs[current_output_index] = Derivatives::DerivativeOf(activations[current_output_index], Y[per_t_Y_addition + i], cost_function);
 			}
 		}
+
+		// Gradient calculation
+		for (int i = neuron_count - 1; i >= 0; i--)
+		{
+			neurons[i]->GetGradients(gradients, costs, execution_results, activations, t_count);
+		}
+
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			neurons[i]->SubtractGradients(gradients, learning_rate, t_count);
+		}
+
+		delete[] costs;
+		delete[] gradients;
+		delete[] activations;
+		delete[] execution_results;
 	}
 
 	void free()
