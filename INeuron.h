@@ -35,7 +35,7 @@ public:
 	/// <summary>
 	/// Modify activations
 	/// </summary>
-	virtual double Execute(double* activations, size_t t_index) = 0;
+	virtual double Execute(double* activations, size_t t_index = 0) = 0;
 	virtual void GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations) = 0;
 	virtual void GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations, size_t t_count) = 0;
 	virtual void SubtractGradients(double* gradients, double learning_rate) = 0;
