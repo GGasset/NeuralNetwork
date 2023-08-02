@@ -46,13 +46,36 @@ public:
 	}
 
 private:
-	std::tuple<double*, double*> ExecuteStore(double* X)
+	void ExecuteStore(double* X, double* network_activations, double* execution_results, size_t t_index = 0)
 	{
+		for (size_t i = 0; i < input_length; i++)
+		{
+			network_activations[i + neuron_count * t_index] = X[i + t_index * input_length];
+		}
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			INeuron* current_neuron = neurons[i];
+			current_neuron->ExecuteStore(network_activations, execution_results, t_index);
+		}
 	}
 
 public:
-	double* Execute(double* X)
+	double* Execute(double* X, size_t t_count = 1)
 	{
+		double* network_activations = new double[t_count * (input_length + neuron_count)];
+		double* execution_results = new double[t_count * (execution_results_value_count)];
+		for (size_t t = 0; t < t_count; t++)
+		{
+			for (size_t i = 0; i < input_length; i++)
+			{
+				network_activations[i + neuron_count * t] = X[i + t * input_length];
+			}
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				INeuron* current_neuron = neurons[i];
+				current_neuron->ExecuteStore(network_activations, execution_results, t);
+			}
+		}
 	}
 
 	/// <summary>
