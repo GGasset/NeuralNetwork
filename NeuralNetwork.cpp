@@ -4,10 +4,8 @@
 #include <iostream>
 
 #include "ActivationFunctions.h"
-#include "ILayer.h"
 #include "NN.h"
 #include "ValueGeneration.h"
-#include "LayerLibrary.h"
 
 int main()
 {
