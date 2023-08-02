@@ -42,7 +42,7 @@ public:
 
 		this->neuron_count = neuron_count;
 		this->execution_results_value_count = network_execution_results_value_count;
-		input_layer_length = input_layer_length;
+		input_length = input_layer_length;
 		output_length = output_layer_length;
 	}
 
