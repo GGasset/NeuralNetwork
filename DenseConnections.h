@@ -48,7 +48,7 @@ public:
 			size_t current_t_first_network_neuron_i = t * network_neuron_count;
 			for (size_t i = 0; i < weight_count; i++)
 			{
-				size_t gradient_i = first_neuron_gradients_start_i + previous_layer_start_i + i + neuron_written_gradient_count;
+				size_t gradient_i = first_neuron_gradients_start_i + neuron_written_gradient_count + i;
 				size_t connected_activation_i = current_t_first_network_neuron_i + previous_layer_start_i;
 
 				gradients[gradient_i] = current_linear_function_gradient * neuron_activations[connected_activation_i];
