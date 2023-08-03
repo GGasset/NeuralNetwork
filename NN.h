@@ -28,7 +28,7 @@ public:
 			// Set
 			current_neuron->self_execution_results_start_i = network_execution_results_value_count;
 			current_neuron->connections->self_gradients_start_i = network_execution_results_value_count;
-			current_neuron->connections->network_neuron_count = neuron_count;
+			current_neuron->connections->network_neuron_count = neuron_count + input_length;
 
 
 			//Get
@@ -73,17 +73,20 @@ public:
 			{
 				network_activations[i + per_t_modifier] = X[i + t * input_length];
 			}
+
 			for (size_t i = 0; i < neuron_count; i++)
 			{
 				INeuron* current_neuron = neurons[i];
 				current_neuron->Execute(network_activations, t);
 			}
+
 			for (size_t i = 0; i < output_length; i++)
 			{
 				output[t * output_length + i] =
 					network_activations[per_t_modifier + neuron_count - output_length + i];
 			}
 		}
+
 		delete[] network_activations;
 		return output;
 	}
