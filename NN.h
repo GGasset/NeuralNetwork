@@ -68,7 +68,7 @@ public:
 		double* network_activations = new double[t_count * (input_length + neuron_count)];
 		for (size_t t = 0; t < t_count; t++)
 		{
-			size_t per_t_modifier = neuron_count * t;
+			size_t per_t_modifier = (neuron_count + input_length) * t;
 			for (size_t i = 0; i < input_length; i++)
 			{
 				network_activations[i + per_t_modifier] = X[i + t * input_length];
