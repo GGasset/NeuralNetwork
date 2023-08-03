@@ -23,7 +23,7 @@ public:
 		size_t t_execution_results_adition = t_index * connections->network_execution_results_value_count;
 		double linear_function = connections->LinearFunction(activations, t_index) + bias;
 		execution_results[t_execution_results_adition + self_execution_results_start_i] = linear_function;
-		activations[t_activation_adition] = ActivationFunctions::Activate(linear_function, activation_function);
+		activations[t_activation_adition + neuron_i] = ActivationFunctions::Activate(linear_function, activation_function);
 	}
 	
 	double INeuron::Execute(double* activations, size_t t_index = 0)
