@@ -50,7 +50,7 @@ public:
 			for (size_t i = 0; i < weight_count; i++)
 			{
 				size_t gradient_i = first_neuron_gradients_start_i + self_gradients_start_i + neuron_written_gradient_count + i;
-				size_t connected_activation_i = current_t_first_network_neuron_i + previous_layer_start_i;
+				size_t connected_activation_i = current_t_first_network_neuron_i + previous_layer_start_i + i;
 
 				gradients[gradient_i] = current_linear_function_gradient * neuron_activations[connected_activation_i];
 				costs[connected_activation_i] -= current_linear_function_gradient * weights[i];
