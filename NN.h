@@ -19,6 +19,10 @@ public:
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length)
 	{
+		input_length = input_layer_length;
+		output_length = output_layer_length;
+		this->neuron_count = neuron_count;
+
 		this->neurons = neurons;
 		size_t network_execution_results_value_count = 0;
 		for (size_t i = 0; i < neuron_count; i++)
@@ -41,10 +45,7 @@ public:
 			neurons[i]->connections->network_execution_results_value_count = network_execution_results_value_count;
 		}
 
-		this->neuron_count = neuron_count;
 		this->execution_results_value_count = network_execution_results_value_count;
-		input_length = input_layer_length;
-		output_length = output_layer_length;
 	}
 
 private:
@@ -52,7 +53,7 @@ private:
 	{
 		for (size_t i = 0; i < input_length; i++)
 		{
-			network_activations[i + neuron_count * t_index] = X[i + t_index * input_length];
+			network_activations[i + (input_length + neuron_count) * t_index] = X[i + t_index * input_length];
 		}
 		for (size_t i = 0; i < neuron_count; i++)
 		{
@@ -83,7 +84,7 @@ public:
 			for (size_t i = 0; i < output_length; i++)
 			{
 				output[t * output_length + i] =
-					network_activations[per_t_modifier + neuron_count - output_length + i];
+					network_activations[per_t_modifier + neuron_count + input_length - output_length + i];
 			}
 		}
 
@@ -108,8 +109,8 @@ public:
 
 			size_t per_t_Y_addition = output_length * t;
 
-			size_t per_t_addition = t * neuron_count;
-			size_t current_output_start = per_t_addition + neuron_count - output_length;
+			size_t per_t_addition = t * (neuron_count + input_length);
+			size_t current_output_start = per_t_addition + neuron_count + input_length - output_length;
 			for (size_t i = 0; i < output_length; i++)
 			{
 				size_t current_output_index = current_output_start + i;
