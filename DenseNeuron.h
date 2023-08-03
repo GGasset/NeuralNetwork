@@ -53,7 +53,7 @@ public:
 			
 			linear_function_gradients[t] =
 				gradients[current_gradient_start_i] =
-					Derivatives::DerivativeOf(execution_results[current_gradient_start_i], activation_function);
+					Derivatives::DerivativeOf(execution_results[current_gradient_start_i], activation_function) * current_cost;
 		}
 
 		connections->CalculateGradients(gradients, network_activations, costs, linear_function_gradients, t_count);
