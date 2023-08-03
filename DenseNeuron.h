@@ -11,6 +11,7 @@ public:
 
 	DenseNeuron(size_t neuron_i, size_t previous_layer_start_i, size_t previous_layer_length, ActivationFunctions::ActivationFunction activation_function)
 	{
+		this->neuron_i = neuron_i;
 		this->activation_function = activation_function;
 		neuron_written_gradient_count = 1;
 		connections = new DenseConnections(previous_layer_start_i, previous_layer_length, neuron_written_gradient_count);
