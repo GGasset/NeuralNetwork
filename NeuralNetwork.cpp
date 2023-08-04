@@ -11,20 +11,24 @@
 
 int main()
 {
-	size_t t_count = 5;
+	size_t t_count = 2;
 	double* X = new double[t_count];
 	double* Y = new double[t_count];
 
 	for (size_t t = 0; t < t_count; t++)
 	{
-		X[t] = 0.6;
-		Y[t] = 0;
+		X[t] = 10;
+		Y[t] = 0.5;
 	}
 
-	size_t shape_length = 2;
+	size_t shape_length = 6;
 	size_t* shape = new size_t[shape_length];
 	shape[0] = 1;
-	shape[1] = 1;
+	shape[1] = 27;
+	shape[2] = 12;
+	shape[3] = 8;
+	shape[4] = 4;
+	shape[5] = 1;
 	
 	size_t neuron_count = 0;
 	for (size_t i = 1; i < shape_length; i++)
@@ -52,15 +56,15 @@ int main()
 	}
 
 	NN* n = new NN(neurons, neuron_count, shape[0], shape[shape_length - 1]);
-	for (size_t i = 0; i < 1000; i++)
+	for (size_t i = 0; i < 10000; i++)
 	{
 		double* output = n->Execute(X, t_count);
 		for (size_t j = 0; j < t_count; j++)
 		{
-			std::cout << "Y: " << output[j] << " | Y hat: " << Y[j] << " | i: " << i << "\n";
+			std::cout << "Y: " << output[j] << " | Y hat: " << std::to_string(Y[j]) << " | i: " << i << "\n";
 		}
 
-		double learning_rate = 1;
+		double learning_rate = 0.1;
 		n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean);
 	}
 }
