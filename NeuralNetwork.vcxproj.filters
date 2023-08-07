@@ -63,6 +63,9 @@
     <ClCompile Include="NN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DenseLSTM.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="NN.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DenseLSTM.h">
+      <Filter>Header Files\Neurons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
