@@ -63,7 +63,7 @@ private:
 	}
 
 public:
-	double* Execute(double* X, size_t t_count = 1)
+	double* Execute(double* X, size_t t_count = 1, bool delete_memory = true)
 	{
 		double* output = new double[output_length * t_count];
 		double* network_activations = new double[t_count * (input_length + neuron_count)];
@@ -88,6 +88,12 @@ public:
 			}
 		}
 
+		if (delete_memory)
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				neurons[neuron_count]->DeleteMemory();
+			}
+
 		delete[] network_activations;
 		return output;
 	}
@@ -95,7 +101,7 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t
 	/// </summary>
-	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function)
+	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, bool delete_memory = true)
 	{
 		double* costs = new double[t_count * (neuron_count + input_length)];
 		double* gradients = new double[t_count * execution_results_value_count];
@@ -128,6 +134,12 @@ public:
 		{
 			neurons[i]->SubtractGradients(gradients, learning_rate, t_count);
 		}
+
+		if (delete_memory)
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				neurons[neuron_count]->DeleteMemory();
+			}
 
 		delete[] costs;
 		delete[] gradients;
