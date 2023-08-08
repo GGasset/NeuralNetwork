@@ -34,14 +34,14 @@ public:
 		return activation;
 	}
 	
-	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations)
-	{
-		double current_cost = costs[neuron_i];
-		double linear_function = execution_results[self_execution_results_start_i];
-		double linear_function_gradient =
-			gradients[self_execution_results_start_i] = current_cost * Derivatives::DerivativeOf(linear_function, activation_function);
-		connections->CalculateGradients(gradients, network_activations, costs, linear_function_gradient);
-	}
+	//void INeuron::GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations)
+	//{
+	//	double current_cost = costs[neuron_i];
+	//	double linear_function = execution_results[self_execution_results_start_i];
+	//	double linear_function_gradient =
+	//		gradients[self_execution_results_start_i] = current_cost * Derivatives::DerivativeOf(linear_function, activation_function);
+	//	connections->CalculateGradients(gradients, network_activations, costs, linear_function_gradient);
+	//}
 	
 	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations, size_t t_count)
 	{
