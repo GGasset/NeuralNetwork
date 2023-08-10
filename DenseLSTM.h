@@ -46,11 +46,16 @@ public:
 	{
 		// execution results Structure
 		// Relative indexing
-		// execution_results[0] = linear_hidden_addition
-		// execution_results[1] = forget sigmoid output
-		// execution_results[0] = 
-		// execution_results[0] = 
-		
+		// execution_results[0] = output cell state
+		// execution_results[1] = output hidden_state (neuron output)
+		// execution_results[2] = linear_hidden_addition
+		// execution_results[3] = linear_hidden_sigmoid output
+		// execution_results[4] = forget weight multiplication
+		// execution_results[5] = store sigmoid weight multiplication
+		// execution_results[6] = linear_hidden_tanh output
+		// execution_results[7] = store tanh weight multiplication
+		// execution_results[8] = output_weight multiplication		
+		// execution_results[9] = output cell state tanh	
 
 
 		size_t execution_results_start = t_index * connections->network_execution_results_value_count + self_execution_results_start_i;
