@@ -56,7 +56,7 @@ int main()
 	}
 
 	NN* n = new NN(neurons, neuron_count, shape[0], shape[shape_length - 1]);
-	for (size_t i = 0; i < 10000; i++)
+	for (size_t i = 0; i < 3000; i++)
 	{
 		double* output = n->Execute(X, t_count);
 		for (size_t j = 0; j < t_count; j++)
