@@ -85,10 +85,34 @@ public:
 			double prev_hidden_gradient = t == 0 ? first_hidden_gradient : gradients[previous_gradient_start];
 			double prev_cell_gradient = t == 0 ? first_cell_gradient : gradients[previous_gradient_start + 1];
 			
+			// Linear_hidden activations derivatives
+			double linear_hidden_sigmoid_derivative = Derivatives::SigmoidDerivative(execution_results[current_execution_result_start + 2]);
+			double linear_hidden_tanh_derivative = Derivatives::TanhDerivative(execution_results[current_execution_result_start + 2]);
 
-			double linear_hidden_addition_derivative = gradients[previous_gradient_start] * prev_hidden_gradient;
-			double forget_sigmoid_derivative = linear_hidden_addition_derivative *  Derivatives::SigmoidDerivative(execution_results[current_execution_result_start]);
-			double forget_weight_multiplication_derivative = execution_results[current_execution_result_start + 1] + forget_sigmoid_derivative;
+			// Forget gate derivatives
+			double forget_weight_multiplication_derivative = execution_results[current_execution_result_start + 3] + linear_hidden_sigmoid_derivative;
+			double cell_state_multiplication_derivative = execution_results[current_execution_result_start + 4] * forget_weight_multiplication_derivative + execution_results[current_execution_result_start] * prev_cell_gradient;
+
+			// Store gate derivatives
+			double store_sigmoid_weight_derivative = execution_results[current_execution_result_start + 3] * linear_hidden_sigmoid_derivative;
+			double store_tanh_weight_derivative = execution_results[current_execution_result_start + 6] * linear_hidden_tanh_derivative;
+
+			double store_gate_multiplication_derivative =
+				store_sigmoid_weight_derivative * execution_results[current_execution_result_start + 5]
+				+
+				store_tanh_weight_derivative * execution_results[current_execution_result_start + 7];
+
+			double cell_state_addition_derivative = cell_state_multiplication_derivative + store_gate_multiplication_derivative;
+
+			double cell_state_tanh_derivative = Derivatives::TanhDerivative(execution_results[current_execution_result_start + 1]);
+
+			// Output gate
+			double output_weight_multiplication_derivative = linear_hidden_sigmoid_derivative * execution_results[current_execution_result_start + 3];
+			double output_gate_derivative =
+				output_weight_multiplication_derivative * execution_results[current_execution_result_start + 8]
+				+
+				cell_state_tanh_derivative * execution_results[current_execution_result_start + 9];
+
 		}
 		
 	}
