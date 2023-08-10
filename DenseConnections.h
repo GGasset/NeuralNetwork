@@ -7,7 +7,7 @@ class DenseConnections :
     public IConnections
 {
 protected:
-    size_t previous_layer_start_i = -1;
+    size_t previous_layer_start_i;
 
 public:
 	DenseConnections(size_t previous_layer_start_i, size_t previous_layer_length, size_t neuron_written_gradient_count)
@@ -45,7 +45,7 @@ public:
 		{
 			double current_linear_function_gradient = linear_function_gradients[t];
 
-			size_t first_neuron_gradients_start_i = network_execution_results_value_count * t;
+			size_t first_neuron_gradients_start_i = network_gradients_value_count * t;
 			size_t current_t_first_network_neuron_i = t * network_neuron_count;
 			for (size_t i = 0; i < weight_count; i++)
 			{
@@ -58,19 +58,11 @@ public:
 		}
 	}
 
-	void IConnections::SubtractGradients(double* gradients, double learning_rate)
-	{
-		for (size_t i = 0; i < weight_count; i++)
-		{
-			weights[i] -= gradients[previous_layer_start_i + i] * learning_rate;
-		}
-	}
-
 	void IConnections::SubtractGradients(double* gradients, size_t t_count, double learning_rate)
 	{
 		for (size_t t = 0; t < t_count; t++)
 		{
-			size_t first_neuron_gradients_start_i = network_execution_results_value_count * t;
+			size_t first_neuron_gradients_start_i = network_gradients_value_count * t;
 			for (size_t i = 0; i < weight_count; i++)
 			{
 				weights[i] -= gradients[first_neuron_gradients_start_i + self_gradients_start_i + neuron_written_gradient_count + i] * learning_rate;

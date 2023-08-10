@@ -35,9 +35,14 @@ public:
 
 
 	/// <summary>
-	/// Value will be automatically initialized by NN
+	/// Value will be automatically initialized by NN and is made to be accessed by neuron
 	/// </summary>
 	size_t network_execution_results_value_count = -1;
+
+	/// <summary>
+	/// Value will be automatically initialized by NN
+	/// </summary>
+	size_t network_gradients_value_count = -1;
 
 	/// <summary>
 	/// Value will be automatically initialized by NN
@@ -59,7 +64,6 @@ public:
 	virtual double LinearFunction(double* network_activations, size_t t_index = 0) = 0;
 	virtual void CalculateGradients(double* gradients, double* neuron_activations, double* costs, double linear_function_gradient) = 0;
 	virtual void CalculateGradients(double* gradients, double* neuron_activations, double* costs, double* linear_function_gradients, size_t t_count) = 0;
-	virtual void SubtractGradients(double* gradients, double learning_rate) = 0;
 	virtual void SubtractGradients(double* gradients, size_t t_count, double learning_rate) = 0;
 };
 

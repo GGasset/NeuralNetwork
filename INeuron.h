@@ -4,8 +4,9 @@
 class INeuron
 {
 protected:
-	size_t neuron_i = -1;
-	size_t neuron_written_gradient_count = -1;
+	size_t neuron_i;
+	size_t neuron_written_gradient_count;
+	size_t neuron_written_execution_results_count;
 
 	double bias = 1;
 
@@ -13,17 +14,28 @@ public:
 	/// <summary>
 	/// This is made to be accessed by NN
 	/// </summary>
-	/// <returns></returns>
 	size_t GetNeuronWrittenGradientCount()
 	{
 		return neuron_written_gradient_count;
 	}
 
 	/// <summary>
-	/// Execution results must have the same values per neuron as gradients per neuron
+	/// This is made to be accessed by NN
+	/// </summary>
+	size_t GetNeuronWrittenExecutionResultsCount()
+	{
+		return neuron_written_execution_results_count;
+	}
+
+	/// <summary>
 	/// Value will be automatically asigned by NN
 	/// </summary>
 	size_t self_execution_results_start_i = -1;
+
+	/// <summary>
+	/// Value automatically asigned by NN
+	/// </summary>
+	size_t self_gradients_start_i = -1;
 
 	IConnections* connections = 0;
 
@@ -37,7 +49,6 @@ public:
 	/// </summary>
 	virtual double Execute(double* activations, size_t t_index = 0) = 0;
 	virtual void GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations, size_t t_count) = 0;
-	virtual void SubtractGradients(double* gradients, double learning_rate) = 0;
 	virtual void SubtractGradients(double* gradients, double learning_rate, size_t t_count) = 0;
 	virtual void DeleteMemory() = 0;
 	virtual void Free() = 0;

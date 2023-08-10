@@ -12,6 +12,7 @@ private:
 	INeuron** neurons = 0;
 	size_t neuron_count = -1;
 	size_t execution_results_value_count = -1;
+	size_t gradients_value_count = -1;
 	size_t input_length = -1;
 	size_t output_length = -1;
 
@@ -25,26 +26,35 @@ public:
 
 		this->neurons = neurons;
 		size_t network_execution_results_value_count = 0;
+		size_t network_gradients_value_count = 0;
 		for (size_t i = 0; i < neuron_count; i++)
 		{
 			INeuron* current_neuron = neurons[i];
 
 			// Set
 			current_neuron->self_execution_results_start_i = network_execution_results_value_count;
+			current_neuron->self_gradients_start_i = network_gradients_value_count;
+
 			current_neuron->connections->self_gradients_start_i = network_execution_results_value_count;
+			current_neuron->connections->self_gradients_start_i = network_gradients_value_count;
 			current_neuron->connections->network_neuron_count = neuron_count + input_length;
 
 
 			//Get
 			network_execution_results_value_count += current_neuron->GetNeuronWrittenGradientCount();
+			network_gradients_value_count += current_neuron->GetNeuronWrittenGradientCount();
+			network_gradients_value_count += current_neuron->connections->GetWeightCount();
+
 		}
 
 		for (size_t i = 0; i < neuron_count; i++)
 		{
 			neurons[i]->connections->network_execution_results_value_count = network_execution_results_value_count;
+			neurons[i]->connections->network_gradients_value_count = network_gradients_value_count;
 		}
 
 		this->execution_results_value_count = network_execution_results_value_count;
+		this->gradients_value_count = network_gradients_value_count;
 	}
 
 private:
@@ -90,7 +100,7 @@ public:
 		if (delete_memory)
 			for (size_t i = 0; i < neuron_count; i++)
 			{
-				neurons[neuron_count]->DeleteMemory();
+				neurons[i]->DeleteMemory();
 			}
 
 		delete[] network_activations;
@@ -103,7 +113,7 @@ public:
 	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, bool delete_memory = true)
 	{
 		double* costs = new double[t_count * (neuron_count + input_length)];
-		double* gradients = new double[t_count * execution_results_value_count];
+		double* gradients = new double[t_count * gradients_value_count];
 		double* activations = new double[t_count * (input_length + neuron_count)];
 		double* execution_results = new double[t_count * execution_results_value_count];
 
@@ -137,7 +147,7 @@ public:
 		if (delete_memory)
 			for (size_t i = 0; i < neuron_count; i++)
 			{
-				neurons[neuron_count]->DeleteMemory();
+				neurons[i]->DeleteMemory();
 			}
 
 		delete[] costs;
