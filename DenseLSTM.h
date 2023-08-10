@@ -75,7 +75,7 @@ public:
 		for (size_t t = 0; t < t_count; t++)
 		{
 			size_t current_execution_result_start = connections->network_execution_results_value_count * t_count + self_execution_results_start_i;
-			size_t previous_gradient_start = connections->network_execution_results_value_count * (t_count - 1) + self_execution_results_start_i;
+			size_t previous_gradient_start = connections->network_gradients_value_count * (t_count - 1) + self_gradients_start_i;
 			
 			double prev_hidden_gradient = t == 0 ? first_hidden_gradient : gradients[previous_gradient_start];
 			double prev_cell_gradient = t == 0 ? first_cell_gradient : gradients[previous_gradient_start + 1];
