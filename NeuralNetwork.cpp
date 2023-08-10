@@ -67,6 +67,8 @@ int main()
 		double learning_rate = 0.1;
 		n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean);
 	}
+	n->free();
+	delete n;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

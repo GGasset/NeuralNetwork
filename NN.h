@@ -148,5 +148,10 @@ public:
 
 	void free()
 	{
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			neurons[i]->Free();
+		}
+		delete[] neurons;
 	}
 };
