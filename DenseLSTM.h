@@ -32,7 +32,7 @@ public:
 	{
 		this->neuron_i = neuron_i;
 
-		neuron_written_gradient_count = 10E5;
+		neuron_written_gradient_count = 5;
 
 		forget_weight = ValueGeneration::GenerateWeight(-2, 0.5, 2);
 		sigmoid_store_weight = ValueGeneration::GenerateWeight(-2, 0.5, 2);
