@@ -141,9 +141,39 @@ public:
 			derivatives[current_derivatives_start + 1] = output_gate_derivative;
 		}
 		
+		// Gradients
+
+		// Gradient positions 
+		// Relative indexing*
+		// gradients[0] = input_hidden_state gradient
+		// gradients[1] = input_cell_state_gradient
+		// gradients[2] = store gate tanh weight multiplication
+		// gradients[3] = store gate sigmoid weight multiplication
+		// gradients[4] = 
+		// gradients[5] = 
+		// gradients[6] = 
+		// gradients[7] = 
 		for (int t = t_count - 1; t >= 0; t--)
 		{
+			double current_gradient = costs[t * connections->network_neuron_count + neuron_i];
 
+			size_t gradients_start_i = connections->network_gradients_value_count * t + self_gradients_start_i;
+			size_t next_gradients_start_i = gradients_start_i + connections->network_gradients_value_count;
+			current_gradient += t == (t_count - 1) ? 0 : gradients[next_gradients_start_i];
+
+			size_t derivatives_start_i = t * derivative_per_t_count;
+			double output_gate_gradient = current_gradient * derivatives[derivatives_start_i + 1];
+
+			current_gradient = output_gate_gradient * derivatives[derivatives_start_i + 10];
+			
+			current_gradient *= derivatives[derivatives_start_i];
+			double cell_state_addition_gradient = current_gradient;
+			
+			current_gradient *= derivatives[derivatives_start_i + 8];
+			double cell_state_multiplication_derivative = current_gradient;
+
+			gradients[gradients_start_i + 2] = current_gradient * derivatives[derivatives_start_i + 7];
+			gradients[gradients_start_i + 3] = current_gradient * derivatives[derivatives_start_i + 6];
 		}
 	}
 
