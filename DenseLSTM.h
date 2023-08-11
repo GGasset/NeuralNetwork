@@ -164,7 +164,7 @@ public:
 			size_t derivatives_start_i = t * derivative_per_t_count;
 			double output_gate_gradient = current_gradient * derivatives[derivatives_start_i + 1];
 
-			current_gradient = output_gate_gradient * derivatives[derivatives_start_i + 10];
+			current_gradient = output_gate_gradient * derivatives[derivatives_start_i + 10] + gradients[next_gradients_start_i + 1];
 			
 			current_gradient *= derivatives[derivatives_start_i];
 			double cell_state_addition_gradient = current_gradient;
