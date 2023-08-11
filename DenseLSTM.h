@@ -66,6 +66,9 @@ public:
 
 	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations, size_t t_count)
 	{
+		// Derivatives
+		size_t derivative_per_t_count = 11;
+
 		// Derivarives positions
 		// Relative indexing*
 		// Derivatives[0] = output cell state derivative (cell state addition derivative);
@@ -79,19 +82,6 @@ public:
 		// Derivatives[8] = store gate multiplication derivative;
 		// Derivatives[9] = output gate weight multiplication derivative;
 		// Derivatives[10] = output cell state tanh derivative;
-
-		// Gradient positions
-		// Relative indexing*
-		// gradients[0] = output_hiddden_state gradient
-		// gradients[1] = output_cell_state_gradient
-		// gradients[2] = 
-		// gradients[3] = 
-		// gradients[4] = 
-		// gradients[5] = 
-		// gradients[6] = 
-		// gradients[7] = 
-
-		size_t derivative_per_t_count = 11;
 		double* derivatives = new double[derivative_per_t_count * t_count];
 		for (size_t t = 0; t < t_count; t++)
 		{
@@ -101,7 +91,6 @@ public:
 			double prev_cell_state_derivative = t == 0 ? first_cell_derivative : derivatives[previous_derivatives_start];
 			double prev_hidden_state_derivative = t == 0 ? first_hidden_derivative : derivatives[previous_derivatives_start + 1];
 			
-			// Derivatives
 			size_t current_derivatives_start = derivative_per_t_count * t;
 
 			// Linear_hidden activations derivatives
