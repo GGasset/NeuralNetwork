@@ -59,8 +59,31 @@ public:
 
 
 		size_t execution_results_start = t_index * connections->network_execution_results_value_count + self_execution_results_start_i;
+		
 		double linear_function = execution_results[execution_results_start] = connections->LinearFunction(activations, t_index) + bias;
+		double hidden_linear = execution_results[execution_results_start + 2] = linear_function + hidden_state;
+		double hidden_linear_sigmoid = execution_results[execution_results_start + 3] = ActivationFunctions::SigmoidActivation(hidden_linear);
+		
+		// Forget gate
+		double forget_weight_multiplication = execution_results[execution_results_start + 4] = hidden_linear_sigmoid * forget_weight;
+		double cell_state_multiplication = forget_weight_multiplication * cell_state;
 
+		// Store gate
+		double store_sigmoid_weight_multiplication = execution_results[execution_results_start + 5] = hidden_linear_sigmoid * sigmoid_store_weight;
+
+		double hidden_linear_tanh = execution_results[execution_results_start + 6] = ActivationFunctions::TanhActivation(hidden_linear);
+		double store_tanh_weight_multiplication = execution_results[execution_results_start + 7] = hidden_linear_tanh * tanh_store_weight;
+
+		double store_gate_multiplication = store_sigmoid_weight_multiplication * store_tanh_weight_multiplication;
+		double output_cell_state = execution_results[execution_results_start] = store_gate_multiplication + cell_state_multiplication;
+
+		// Output gate
+		double output_gate_weight_multiplication = execution_results[execution_results_start + 8] = hidden_linear_sigmoid * output_weight;
+		double output_cell_state_tanh = execution_results[execution_results_start + 9] = ActivationFunctions::TanhActivation(output_cell_state);
+		double output = execution_results[execution_results_start + 1] = output_gate_weight_multiplication * output_cell_state_tanh;
+
+		size_t current_activation_i = connections->network_neuron_count * t_index + neuron_i;
+		activations[current_activation_i] = output;
 	}
 
 	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations, size_t t_count)
