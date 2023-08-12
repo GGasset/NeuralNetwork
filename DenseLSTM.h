@@ -32,7 +32,7 @@ public:
 	{
 		this->neuron_i = neuron_i;
 
-		neuron_written_gradient_count = 5;
+		neuron_written_gradient_count = 6;
 		neuron_written_execution_results_count = 10;
 
 		forget_weight = ValueGeneration::GenerateWeight(-2, 0.5, 2);
@@ -56,7 +56,7 @@ public:
 		// execution_results[6] = linear_hidden_tanh output
 		// execution_results[7] = store tanh weight multiplication
 		// execution_results[8] = output_weight multiplication		
-		// execution_results[9] = output cell state tanh	
+		// execution_results[9] = output cell state tanh
 
 
 		size_t execution_results_start = t_index * connections->network_execution_results_value_count + self_execution_results_start_i;
@@ -67,7 +67,7 @@ public:
 	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations, size_t t_count)
 	{
 		// Derivatives
-		size_t derivative_per_t_count = 11;
+		size_t derivative_per_t_count = 12;
 
 		// Derivarives positions
 		// Relative indexing*
@@ -82,6 +82,7 @@ public:
 		// Derivatives[8] = store gate multiplication derivative;
 		// Derivatives[9] = output gate weight multiplication derivative;
 		// Derivatives[10] = output cell state tanh derivative;
+		// Derivatives[11] = linear_function derivative
 		double* derivatives = new double[derivative_per_t_count * t_count];
 		for (size_t t = 0; t < t_count; t++)
 		{
@@ -92,6 +93,8 @@ public:
 			double prev_hidden_state_derivative = t == 0 ? first_hidden_derivative : derivatives[previous_derivatives_start + 1];
 			
 			size_t current_derivatives_start = derivative_per_t_count * t;
+
+			derivatives[current_derivatives_start + 11] = connections->CalculateDerivative(network_activations);
 
 			// Linear_hidden activations derivatives
 			double linear_hidden_sigmoid_derivative = Derivatives::SigmoidDerivative(execution_results[current_execution_result_start + 2]);
@@ -143,16 +146,16 @@ public:
 		
 		// Gradients
 
+		double* linear_function_gradients = new double[t_count];
+
 		// Gradient positions 
 		// Relative indexing*
 		// gradients[0] = input_hidden_state gradient
 		// gradients[1] = input_cell_state_gradient
-		// gradients[2] = store gate tanh weight multiplication
-		// gradients[3] = store gate sigmoid weight multiplication
-		// gradients[4] = 
-		// gradients[5] = 
-		// gradients[6] = 
-		// gradients[7] = 
+		// gradients[2] = store gate tanh weight gradient
+		// gradients[3] = store gate sigmoid weight gradient
+		// gradients[4] = forget gate weight gradient
+		// gradients[5] = output gate weight gradient
 		for (int t = t_count - 1; t >= 0; t--)
 		{
 			double current_gradient = costs[t * connections->network_neuron_count + neuron_i];
@@ -166,6 +169,7 @@ public:
 
 			current_gradient = output_gate_gradient * derivatives[derivatives_start_i + 10] + gradients[next_gradients_start_i + 1];
 			
+			// Store gate
 			current_gradient *= derivatives[derivatives_start_i];
 			double cell_state_addition_gradient = current_gradient;
 			
@@ -174,7 +178,30 @@ public:
 
 			gradients[gradients_start_i + 2] = current_gradient * derivatives[derivatives_start_i + 7];
 			gradients[gradients_start_i + 3] = current_gradient * derivatives[derivatives_start_i + 6];
+
+			// Forget Gate
+			current_gradient = cell_state_addition_gradient;
+			current_gradient *= derivatives[derivatives_start_i + 5];
+			gradients[gradients_start_i + 1] = current_gradient;
+
+			current_gradient *= derivatives[derivatives_start_i + 4];
+			gradients[gradients_start_i + 4] = current_gradient;
+
+			// Output gate
+			current_gradient = output_gate_gradient * derivatives[gradients_start_i + 9];
+			gradients[gradients_start_i + 5] = current_gradient;
+
+			current_gradient *= derivatives[derivatives_start_i + 2];
+
+			size_t previous_derivatives_start_i = (t - 1) * derivative_per_t_count;
+			gradients[gradients_start_i] = t == 0 ? 0 : current_gradient * derivatives[previous_derivatives_start_i + 1];
+			linear_function_gradients[(t_count - 1) - t] = current_gradient * derivatives[derivatives_start_i + 11];
 		}
+
+		connections->CalculateGradients(gradients, network_activations, costs, linear_function_gradients, t_count);
+
+		delete[] linear_function_gradients;
+		delete[] derivatives;
 	}
 
 	void INeuron::DeleteMemory()
