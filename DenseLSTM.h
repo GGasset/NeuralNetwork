@@ -204,6 +204,29 @@ public:
 		delete[] derivatives;
 	}
 
+	void INeuron::SubtractGradients(double* gradients, double learning_rate, size_t t_count)
+	{
+		// Gradient positions 
+		// Relative indexing*
+		// gradients[0] = input_hidden_state gradient
+		// gradients[1] = input_cell_state_gradient
+		// gradients[2] = store gate tanh weight gradient
+		// gradients[3] = store gate sigmoid weight gradient
+		// gradients[4] = forget gate weight gradient
+		// gradients[5] = output gate weight gradient
+
+		for (size_t t = 0; t < t_count; t++)
+		{
+			size_t gradients_start_i = t * connections->network_gradients_value_count + self_gradients_start_i;
+			tanh_store_weight -= gradients[gradients_start_i + 2] * learning_rate;
+			sigmoid_store_weight -= gradients[gradients_start_i + 3] * learning_rate;
+			forget_weight -= gradients[gradients_start_i + 4] * learning_rate;
+			output_weight -= gradients[gradients_start_i + 5] * learning_rate;
+
+			connections->SubtractGradients(gradients, t_count, learning_rate);
+		}
+	}
+
 	void INeuron::DeleteMemory()
 	{
 		hidden_state = 0;
