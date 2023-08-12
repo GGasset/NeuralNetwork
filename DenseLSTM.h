@@ -211,5 +211,10 @@ public:
 		first_hidden_derivative = 0;
 		first_cell_derivative = 0;
 	}
+
+	void INeuron::Free()
+	{
+		connections->Free();
+	}
 };
 
