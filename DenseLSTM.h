@@ -1,6 +1,5 @@
 #include "DenseConnections.h"
 #include "INeuron.h"
-#include "Derivatives.h"
 
 #pragma once
 class DenseLSTM : public INeuron
