@@ -94,7 +94,7 @@ public:
 			
 			size_t current_derivatives_start = derivative_per_t_count * t;
 
-			derivatives[current_derivatives_start + 11] = connections->CalculateDerivative(network_activations);
+			derivatives[current_derivatives_start + 11] = connections->CalculateDerivative(network_activations, t);
 
 			// Linear_hidden activations derivatives
 			double linear_hidden_sigmoid_derivative = Derivatives::SigmoidDerivative(execution_results[current_execution_result_start + 2]);
