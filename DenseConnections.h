@@ -30,14 +30,20 @@ public:
 		return linear_function;
 	}
 
-	void IConnections::CalculateGradients(double* gradients, double* neuron_activations, double* costs, double linear_function_gradient)
+	double IConnections::CalculateDerivative(double* network_activations, size_t t_index)
 	{
+		size_t t_addition = t_index * network_neuron_count;
+		size_t current_previous_layer_start = t_addition + previous_layer_start_i;
+
+		double derivative = 0;
 		for (size_t i = 0; i < weight_count; i++)
 		{
-			gradients[self_gradients_start_i + neuron_written_gradient_count + i] = linear_function_gradient * neuron_activations[previous_layer_start_i + i];
-			costs[previous_layer_start_i + i] -= linear_function_gradient * weights[i];
+			// Delete weights[i] if it doesn't work
+			derivative += network_activations[current_previous_layer_start + i] + weights[i];
 		}
+		return derivative;
 	}
+
 
 	void IConnections::CalculateGradients(double* gradients, double* neuron_activations, double* costs, double* linear_function_gradients, size_t t_count)
 	{
