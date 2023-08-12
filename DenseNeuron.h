@@ -1,7 +1,5 @@
 #include "INeuron.h"
 #include "DenseConnections.h"
-#include "ActivationFunctions.h"
-#include "Derivatives.h"
 
 #pragma once
 class DenseNeuron : public INeuron
