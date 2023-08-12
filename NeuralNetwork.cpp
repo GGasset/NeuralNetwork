@@ -47,7 +47,6 @@ int main()
 		size_t prev_layer_length = shape[i - 1];
 		for (size_t j = 0; j < shape[i] && (neuron_i < neuron_count); j++)
 		{
-			// Bug in previous_layer_length
 			neurons[neuron_i] = new DenseNeuron(neuron_i + shape[0], previous_layer_start, prev_layer_length, activation_function);
 			neuron_i++;
 		}
