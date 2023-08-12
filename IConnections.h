@@ -62,7 +62,7 @@ public:
 	}
 
 	virtual double LinearFunction(double* network_activations, size_t t_index = 0) = 0;
-	virtual void CalculateGradients(double* gradients, double* neuron_activations, double* costs, double linear_function_gradient) = 0;
+	virtual double CalculateDerivative(double* network_activations, size_t t_index) = 0;
 	virtual void CalculateGradients(double* gradients, double* neuron_activations, double* costs, double* linear_function_gradients, size_t t_count) = 0;
 	virtual void SubtractGradients(double* gradients, size_t t_count, double learning_rate) = 0;
 };
