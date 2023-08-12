@@ -38,7 +38,6 @@ public:
 		double derivative = 0;
 		for (size_t i = 0; i < weight_count; i++)
 		{
-			// Delete weights[i] if it doesn't work
 			derivative += network_activations[current_previous_layer_start + i] + weights[i];
 		}
 		return derivative;
