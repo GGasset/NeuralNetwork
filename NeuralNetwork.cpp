@@ -3,9 +3,10 @@
 
 #include <iostream>
 
+#include "DenseNeuron.h"
+#include "DenseLSTM.h"
 #include "ActivationFunctions.h"
 #include "Cost.h"
-#include "NeuronLibrary.h"
 #include "NN.h"
 #include "ValueGeneration.h"
 
@@ -18,7 +19,7 @@ int main()
 	for (size_t t = 0; t < t_count; t++)
 	{
 		X[t] = 10;
-		Y[t] = 0.5;
+		Y[t] = t;
 	}
 
 	size_t shape_length = 6;
@@ -47,7 +48,7 @@ int main()
 		size_t prev_layer_length = shape[i - 1];
 		for (size_t j = 0; j < shape[i] && (neuron_i < neuron_count); j++)
 		{
-			neurons[neuron_i] = new DenseNeuron(neuron_i + shape[0], previous_layer_start, prev_layer_length, activation_function);
+			neurons[neuron_i] = new DenseLSTM(neuron_i + shape[0], previous_layer_start, prev_layer_length);
 			neuron_i++;
 		}
 
