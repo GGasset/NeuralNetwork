@@ -16,16 +16,6 @@ protected:
 	double first_hidden_derivative = 0;
 	double first_cell_derivative = 0;
 
-	/// <summary>
-	/// Modifies cell state and hidden_state
-	/// </summary>
-	/// <param name="linear_hidden_adition"></param>
-	/// <returns></returns>
-	double calculate_forget_gate(double linear_hidden_adition)
-	{
-		return -1;
-	}
-
 public:
 	DenseLSTM(size_t neuron_i, size_t previous_layer_start_i, size_t previous_layer_length)
 	{
@@ -40,6 +30,24 @@ public:
 		output_weight = ValueGeneration::GenerateWeight(-2, 0.5, 2);
 
 		this->connections = new DenseConnections(previous_layer_start_i, previous_layer_length, neuron_written_gradient_count);
+	}
+
+	double INeuron::Execute(double* activations, size_t t_index = 0)
+	{
+		double hidden_linear = hidden_state + connections->LinearFunction(activations, t_index);
+
+		double hidden_linear_sigmoid = ActivationFunctions::SigmoidActivation(hidden_linear);
+		double hidden_linear_tanh = ActivationFunctions::TanhActivation(hidden_linear);
+
+		// Forget_gate
+		cell_state *= hidden_linear_sigmoid * forget_weight;
+
+		// Store gate
+		cell_state += (hidden_linear_sigmoid * sigmoid_store_weight) * (hidden_linear_tanh * tanh_store_weight);
+
+		// Output gate
+		activations[t_index * connections->network_neuron_count + neuron_i] = hidden_state = (hidden_linear_sigmoid * output_weight) * ActivationFunctions::TanhActivation(cell_state);
+		return hidden_state;
 	}
 
 	void INeuron::ExecuteStore(double* activations, double* execution_results, size_t t_index = 0)
