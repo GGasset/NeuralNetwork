@@ -195,9 +195,13 @@ public:
 			current_gradient += t == (t_count - 1) ? 0 : gradients[next_gradients_start_i];
 
 			size_t derivatives_start_i = t * derivative_per_t_count;
+
+			// Output_hidden gradient
 			double output_gate_gradient = current_gradient * derivatives[derivatives_start_i + 1];
 
-			current_gradient = output_gate_gradient * derivatives[derivatives_start_i + 10] + gradients[next_gradients_start_i + 1];
+			// Cell_State tanh gradient
+			current_gradient = output_gate_gradient * derivatives[derivatives_start_i + 10];
+			current_gradient += (t == (t_count - 1)) ? 0 : gradients[next_gradients_start_i + 1];
 			
 			// Store gate
 			current_gradient *= derivatives[derivatives_start_i];
