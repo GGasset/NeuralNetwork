@@ -83,7 +83,7 @@ public:
 		double output = execution_results[execution_results_start + 1] = output_gate_weight_multiplication * output_cell_state_tanh;
 
 		size_t current_activation_i = connections->network_neuron_count * t_index + neuron_i;
-		activations[current_activation_i] = output;
+		hidden_state = activations[current_activation_i] = output;
 	}
 
 	void INeuron::GetGradients(double* gradients, double* costs, double* execution_results, double* network_activations, size_t t_count)
