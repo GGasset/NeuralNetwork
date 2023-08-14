@@ -116,7 +116,7 @@ public:
 		double* derivatives = new double[derivative_per_t_count * t_count];
 		for (size_t t = 0; t < t_count; t++)
 		{
-			size_t current_execution_result_start = connections->network_execution_results_value_count * t_count + self_execution_results_start_i;
+			size_t current_execution_result_start = connections->network_execution_results_value_count * t + self_execution_results_start_i;
 			size_t previous_derivatives_start = derivative_per_t_count * (t - 1);
 
 			double prev_cell_state_derivative = t == 0 ? first_cell_derivative : derivatives[previous_derivatives_start];
