@@ -41,7 +41,7 @@ public:
 
 
 			//Get
-			network_execution_results_value_count += current_neuron->GetNeuronWrittenGradientCount();
+			network_execution_results_value_count += current_neuron->GetNeuronWrittenExecutionResultsCount();
 			network_gradients_value_count += current_neuron->GetNeuronWrittenGradientCount();
 			network_gradients_value_count += current_neuron->connections->GetWeightCount();
 
