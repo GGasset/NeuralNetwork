@@ -225,7 +225,7 @@ public:
 
 			size_t previous_derivatives_start_i = (t - 1) * derivative_per_t_count;
 			gradients[gradients_start_i] = t == 0 ? 0 : current_gradient * derivatives[previous_derivatives_start_i + 1];
-			linear_function_gradients[(t_count - 1) - t] = current_gradient * derivatives[derivatives_start_i + 11];
+			linear_function_gradients[t] = current_gradient * derivatives[derivatives_start_i + 11];
 		}
 
 		connections->CalculateGradients(gradients, network_activations, costs, linear_function_gradients, t_count);
