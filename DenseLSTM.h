@@ -218,7 +218,7 @@ public:
 			gradients[gradients_start_i + 4] = current_gradient;
 
 			// Output gate
-			current_gradient = output_gate_gradient * derivatives[gradients_start_i + 9];
+			current_gradient = output_gate_gradient * derivatives[derivatives_start_i + 9];
 			gradients[gradients_start_i + 5] = current_gradient;
 
 			current_gradient *= derivatives[derivatives_start_i + 2];
