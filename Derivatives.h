@@ -36,8 +36,8 @@ public:
 
 	static double TanhDerivative(double x)
 	{
-		double bottomDerivative = expDerivative(-2 * x);
-		return -DivisionDerivative(2, 1 + exp(-2 * x), 0, bottomDerivative);
+		double tanh_output = ActivationFunctions::TanhActivation(x);
+		return 1 - (tanh_output * tanh_output);
 	}
 
 	static double DivisionDerivative(double a, double b, double Da, double Db)
