@@ -208,7 +208,7 @@ public:
 			double cell_state_addition_gradient = current_gradient;
 			
 			current_gradient *= derivatives[derivatives_start_i + 8];
-			double cell_state_multiplication_derivative = current_gradient;
+			double store_gate_multiplication_derivative = current_gradient;
 
 			gradients[gradients_start_i + 2] = current_gradient * derivatives[derivatives_start_i + 7];
 			gradients[gradients_start_i + 3] = current_gradient * derivatives[derivatives_start_i + 6];
