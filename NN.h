@@ -112,10 +112,16 @@ public:
 	/// </summary>
 	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, bool delete_memory = true)
 	{
-		double* costs = new double[t_count * (neuron_count + input_length)];
+		size_t single_value_for_neurons_count = t_count * (neuron_count + input_length);
+		double* costs = new double[single_value_for_neurons_count];
 		double* gradients = new double[t_count * gradients_value_count];
-		double* activations = new double[t_count * (input_length + neuron_count)];
+		double* activations = new double[single_value_for_neurons_count];
 		double* execution_results = new double[t_count * execution_results_value_count];
+
+		for (size_t i = 0; i < single_value_for_neurons_count; i++)
+		{
+			costs[i] = activations[i] = 0;
+		}
 
 		// Inference
 		for (size_t t = 0; t < t_count; t++)
