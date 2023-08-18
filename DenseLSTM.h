@@ -228,7 +228,7 @@ public:
 			current_gradient *= derivatives[derivatives_start_i + 2];
 
 			size_t previous_derivatives_start_i = (t - 1) * derivative_per_t_count;
-			gradients[gradients_start_i] = t == 0 ? 0 : current_gradient * derivatives[previous_derivatives_start_i + 1];
+			linear_function_gradients[t] = gradients[gradients_start_i] = current_gradient * ((t == 0) ? 0 : (derivatives[previous_derivatives_start_i + 1]) + derivatives[derivatives_start_i + 11]);
 			linear_function_gradients[t] = current_gradient * derivatives[derivatives_start_i + 11];
 		}
 
