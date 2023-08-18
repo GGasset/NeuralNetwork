@@ -134,7 +134,7 @@ public:
 			derivatives[current_derivatives_start + 3] = linear_hidden_tanh_derivative;
 
 			// Forget gate derivatives
-			double forget_weight_multiplication_derivative = execution_results[current_execution_result_start + 3] + linear_hidden_sigmoid_derivative;
+			double forget_weight_multiplication_derivative = execution_results[current_execution_result_start + 3] * linear_hidden_sigmoid_derivative;
 			derivatives[current_derivatives_start + 4] = forget_weight_multiplication_derivative;
 
 			double cell_state_multiplication_derivative = 
