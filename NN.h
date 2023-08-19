@@ -118,6 +118,11 @@ public:
 		double* activations = new double[single_value_for_neurons_count];
 		double* execution_results = new double[t_count * execution_results_value_count];
 
+		for (size_t i = 0; i < (t_count * gradients_value_count); i++)
+		{
+			gradients[i] = 0;
+		}
+
 		for (size_t i = 0; i < single_value_for_neurons_count; i++)
 		{
 			costs[i] = activations[i] = 0;
