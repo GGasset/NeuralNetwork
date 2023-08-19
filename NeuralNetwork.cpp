@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <chrono>
 
 #include "DenseNeuron.h"
 #include "DenseLSTM.h"
@@ -12,24 +13,25 @@
 
 int main()
 {
-	size_t t_count = 2;
+	srand(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+
+	size_t t_count = 1;
 	double* X = new double[t_count];
 	double* Y = new double[t_count];
 
 	for (size_t t = 0; t < t_count; t++)
 	{
 		X[t] = 10;
-		Y[t] = t;
+		Y[t] = .2 + .1 * t;
 	}
 
-	size_t shape_length = 6;
+	size_t shape_length = 2;
 	size_t* shape = new size_t[shape_length];
 	shape[0] = 1;
-	shape[1] = 27;
-	shape[2] = 12;
-	shape[3] = 8;
-	shape[4] = 4;
-	shape[5] = 1;
+	shape[1] = 1;
+	/*shape[1] = 4;
+	shape[2] = 2;
+	shape[3] = 1;*/
 	
 	size_t neuron_count = 0;
 	for (size_t i = 1; i < shape_length; i++)
@@ -55,20 +57,44 @@ int main()
 		previous_layer_start += shape[i - 1];
 	}
 
+	bool continue_training = true;
 	NN* n = new NN(neurons, neuron_count, shape[0], shape[shape_length - 1]);
-	for (size_t i = 0; i < 3000; i++)
+	double* output = 0;
+	for (size_t i = 0; i < 10000; i++)
 	{
-		double* output = n->Execute(X, t_count);
+		double* last_output = output;
+		output = n->Execute(X, t_count);
+		bool is_same_output = true;
 		for (size_t j = 0; j < t_count; j++)
 		{
-			std::cout << "Y: " << output[j] << " | Y hat: " << std::to_string(Y[j]) << " | i: " << i << "\n";
+			std::cout << "Y: " << output[j] << " | Y hat: " << Y[j] << " | i: " << i << std::endl;
+			if (last_output == 0)
+			{
+				is_same_output = false;
+			}
+			else
+			{
+				double max_output = output[j] * (output[j] > last_output[j]) + last_output[j] * (last_output[j] > output[j]);
+				double min_output = output[j] * (output[j] < last_output[j]) + last_output[j] * (last_output[j] < output[j]);
+				is_same_output = is_same_output && ((max_output - min_output) < 10E-5);
+			}
 		}
 
-		double learning_rate = 0.1;
+		if (is_same_output)
+		{
+			continue_training = !is_same_output;
+		}
+
+		double learning_rate = 2;
 		n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean);
+
+
+		delete[] last_output;
 	}
 	n->free();
 	delete n;
+
+	delete[] output;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
