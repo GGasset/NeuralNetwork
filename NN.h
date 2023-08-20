@@ -142,6 +142,9 @@ public:
 			costs[i] = activations[i] = 0;
 		}
 
+		// There is a false positive as the warning says that per_t_Y_addition may be null, it must have 0 as a value to properly function
+#pragma warning(push)
+#pragma warning(disable:6385)
 		// Inference
 		for (size_t t = 0; t < t_count; t++)
 		{
@@ -157,6 +160,10 @@ public:
 				costs[current_output_index] = Derivatives::DerivativeOf(activations[current_output_index], current_Y[per_t_Y_addition + i], cost_function);
 			}
 		}
+#pragma warning(pop)
+
+		delete[] current_X;
+		delete[] current_Y;
 
 		// Gradient calculation
 		for (int i = neuron_count - 1; i >= 0; i--)
