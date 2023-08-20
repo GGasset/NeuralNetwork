@@ -110,7 +110,7 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t
 	/// </summary>
-	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, size_t X_start_i = 0, size_t Y_start_i, bool delete_memory = true, double dropout_rate = 0)
+	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
 	{
 		size_t current_X_size = input_length * t_count;
 		double* current_X = new double[current_X_size];
