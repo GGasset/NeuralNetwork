@@ -110,8 +110,22 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t
 	/// </summary>
-	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, bool delete_memory = true, double dropout_rate = 0)
+	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, size_t X_start_i = 0, size_t Y_start_i, bool delete_memory = true, double dropout_rate = 0)
 	{
+		size_t current_X_size = input_length * t_count;
+		double* current_X = new double[current_X_size];
+		for (size_t i = 0; i < current_X_size; i++)
+		{
+			current_X[i] = X[i + X_start_i];
+		}
+
+		size_t current_Y_size = output_length * t_count;
+		double* current_Y = new double[current_Y_size];
+		for (size_t i = 0; i < current_Y_size; i++)
+		{
+			current_Y[i] = Y[i + Y_start_i];
+		}
+
 		size_t single_value_for_neurons_count = t_count * (neuron_count + input_length);
 		double* costs = new double[single_value_for_neurons_count];
 		double* gradients = new double[t_count * gradients_value_count];
@@ -131,7 +145,7 @@ public:
 		// Inference
 		for (size_t t = 0; t < t_count; t++)
 		{
-			ExecuteStore(X, activations, execution_results, t);
+			ExecuteStore(current_X, activations, execution_results, t);
 
 			size_t per_t_Y_addition = output_length * t;
 
@@ -140,7 +154,7 @@ public:
 			for (size_t i = 0; i < output_length; i++)
 			{
 				size_t current_output_index = current_output_start + i;
-				costs[current_output_index] = Derivatives::DerivativeOf(activations[current_output_index], Y[per_t_Y_addition + i], cost_function);
+				costs[current_output_index] = Derivatives::DerivativeOf(activations[current_output_index], current_Y[per_t_Y_addition + i], cost_function);
 			}
 		}
 
