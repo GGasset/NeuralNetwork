@@ -173,6 +173,9 @@ public:
 				cell_state_tanh_derivative * execution_results[current_execution_result_start + 9];
 			derivatives[current_derivatives_start + 1] = output_gate_derivative;
 		}
+
+		first_hidden_derivative = derivatives[derivative_per_t_count * (t_count - 1) + 1];
+		first_cell_derivative = derivatives[derivative_per_t_count * (t_count - 1)];
 		
 		// Gradients
 
