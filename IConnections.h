@@ -22,7 +22,7 @@ protected:
 		weights = new double[weight_count];
 		for (size_t i = 0; i < weight_count; i++)
 		{
-			weights[i] = ValueGeneration::GenerateWeight(-2, 0.7, 2);
+			weights[i] = ValueGeneration::GenerateWeight(.5, 0.7, 2);
 		}
 	}
 
