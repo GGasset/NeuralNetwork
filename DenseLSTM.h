@@ -62,16 +62,15 @@ public:
 		// execution_results[5] = store sigmoid weight multiplication
 		// execution_results[6] = linear_hidden_tanh output
 		// execution_results[7] = store tanh weight multiplication
-		// execution_results[8] = output_weight multiplication		
+		// execution_results[8] = output_weight multiplication
 		// execution_results[9] = output cell state tanh
 
-
 		size_t execution_results_start = t_index * connections->network_execution_results_value_count + self_execution_results_start_i;
-		
+
 		double linear_function = execution_results[execution_results_start] = connections->LinearFunction(activations, t_index) + bias;
 		double hidden_linear = execution_results[execution_results_start + 2] = linear_function + hidden_state;
 		double hidden_linear_sigmoid = execution_results[execution_results_start + 3] = ActivationFunctions::SigmoidActivation(hidden_linear);
-		
+
 		// Forget gate
 		double forget_weight_multiplication = execution_results[execution_results_start + 4] = hidden_linear_sigmoid * forget_weight;
 		double cell_state_multiplication = forget_weight_multiplication * cell_state;
@@ -121,7 +120,7 @@ public:
 
 			double prev_cell_state_derivative = t == 0 ? first_cell_derivative : derivatives[previous_derivatives_start];
 			double prev_hidden_state_derivative = t == 0 ? first_hidden_derivative : derivatives[previous_derivatives_start + 1];
-			
+
 			size_t current_derivatives_start = derivative_per_t_count * t;
 
 			derivatives[current_derivatives_start + 11] = connections->CalculateDerivative(network_activations, t);
@@ -137,7 +136,7 @@ public:
 			double forget_weight_multiplication_derivative = execution_results[current_execution_result_start + 3] * linear_hidden_sigmoid_derivative;
 			derivatives[current_derivatives_start + 4] = forget_weight_multiplication_derivative;
 
-			double cell_state_multiplication_derivative = 
+			double cell_state_multiplication_derivative =
 				execution_results[current_execution_result_start + 4] * forget_weight_multiplication_derivative
 				+
 				execution_results[current_execution_result_start] * prev_cell_state_derivative;
@@ -176,12 +175,12 @@ public:
 
 		first_hidden_derivative = derivatives[derivative_per_t_count * (t_count - 1) + 1];
 		first_cell_derivative = derivatives[derivative_per_t_count * (t_count - 1)];
-		
+
 		// Gradients
 
 		double* linear_function_gradients = new double[t_count];
 
-		// Gradient positions 
+		// Gradient positions
 		// Relative indexing*
 		// gradients[0] = input_hidden_state gradient
 		// gradients[1] = input_cell_state_gradient
@@ -205,11 +204,11 @@ public:
 			// Cell_State tanh gradient
 			current_gradient = output_gate_gradient * derivatives[derivatives_start_i + 10];
 			current_gradient += (t == (t_count - 1)) ? 0 : gradients[next_gradients_start_i + 1];
-			
+
 			// Store gate
 			current_gradient *= derivatives[derivatives_start_i];
 			double cell_state_addition_gradient = current_gradient;
-			
+
 			current_gradient *= derivatives[derivatives_start_i + 8];
 			double store_gate_multiplication_derivative = current_gradient;
 
@@ -242,7 +241,7 @@ public:
 
 	void INeuron::SubtractGradients(double* gradients, double learning_rate, size_t t_count)
 	{
-		// Gradient positions 
+		// Gradient positions
 		// Relative indexing*
 		// gradients[0] = input_hidden_state gradient
 		// gradients[1] = input_cell_state_gradient
@@ -276,4 +275,3 @@ public:
 		connections->Free();
 	}
 };
-
