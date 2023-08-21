@@ -6,9 +6,9 @@
 class INeuron
 {
 protected:
-	size_t neuron_i;
-	size_t neuron_written_gradient_count;
-	size_t neuron_written_execution_results_count;
+	size_t neuron_i = 0;
+	size_t neuron_written_gradient_count = 0;
+	size_t neuron_written_execution_results_count = 0;
 
 	double bias = 1;
 
