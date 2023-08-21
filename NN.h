@@ -15,7 +15,6 @@ private:
 	size_t input_length = -1;
 	size_t output_length = -1;
 
-
 public:
 	enum NeuronTypeIdentifier
 	{
@@ -45,12 +44,10 @@ public:
 			current_neuron->connections->self_gradients_start_i = network_gradients_value_count;
 			current_neuron->connections->network_neuron_count = neuron_count + input_length;
 
-
 			//Get
 			network_execution_results_value_count += current_neuron->GetNeuronWrittenExecutionResultsCount();
 			network_gradients_value_count += current_neuron->GetNeuronWrittenGradientCount();
 			network_gradients_value_count += current_neuron->connections->GetWeightCount();
-
 		}
 
 		for (size_t i = 0; i < neuron_count; i++)
@@ -208,11 +205,20 @@ public:
 
 	void Save(std::string path_with_no_extension, NeuronTypeIdentifier* neuronTypes)
 	{
-
 	}
 
 	static NN Load(std::string path_with_no_extension)
 	{
+	}
 
+private:
+	static std::string GetNeuronTypeFileExtension()
+	{
+		return std::string(".nt");
+	}
+
+	static std::string GetNNFileExtension()
+	{
+		return std::string(".nn");
 	}
 };
