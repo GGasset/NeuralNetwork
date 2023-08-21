@@ -28,7 +28,7 @@ private:
 public:
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
-	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, NeuronTypeIdentifier* neuron_types = 0, bool populate_values = true)
+	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, NeuronTypeIdentifier* neuron_types = 0, int* parsed_neuron_types = 0, bool populate_values = true)
 	{
 		input_length = input_layer_length;
 		output_length = output_layer_length;
@@ -75,6 +75,10 @@ public:
 				this->neuron_types[i] = neuron_types[i];
 			}
 			delete[] neuron_types;
+		}
+		else if (parsed_neuron_types)
+		{
+			this->neuron_types = parsed_neuron_types;
 		}
 	}
 
@@ -273,7 +277,7 @@ public:
 		fclose(nn_file);
 	}
 
-	static NN Load(std::string path_with_no_extension)
+	static NN* Load(std::string path_with_no_extension)
 	{
 		size_t metadata[5]{};
 		//	neuron_count,
@@ -297,6 +301,53 @@ public:
 		int* neuron_types = new int[neuron_count];
 		fread(neuron_types, sizeof(int), neuron_count, nt_file);
 		fclose(nt_file);
+
+		FILE* nn_file = fopen((path_with_no_extension + GetNNFileExtension()).data(), "r");
+		INeuron** neurons = new INeuron * [neuron_count];
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			switch ((NeuronTypeIdentifier)neuron_types[i])
+			{
+			case DenseNeuronId:
+				DenseNeuron *neuron = (DenseNeuron*)malloc(sizeof(DenseNeuron));
+				fread(neuron, sizeof(DenseNeuron), 1, nn_file);
+				
+				neuron->connections = (DenseConnections*)malloc(sizeof(DenseConnections));
+				fread(neuron->connections, sizeof(DenseConnections), 1, nn_file);
+
+				size_t weight_count = neuron->connections->GetWeightCount();
+				double* weights = new double[weight_count];
+				fread(weights, sizeof(double), weight_count, nn_file);
+				neuron->connections->SetWeights(weights);
+
+				neurons[i] = neuron;
+				break;
+
+			case DenseLSTMId:
+				DenseLSTM* neuron = (DenseLSTM*)malloc(sizeof(DenseLSTM));
+				fread(neuron, sizeof(DenseLSTM), 1, nn_file);
+
+				neuron->connections = (DenseConnections*)malloc(sizeof(DenseConnections));
+				fread(neuron->connections, sizeof(DenseConnections), 1, nn_file);
+
+				size_t weight_count = neuron->connections->GetWeightCount();
+				double* weights = new double[weight_count];
+				fread(weights, sizeof(double), weight_count, nn_file);
+				neuron->connections->SetWeights(weights);
+
+				neurons[i] = neuron;
+				break;
+			default:
+				throw std::exception("Neuron not implemented for loading");
+			}
+		}
+		fclose(nn_file);
+
+		NN* out = new NN(neurons, neuron_count, input_length, output_length, 0, neuron_types, false);
+		out->gradients_value_count = gradients_value_count;
+		out->execution_results_value_count = execution_results_value_count;
+
+		return out;
 	}
 
 private:
