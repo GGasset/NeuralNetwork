@@ -275,6 +275,28 @@ public:
 
 	static NN Load(std::string path_with_no_extension)
 	{
+		size_t metadata[5]{};
+		//	neuron_count,
+		//	input_length,
+		//	output_length,
+		//	execution_results_value_count,
+		//	gradients_value_count
+
+		FILE* nt_file = fopen((path_with_no_extension + GetNeuronTypeFileExtension()).data(), "r");
+		if (!nt_file)
+			throw std::exception("File not found");
+
+		fread(&metadata, sizeof(size_t), 5, nt_file);
+
+		size_t neuron_count = metadata[0];
+		size_t input_length = metadata[1];
+		size_t output_length = metadata[2];
+		size_t execution_results_value_count = metadata[3];
+		size_t gradients_value_count = metadata[4];
+
+		int* neuron_types = new int[neuron_count];
+		fread(neuron_types, sizeof(int), neuron_count, nt_file);
+		fclose(nt_file);
 	}
 
 private:
