@@ -264,10 +264,13 @@ public:
 				connections_size = sizeof(DenseConnections);
 				break;
 			default:
-				break;
+				throw std::exception("NeuronType not implemented");
 			}
-			fwrite()
+			fwrite(current_neuron, neuron_size, 1, nn_file);
+			fwrite(current_neuron->connections, connections_size, 1, nn_file);
+			fwrite(current_neuron->connections->GetWeights(), sizeof(double), weight_count, nn_file);
 		}
+		fclose(nn_file);
 	}
 
 	static NN Load(std::string path_with_no_extension)
