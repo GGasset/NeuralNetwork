@@ -4,6 +4,10 @@
 #include "Derivatives.h"
 #include "Cost.h"
 
+// Neurons
+#include "DenseNeuron.h"
+#include "DenseLSTM.h"
+
 #pragma once
 class NN
 {
