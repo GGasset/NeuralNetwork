@@ -59,6 +59,11 @@ public:
 		return weights;
 	}
 
+	void SetWeights(double* weights)
+	{
+		this->weights = weights;
+	}
+
 	void Free()
 	{
 		if (weights)
