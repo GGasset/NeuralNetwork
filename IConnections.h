@@ -54,6 +54,11 @@ public:
 		return weight_count;
 	}
 
+	double* GetWeights()
+	{
+		return weights;
+	}
+
 	void Free()
 	{
 		if (weights)
