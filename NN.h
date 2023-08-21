@@ -1,5 +1,4 @@
-#include <list>
-#include <tuple>
+#include <stdio.h>
 
 #include "INeuron.h"
 #include "Derivatives.h"
@@ -16,7 +15,14 @@ private:
 	size_t input_length = -1;
 	size_t output_length = -1;
 
+
 public:
+	enum NeuronTypeIdentifier
+	{
+		DenseNeuron = 0,
+		DenseLSTM = 1
+	};
+
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length)
 	{
@@ -198,5 +204,15 @@ public:
 			neurons[i]->Free();
 		}
 		delete[] neurons;
+	}
+
+	void Save(std::string path_with_no_extension, NeuronTypeIdentifier* neuronTypes)
+	{
+
+	}
+
+	static NN Load(std::string path_with_no_extension)
+	{
+
 	}
 };
