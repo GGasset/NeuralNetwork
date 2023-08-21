@@ -18,46 +18,64 @@ private:
 public:
 	enum NeuronTypeIdentifier
 	{
-		DenseNeuron = 0,
-		DenseLSTM = 1
+		DenseNeuronId = 0,
+		DenseLSTMId = 1
 	};
 
+private:
+	int* neuron_types = 0;
+
+public:
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
-	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length)
+	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
+	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, NeuronTypeIdentifier* neuron_types = 0, bool populate_values = true)
 	{
 		input_length = input_layer_length;
 		output_length = output_layer_length;
 		this->neuron_count = neuron_count;
 
 		this->neurons = neurons;
-		size_t network_execution_results_value_count = 0;
-		size_t network_gradients_value_count = 0;
-		for (size_t i = 0; i < neuron_count; i++)
+		if (populate_values)
 		{
-			INeuron* current_neuron = neurons[i];
+			size_t network_execution_results_value_count = 0;
+			size_t network_gradients_value_count = 0;
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				INeuron* current_neuron = neurons[i];
 
-			// Set
-			current_neuron->self_execution_results_start_i = network_execution_results_value_count;
-			current_neuron->self_gradients_start_i = network_gradients_value_count;
+				// Set
+				current_neuron->self_execution_results_start_i = network_execution_results_value_count;
+				current_neuron->self_gradients_start_i = network_gradients_value_count;
 
-			current_neuron->connections->self_gradients_start_i = network_execution_results_value_count;
-			current_neuron->connections->self_gradients_start_i = network_gradients_value_count;
-			current_neuron->connections->network_neuron_count = neuron_count + input_length;
+				current_neuron->connections->self_gradients_start_i = network_execution_results_value_count;
+				current_neuron->connections->self_gradients_start_i = network_gradients_value_count;
+				current_neuron->connections->network_neuron_count = neuron_count + input_length;
 
-			//Get
-			network_execution_results_value_count += current_neuron->GetNeuronWrittenExecutionResultsCount();
-			network_gradients_value_count += current_neuron->GetNeuronWrittenGradientCount();
-			network_gradients_value_count += current_neuron->connections->GetWeightCount();
+				//Get
+				network_execution_results_value_count += current_neuron->GetNeuronWrittenExecutionResultsCount();
+				network_gradients_value_count += current_neuron->GetNeuronWrittenGradientCount();
+				network_gradients_value_count += current_neuron->connections->GetWeightCount();
+			}
+
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				neurons[i]->connections->network_execution_results_value_count = network_execution_results_value_count;
+				neurons[i]->connections->network_gradients_value_count = network_gradients_value_count;
+			}
+
+			this->execution_results_value_count = network_execution_results_value_count;
+			this->gradients_value_count = network_gradients_value_count;
 		}
 
-		for (size_t i = 0; i < neuron_count; i++)
+		if (neuron_types)
 		{
-			neurons[i]->connections->network_execution_results_value_count = network_execution_results_value_count;
-			neurons[i]->connections->network_gradients_value_count = network_gradients_value_count;
+			this->neuron_types = new int[neuron_count];
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				this->neuron_types[i] = neuron_types[i];
+			}
+			delete[] neuron_types;
 		}
-
-		this->execution_results_value_count = network_execution_results_value_count;
-		this->gradients_value_count = network_gradients_value_count;
 	}
 
 private:
@@ -203,8 +221,53 @@ public:
 		delete[] neurons;
 	}
 
-	void Save(std::string path_with_no_extension, NeuronTypeIdentifier* neuronTypes)
+	void Save(std::string path_with_no_extension)
 	{
+		if (neuron_types == 0)
+			throw std::exception("No info about neuron_types provided, please use another overload of this method.\nYou may also save that info at the constructor");
+
+		Save(path_with_no_extension, neuron_types);
+	}
+
+	void Save(std::string path_with_no_extension, int* neuronTypes)
+	{
+		size_t metadata[5]
+		{
+			neuron_count,
+			input_length,
+			output_length,
+			execution_results_value_count,
+			gradients_value_count
+		};
+
+		FILE* neuron_type_file = fopen((path_with_no_extension + GetNeuronTypeFileExtension()).data(), "w");
+		fwrite(&metadata, sizeof(size_t), 5, neuron_type_file);
+		fwrite(neuronTypes, sizeof(int), neuron_count, neuron_type_file);
+		fclose(neuron_type_file);
+
+		FILE* nn_file = fopen((path_with_no_extension + GetNNFileExtension()).data(), "w");
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			INeuron* current_neuron = neurons[i];
+
+			size_t neuron_size;
+			size_t connections_size;
+			size_t weight_count = current_neuron->connections->GetWeightCount();
+			switch (neuronTypes[i])
+			{
+			case 0:
+				neuron_size = sizeof(DenseNeuron);
+				connections_size = sizeof(DenseConnections);
+				break;
+			case 1:
+				neuron_size = sizeof(DenseLSTM);
+				connections_size = sizeof(DenseConnections);
+				break;
+			default:
+				break;
+			}
+			fwrite()
+		}
 	}
 
 	static NN Load(std::string path_with_no_extension)
