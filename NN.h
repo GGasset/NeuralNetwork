@@ -332,11 +332,6 @@ public:
 				neuron->connections = (DenseConnections*)malloc(sizeof(DenseConnections));
 				fread(neuron->connections, sizeof(DenseConnections), 1, nn_file);
 
-				weight_count = neuron->connections->GetWeightCount();
-				weights = new double[weight_count];
-				fread(weights, sizeof(double), weight_count, nn_file);
-				neuron->connections->SetWeights(weights);
-
 				neurons[i] = neuron;
 				break;
 
@@ -347,16 +342,16 @@ public:
 				neuron->connections = (DenseConnections*)malloc(sizeof(DenseConnections));
 				fread(neuron->connections, sizeof(DenseConnections), 1, nn_file);
 
-				weight_count = neuron->connections->GetWeightCount();
-				weights = new double[weight_count];
-				fread(weights, sizeof(double), weight_count, nn_file);
-				neuron->connections->SetWeights(weights);
-
 				neurons[i] = neuron;
 				break;
 			default:
 				throw std::exception("Neuron not implemented for loading");
 			}
+
+			weight_count = neuron->connections->GetWeightCount();
+			weights = new double[weight_count];
+			fread(weights, sizeof(double), weight_count, nn_file);
+			neuron->connections->SetWeights(weights);
 			weights = 0;
 		}
 		fclose(nn_file);
