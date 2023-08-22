@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <iostream>
 
 #include "INeuron.h"
 #include "Derivatives.h"
@@ -248,12 +249,17 @@ public:
 			gradients_value_count
 		};
 
-		FILE* neuron_type_file = fopen((path_with_no_extension + GetNeuronTypeFileExtension()).data(), "w");
+		FILE* neuron_type_file;
+		if (fopen_s(&neuron_type_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "wb"))
+			throw std::exception("File cannot be opened");
 		fwrite(&metadata, sizeof(size_t), 5, neuron_type_file);
 		fwrite(neuronTypes, sizeof(int), neuron_count, neuron_type_file);
 		fclose(neuron_type_file);
 
-		FILE* nn_file = fopen((path_with_no_extension + GetNNFileExtension()).data(), "w");
+		FILE* nn_file;
+		if (fopen_s(&nn_file, (path_with_no_extension + GetNNFileExtension()).data(), "wb"))
+			throw std::exception("File cannot be opened");
+
 		for (size_t i = 0; i < neuron_count; i++)
 		{
 			INeuron* current_neuron = neurons[i];
@@ -290,9 +296,9 @@ public:
 		//	execution_results_value_count,
 		//	gradients_value_count
 
-		FILE* nt_file = fopen((path_with_no_extension + GetNeuronTypeFileExtension()).data(), "r");
-		if (!nt_file)
-			throw std::exception("File not found");
+		FILE* nt_file;
+		if (fopen_s(&nt_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "rb"))
+			throw std::exception("File cannot be opened");
 
 		fread(&metadata, sizeof(size_t), 5, nt_file);
 
@@ -306,21 +312,28 @@ public:
 		fread(neuron_types, sizeof(int), neuron_count, nt_file);
 		fclose(nt_file);
 
-		FILE* nn_file = fopen((path_with_no_extension + GetNNFileExtension()).data(), "r");
+		FILE* nn_file; 
+		if (fopen_s(&nn_file, (path_with_no_extension + GetNNFileExtension()).data(), "rb"))
+			throw std::exception("File cannot be opened");
+
 		INeuron** neurons = new INeuron * [neuron_count];
+
+		INeuron* neuron;
+		double* weights;
+		size_t weight_count;
 		for (size_t i = 0; i < neuron_count; i++)
 		{
 			switch ((NeuronTypeIdentifier)neuron_types[i])
 			{
 			case DenseNeuronId:
-				DenseNeuron *neuron = (DenseNeuron*)malloc(sizeof(DenseNeuron));
+				neuron = (DenseNeuron*)malloc(sizeof(DenseNeuron));
 				fread(neuron, sizeof(DenseNeuron), 1, nn_file);
 				
 				neuron->connections = (DenseConnections*)malloc(sizeof(DenseConnections));
 				fread(neuron->connections, sizeof(DenseConnections), 1, nn_file);
 
-				size_t weight_count = neuron->connections->GetWeightCount();
-				double* weights = new double[weight_count];
+				weight_count = neuron->connections->GetWeightCount();
+				weights = new double[weight_count];
 				fread(weights, sizeof(double), weight_count, nn_file);
 				neuron->connections->SetWeights(weights);
 
@@ -328,14 +341,14 @@ public:
 				break;
 
 			case DenseLSTMId:
-				DenseLSTM* neuron = (DenseLSTM*)malloc(sizeof(DenseLSTM));
+				neuron = (DenseLSTM*)malloc(sizeof(DenseLSTM));
 				fread(neuron, sizeof(DenseLSTM), 1, nn_file);
 
 				neuron->connections = (DenseConnections*)malloc(sizeof(DenseConnections));
 				fread(neuron->connections, sizeof(DenseConnections), 1, nn_file);
 
-				size_t weight_count = neuron->connections->GetWeightCount();
-				double* weights = new double[weight_count];
+				weight_count = neuron->connections->GetWeightCount();
+				weights = new double[weight_count];
 				fread(weights, sizeof(double), weight_count, nn_file);
 				neuron->connections->SetWeights(weights);
 
@@ -344,6 +357,7 @@ public:
 			default:
 				throw std::exception("Neuron not implemented for loading");
 			}
+			weights = 0;
 		}
 		fclose(nn_file);
 
