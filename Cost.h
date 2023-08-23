@@ -9,23 +9,14 @@ public:
 		SquaredMean,
 	};
 
-	static double GetCostOf(size_t networkOutputLength, double* neuronOutput, double* Y, CostFunction costType)
+	static double GetCostOf(double neuron_output, double Y, CostFunction cost_function)
 	{
-		switch (costType)
+		switch (cost_function)
 		{
 		case Cost::SquaredMean:
-			return SquaredMeanLoss(networkOutputLength, neuronOutput, Y);
+			return SquaredMeanLoss(neuron_output, Y);
 		default:
-			return NULL;
-		}
-	}
-
-	static double SquaredMeanLoss(size_t outputLength, double* neuronOutput, double* Y)
-	{
-		double mean = 0;
-		for (size_t i = 0; i < outputLength; i++)
-		{
-			mean += SquaredMeanLoss(neuronOutput[i], Y[i]);
+			throw std::exception("Cost function not implemented");
 		}
 	}
 

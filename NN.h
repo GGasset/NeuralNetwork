@@ -139,9 +139,9 @@ public:
 	}
 
 	/// <summary>
-	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t
+	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t. Returns: Mean output cost averaged over t of the average neuron_cost
 	/// </summary>
-	void Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
+	double Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
 	{
 		size_t current_X_size = input_length * t_count;
 		double* current_X = new double[current_X_size];
@@ -176,9 +176,13 @@ public:
 		// There is a false positive as the warning says that per_t_Y_addition may be null, it must have 0 as a value to properly function
 #pragma warning(push)
 #pragma warning(disable:6385)
+
 		// Inference
+		double cost = 0;
 		for (size_t t = 0; t < t_count; t++)
 		{
+			double current_t_cost = 0;
+
 			ExecuteStore(current_X, activations, execution_results, t);
 
 			size_t per_t_Y_addition = output_length * t;
@@ -189,8 +193,13 @@ public:
 			{
 				size_t current_output_index = current_output_start + i;
 				costs[current_output_index] = Derivatives::DerivativeOf(activations[current_output_index], current_Y[per_t_Y_addition + i], cost_function);
+				current_t_cost += Cost::GetCostOf(activations[current_output_index], current_Y[per_t_Y_addition + i], cost_function);
 			}
+			current_t_cost /= output_length;
+			cost += current_t_cost;
 		}
+		cost /= t_count;
+
 #pragma warning(pop)
 
 		delete[] current_X;
@@ -220,6 +229,8 @@ public:
 		delete[] gradients;
 		delete[] activations;
 		delete[] execution_results;
+
+		return cost
 	}
 
 	void free()
