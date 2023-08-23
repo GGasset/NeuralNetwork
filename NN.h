@@ -33,7 +33,7 @@ private:
 public:
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
-	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, NeuronTypeIdentifier* neuron_types = 0, int* parsed_neuron_types = 0, bool populate_values = true)
+	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, NeuronTypeIdentifier* neuron_types = 0, bool free_neuron_types = false, int* parsed_neuron_types = 0, bool populate_values = true)
 	{
 		input_length = input_layer_length;
 		output_length = output_layer_length;
@@ -79,7 +79,8 @@ public:
 			{
 				this->neuron_types[i] = neuron_types[i];
 			}
-			delete[] neuron_types;
+			if (free_neuron_types)
+				delete[] neuron_types;
 		}
 		else if (parsed_neuron_types)
 		{
