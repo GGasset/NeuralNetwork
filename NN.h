@@ -238,6 +238,21 @@ public:
 		Save(path_with_no_extension, neuron_types);
 	}
 
+	void Save(std::string path_with_no_extensions, NeuronTypeIdentifier *neuron_types)
+	{
+		if (neuron_types == 0)
+			throw std::exception("neuron_types is null");
+
+		int* parsed_neuron_types = new int[neuron_count];
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			parsed_neuron_types[i] = neuron_types[i];
+		}
+
+		Save(path_with_no_extensions, parsed_neuron_types);
+		delete[] parsed_neuron_types;
+	}
+
 	void Save(std::string path_with_no_extension, int* neuronTypes)
 	{
 		size_t metadata[5]
