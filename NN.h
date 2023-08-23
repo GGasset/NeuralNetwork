@@ -230,7 +230,7 @@ public:
 		delete[] activations;
 		delete[] execution_results;
 
-		return cost
+		return cost;
 	}
 
 	void free()
