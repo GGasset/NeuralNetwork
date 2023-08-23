@@ -240,6 +240,7 @@ public:
 			neurons[i]->Free();
 		}
 		delete[] neurons;
+		delete[] neuron_types;
 	}
 
 	void Save(std::string path_with_no_extension)
