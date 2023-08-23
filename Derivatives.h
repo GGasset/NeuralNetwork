@@ -60,7 +60,7 @@ public:
 			return SquaredMeanDerivative(Y, Ŷ);
 			break;
 		default:
-			break;
+			throw std::exception("Cost function derivative not implemented");
 		}
 	}
 
