@@ -47,7 +47,7 @@ class NN_instantiator
 		if (free_layer_types)
 			delete[] layer_types;
 
-		NN* out = new NN(neurons, neuron_count, input_length, shape[layer_count - 1], neuron_ids);
+		NN* out = new NN(neurons, neuron_count, input_length, shape[layer_count - 1], shape, layer_count, neuron_ids);
 		return out;
 	}
 };

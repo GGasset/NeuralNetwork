@@ -14,6 +14,8 @@ class NN
 {
 private:
 	INeuron** neurons = 0;
+	size_t* network_shape = 0;
+	size_t shape_length = -1;
 	size_t neuron_count = -1;
 	size_t execution_results_value_count = -1;
 	size_t gradients_value_count = -1;
@@ -33,11 +35,13 @@ private:
 public:
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
-	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, NeuronTypeIdentifier* neuron_types = 0, bool free_neuron_types = true, int* parsed_neuron_types = 0, bool populate_values = true)
+	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, size_t* network_shape, size_t shape_length, NeuronTypeIdentifier* neuron_types = 0, bool free_neuron_types = true, int* parsed_neuron_types = 0, bool populate_values = true)
 	{
 		input_length = input_layer_length;
 		output_length = output_layer_length;
 		this->neuron_count = neuron_count;
+		this->network_shape = network_shape;
+		this->shape_length = shape_length;
 
 		this->neurons = neurons;
 		if (populate_values)
@@ -233,16 +237,6 @@ public:
 		return cost;
 	}
 
-	void free()
-	{
-		for (size_t i = 0; i < neuron_count; i++)
-		{
-			neurons[i]->Free();
-		}
-		delete[] neurons;
-		delete[] neuron_types;
-	}
-
 	void Save(std::string path_with_no_extension)
 	{
 		if (neuron_types == 0)
@@ -268,13 +262,14 @@ public:
 
 	void Save(std::string path_with_no_extension, int* neuronTypes)
 	{
-		size_t metadata[5]
+		size_t metadata[6]
 		{
 			neuron_count,
 			input_length,
 			output_length,
 			execution_results_value_count,
-			gradients_value_count
+			gradients_value_count,
+			shape_length
 		};
 
 		FILE* neuron_type_file;
@@ -282,6 +277,7 @@ public:
 			throw std::exception("File cannot be opened");
 		fwrite(&metadata, sizeof(size_t), 5, neuron_type_file);
 		fwrite(neuronTypes, sizeof(int), neuron_count, neuron_type_file);
+		fwrite(network_shape, sizeof(size_t), shape_length, neuron_type_file);
 		fclose(neuron_type_file);
 
 		FILE* nn_file;
@@ -317,7 +313,7 @@ public:
 
 	static NN* Load(std::string path_with_no_extension)
 	{
-		size_t metadata[5]{};
+		size_t metadata[6]{};
 		//	neuron_count,
 		//	input_length,
 		//	output_length,
@@ -328,16 +324,21 @@ public:
 		if (fopen_s(&nt_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "rb"))
 			throw std::exception("File cannot be opened");
 
-		fread(&metadata, sizeof(size_t), 5, nt_file);
+		fread(&metadata, sizeof(size_t), 6, nt_file);
 
 		size_t neuron_count = metadata[0];
 		size_t input_length = metadata[1];
 		size_t output_length = metadata[2];
 		size_t execution_results_value_count = metadata[3];
 		size_t gradients_value_count = metadata[4];
+		size_t shape_length = metadata[5];
 
 		int* neuron_types = new int[neuron_count];
 		fread(neuron_types, sizeof(int), neuron_count, nt_file);
+
+		size_t* shape = new size_t[shape_length];
+		fread(shape, sizeof(size_t), shape_length, nt_file);
+
 		fclose(nt_file);
 
 		FILE* nn_file; 
@@ -384,11 +385,21 @@ public:
 		}
 		fclose(nn_file);
 
-		NN* out = new NN(neurons, neuron_count, input_length, output_length, 0, neuron_types, false);
+		NN* out = new NN(neurons, neuron_count, input_length, output_length, shape, shape_length, 0, neuron_types, false);
 		out->gradients_value_count = gradients_value_count;
 		out->execution_results_value_count = execution_results_value_count;
 
 		return out;
+	}
+
+	void free(bool free_shape = true)
+	{
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			neurons[i]->Free();
+		}
+		delete[] neurons;
+		delete[] neuron_types;
 	}
 
 private:
