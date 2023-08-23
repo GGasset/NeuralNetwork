@@ -66,6 +66,9 @@
     <ClCompile Include="DenseLSTM.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
+    <ClCompile Include="NN_instantiator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="DenseLSTM.h">
       <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="NN_instantiator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

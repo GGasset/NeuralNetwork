@@ -137,6 +137,7 @@
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="DenseNeuron.cpp" />
     <ClCompile Include="NN.cpp" />
+    <ClCompile Include="NN_instantiator.cpp" />
     <ClCompile Include="ValueGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="INeuron.h" />
     <ClInclude Include="DenseNeuron.h" />
     <ClInclude Include="NN.h" />
+    <ClInclude Include="NN_instantiator.h" />
     <ClInclude Include="ValueGeneration.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
