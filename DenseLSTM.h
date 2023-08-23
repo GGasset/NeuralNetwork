@@ -229,7 +229,7 @@ public:
 
 			current_gradient *= derivatives[derivatives_start_i + 2];
 
-			size_t previous_derivatives_start_i = (t - 1) * derivative_per_t_count;
+			size_t previous_derivatives_start_i = (static_cast<unsigned long long>(t) - 1) * derivative_per_t_count;
 			linear_function_gradients[t] = gradients[gradients_start_i] = current_gradient * ((t == 0) ? 0 : (derivatives[previous_derivatives_start_i + 1]) + derivatives[derivatives_start_i + 11]);
 		}
 
