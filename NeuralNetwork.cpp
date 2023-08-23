@@ -58,7 +58,7 @@ int main()
 		previous_layer_start += shape[i - 1];
 	}
 
-	NN* n = new NN(neurons, neuron_count, shape[0], shape[shape_length - 1], neurons_id);
+	NN* n = new NN(neurons, neuron_count, shape[0], shape[shape_length - 1], shape, shape_length, neurons_id);
 	std::cout << "Before:" << std::endl;
 	double* before_output = n->Execute(X, t_count);
 	for (size_t i = 0; i < t_count; i++)

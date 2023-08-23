@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include <iostream>
+#include <thread>
+#include <vector>
+#include <functional>
 
 #include "INeuron.h"
 #include "Derivatives.h"
@@ -177,6 +179,8 @@ public:
 			costs[i] = activations[i] = 0;
 		}
 
+		std::vector<std::thread> threads = std::vector<std::thread>();
+
 		// There is a false positive as the warning says that per_t_Y_addition may be null, it must have 0 as a value to properly function
 #pragma warning(push)
 #pragma warning(disable:6385)
@@ -185,24 +189,14 @@ public:
 		double cost = 0;
 		for (size_t t = 0; t < t_count; t++)
 		{
-			double current_t_cost = 0;
-
-			ExecuteStore(current_X, activations, execution_results, t);
-
-			size_t per_t_Y_addition = output_length * t;
-
-			size_t per_t_addition = t * (neuron_count + input_length);
-			size_t current_output_start = per_t_addition + neuron_count + input_length - output_length;
-			for (size_t i = 0; i < output_length; i++)
-			{
-				size_t current_output_index = current_output_start + i;
-				costs[current_output_index] = Derivatives::DerivativeOf(activations[current_output_index], current_Y[per_t_Y_addition + i], cost_function);
-				current_t_cost += Cost::GetCostOf(activations[current_output_index], current_Y[per_t_Y_addition + i], cost_function);
-			}
-			current_t_cost /= output_length;
-			cost += current_t_cost;
+			threads.push_back(std::thread([this, current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function] {  this->TrainingInference(current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function); }));
+		}
+		for (size_t t = 0; t < t_count; t++)
+		{
+			threads[t].join();
 		}
 		cost /= t_count;
+		threads.clear();
 
 #pragma warning(pop)
 
@@ -210,12 +204,21 @@ public:
 		delete[] current_Y;
 
 		// Gradient calculation
-		for (int i = neuron_count - 1; i >= 0; i--)
+		size_t neuron_i = 0;
+		for (size_t layer_i = 1; layer_i < shape_length; layer_i++)
 		{
-			if (ValueGeneration::NextDouble() < dropout_rate && ((neuron_count - 1 - i) > output_length))
-				continue;
+			for (size_t i = 0; i < network_shape[i]; i++, neuron_i++)
+			{
+				if (ValueGeneration::NextDouble() < dropout_rate && ((neuron_count - 1 - i) > output_length))
+					continue;
 
-			neurons[i]->GetGradients(gradients, costs, execution_results, activations, t_count);
+				threads.push_back(std::thread([this, neuron_i, gradients, costs, execution_results, activations, t_count] {  this->GetNeuron(neuron_i)->GetGradients(gradients, costs, execution_results, activations, t_count);  }));
+			}
+			for (size_t i = 0; i < network_shape[i]; i++)
+			{
+				threads[i].join();
+			}
+			threads.clear();
 		}
 
 		for (size_t i = 0; i < neuron_count; i++)
@@ -235,6 +238,26 @@ public:
 		delete[] execution_results;
 
 		return cost;
+	}
+
+	void TrainingInference(double* current_X, double* current_Y, double* activations, double* execution_results, double* costs, size_t t, double* cost, Cost::CostFunction cost_function)
+	{
+		double current_t_cost = 0;
+
+		ExecuteStore(current_X, activations, execution_results, t);
+
+		size_t per_t_Y_addition = output_length * t;
+
+		size_t per_t_addition = t * (neuron_count + input_length);
+		size_t current_output_start = per_t_addition + neuron_count + input_length - output_length;
+		for (size_t i = 0; i < output_length; i++)
+		{
+			size_t current_output_index = current_output_start + i;
+			costs[current_output_index] = Derivatives::DerivativeOf(activations[current_output_index], current_Y[per_t_Y_addition + i], cost_function);
+			current_t_cost += Cost::GetCostOf(activations[current_output_index], current_Y[per_t_Y_addition + i], cost_function);
+		}
+		current_t_cost /= output_length;
+		*cost += current_t_cost;
 	}
 
 	void Save(std::string path_with_no_extension)
@@ -385,11 +408,16 @@ public:
 		}
 		fclose(nn_file);
 
-		NN* out = new NN(neurons, neuron_count, input_length, output_length, shape, shape_length, 0, neuron_types, false);
+		NN* out = new NN(neurons, neuron_count, input_length, output_length, shape, shape_length, 0, false, neuron_types, false);
 		out->gradients_value_count = gradients_value_count;
 		out->execution_results_value_count = execution_results_value_count;
 
 		return out;
+	}
+
+	INeuron* GetNeuron(size_t neuron_i)
+	{
+		return neurons[neuron_i];
 	}
 
 	void free(bool free_shape = true)

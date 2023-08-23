@@ -1,4 +1,5 @@
 #include <cmath>
+#include <exception>
 
 #pragma once
 class Cost
