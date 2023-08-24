@@ -147,7 +147,7 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t. Returns: Mean output cost averaged over t of the average neuron_cost
 	/// </summary>
-	double Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
+	double Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, bool use_multithreading = false, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
 	{
 		size_t current_X_size = input_length * t_count;
 		double* current_X = new double[current_X_size];
@@ -187,13 +187,23 @@ public:
 
 		// Inference
 		double cost = 0;
-		for (size_t t = 0; t < t_count; t++)
+		if (use_multithreading)
 		{
-			threads.push_back(std::thread([this, current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function] {  this->TrainingInference(current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function); }));
+			for (size_t t = 0; t < t_count; t++)
+			{
+				threads.push_back(std::thread(&NN::TrainingInference, this, current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function));
+			}
+			for (size_t t = 0; t < t_count; t++)
+			{
+				threads[t].join();
+			}
 		}
-		for (size_t t = 0; t < t_count; t++)
+		else
 		{
-			threads[t].join();
+			for (size_t t = 0; t < t_count; t++)
+			{
+				TrainingInference(current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function);
+			}
 		}
 		cost /= t_count;
 		threads.clear();
@@ -204,17 +214,26 @@ public:
 		delete[] current_Y;
 
 		// Gradient calculation
-		size_t neuron_i = 0;
-		for (size_t layer_i = 1; layer_i < shape_length; layer_i++)
+		size_t neuron_i = neuron_count - 1;
+		for (size_t layer_i = shape_length - 1; layer_i >= 1; layer_i--)
 		{
-			for (size_t i = 0; i < network_shape[i]; i++, neuron_i++)
+			size_t layer_trained_neurons = 0;
+			for (size_t i = 0; i < network_shape[i]; i++, neuron_i--)
 			{
 				if (ValueGeneration::NextDouble() < dropout_rate && ((neuron_count - 1 - i) > output_length))
 					continue;
 
-				threads.push_back(std::thread([this, neuron_i, gradients, costs, execution_results, activations, t_count] {  this->GetNeuron(neuron_i)->GetGradients(gradients, costs, execution_results, activations, t_count);  }));
+				if (use_multithreading)
+				{
+					threads.push_back(std::thread(&INeuron::GetGradients, neurons[neuron_i], gradients, costs, execution_results, activations, t_count));
+					layer_trained_neurons++;
+				}
+				else
+				{
+					neurons[neuron_i]->GetGradients(gradients, costs, execution_results, activations, t_count);
+				}
 			}
-			for (size_t i = 0; i < network_shape[i]; i++)
+			for (size_t i = 0; i < layer_trained_neurons; i++)
 			{
 				threads[i].join();
 			}

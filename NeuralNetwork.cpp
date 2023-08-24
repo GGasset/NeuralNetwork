@@ -84,7 +84,7 @@ int main()
 
 	double* output = 0;
 	bool continue_training = true;
-	for (size_t i = 0; i < 10000 && continue_training; i++)
+	for (size_t i = 0; i < 10000/* && continue_training*/; i++)
 	{
 		double* last_output = output;
 		output = n->Execute(X, t_count);
@@ -100,17 +100,14 @@ int main()
 			{
 				double max_output = output[j] * (output[j] > last_output[j]) + last_output[j] * (last_output[j] > output[j]);
 				double min_output = output[j] * (output[j] < last_output[j]) + last_output[j] * (last_output[j] < output[j]);
-				is_same_output = is_same_output && ((max_output - min_output) < 10E-10);
+				is_same_output = is_same_output && ((max_output - min_output) < 10E-15);
 			}
 		}
 
-		if (is_same_output)
-		{
-			continue_training = false;
-		}
+		continue_training = !is_same_output;
 
-		double learning_rate = 5;
-		n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean, 0, 0, 1, .2);
+		double learning_rate = 1;
+		n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean, true, 0, 0, false, .2);
 
 
 		delete[] last_output;
