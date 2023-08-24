@@ -298,7 +298,7 @@ public:
 		FILE* neuron_type_file;
 		if (fopen_s(&neuron_type_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "wb"))
 			throw std::exception("File cannot be opened");
-		fwrite(&metadata, sizeof(size_t), 5, neuron_type_file);
+		fwrite(&metadata, sizeof(size_t), 6, neuron_type_file);
 		fwrite(neuronTypes, sizeof(int), neuron_count, neuron_type_file);
 		fwrite(network_shape, sizeof(size_t), shape_length, neuron_type_file);
 		fclose(neuron_type_file);
@@ -342,6 +342,7 @@ public:
 		//	output_length,
 		//	execution_results_value_count,
 		//	gradients_value_count
+		//	shape_length
 
 		FILE* nt_file;
 		if (fopen_s(&nt_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "rb"))
