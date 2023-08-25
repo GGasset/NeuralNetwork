@@ -138,7 +138,7 @@ public:
 			return new_learning_rate;
 
 		default:
-			throw std::exception("Learning rate optimizator not set");
+			throw std::exception("Learning rate optimizator not implemented");
 		}
 	}
 
