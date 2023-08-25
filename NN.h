@@ -31,6 +31,12 @@ public:
 		DenseLSTMId = 1
 	};
 
+	enum LearningRateOptimizators
+	{
+		None,
+		LearningEffectiveness
+	};
+
 private:
 	int* neuron_types = 0;
 
@@ -94,6 +100,36 @@ public:
 		else if (parsed_neuron_types)
 		{
 			this->neuron_types = parsed_neuron_types;
+		}
+	}
+
+	double AdjustLearningRate(double original_learning_rate, LearningRateOptimizators optimize_based_of, double* previous_cost, double* current_cost)
+	{
+		switch (optimize_based_of)
+		{
+		case NN::None:
+			return original_learning_rate;
+			break;
+		case NN::LearningEffectiveness:
+			if (previous_cost == 0)
+				return original_learning_rate;
+
+			/*
+				Scenario:
+					Previous_cost > Current_cost
+					(Learning occured)
+					Means:
+						Learning rate should go up based on the difference
+						or else:
+						Learning_rate should go down based on the difference
+			*/
+
+			double difference = previous_cost - current_cost;
+			double new_learning_rate = original_learning_rate + (1 / difference);
+			return new_learning_rate;
+			break;
+		default:
+			throw std::exception("Learning rate optimizator not set");
 		}
 	}
 
