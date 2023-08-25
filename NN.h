@@ -34,7 +34,8 @@ public:
 	enum LearningRateOptimizators
 	{
 		None,
-		LearningEffectiveness
+		LearningEffectiveness,
+		InverseLearningEffectiveness
 	};
 
 private:
@@ -124,10 +125,18 @@ public:
 						Learning_rate should go down based on the difference
 			*/
 
-			double difference = previous_cost - current_cost;
+			double difference = *previous_cost - *current_cost;
 			double new_learning_rate = original_learning_rate + (1 / difference);
 			return new_learning_rate;
-			break;
+
+		case NN::InverseLearningEffectiveness:
+			if (previous_cost == 0)
+				return original_learning_rate;
+
+			double difference = *current_cost - *previous_cost;
+			double new_learning_rate = original_learning_rate + (1 / difference);
+			return new_learning_rate;
+
 		default:
 			throw std::exception("Learning rate optimizator not set");
 		}
