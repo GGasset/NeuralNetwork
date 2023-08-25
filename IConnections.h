@@ -19,10 +19,12 @@ protected:
 			delete[] weights;
 			weights = 0;
 		}
+
 		weights = new double[weight_count];
+		double weight_range = 1 / sqrt(weight_count);
 		for (size_t i = 0; i < weight_count; i++)
 		{
-			weights[i] = 1;
+			weights[i] = ValueGeneration::GenerateWeight(-weight_range, 0, weight_range);
 		}
 	}
 
