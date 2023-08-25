@@ -16,7 +16,7 @@ class NN
 {
 private:
 	INeuron** neurons = 0;
-	size_t* network_shape = 0;
+	size_t* shape = 0;
 	size_t shape_length = -1;
 	size_t neuron_count = -1;
 	size_t execution_results_value_count = -1;
@@ -35,6 +35,9 @@ private:
 	int* neuron_types = 0;
 
 public:
+	/// <summary>
+	/// Remember to save and load recurrent states, learning and executing will modify recurrent state
+	/// </summary>
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
 	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, size_t* network_shape, size_t shape_length, NeuronTypeIdentifier* neuron_types = 0, bool free_neuron_types = true, int* parsed_neuron_types = 0, bool populate_values = true)
@@ -42,7 +45,7 @@ public:
 		input_length = input_layer_length;
 		output_length = output_layer_length;
 		this->neuron_count = neuron_count;
-		this->network_shape = network_shape;
+		this->shape = network_shape;
 		this->shape_length = shape_length;
 
 		this->neurons = neurons;
@@ -95,21 +98,41 @@ public:
 	}
 
 private:
-	void ExecuteStore(double* X, double* network_activations, double* execution_results, size_t t_index = 0)
+	void ExecuteStore(double* X, double* network_activations, double* execution_results, bool use_multiprocessing, size_t t_index = 0)
 	{
 		for (size_t i = 0; i < input_length; i++)
 		{
 			network_activations[i + (input_length + neuron_count) * t_index] = X[i + t_index * input_length];
 		}
-		for (size_t i = 0; i < neuron_count; i++)
+
+		if (use_multiprocessing)
 		{
-			INeuron* current_neuron = neurons[i];
-			current_neuron->ExecuteStore(network_activations, execution_results, t_index);
+			std::vector<std::thread> threads = std::vector<std::thread>();
+			size_t neuron_i = 0;
+			for (size_t i = 1; i < shape_length; i++)
+			{
+				size_t layer_length = shape[i];
+				for (size_t j = 0; j < layer_length; j++, neuron_i++)
+				{
+					threads.push_back(std::thread(&INeuron::ExecuteStore, neurons[neuron_i], network_activations, execution_results, t_index));
+				}
+				for (size_t j = 0; j < layer_length; j++)
+				{
+					threads[j].join();
+				}
+				threads.clear();
+			}
 		}
+		else
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				INeuron* current_neuron = neurons[i];
+				current_neuron->ExecuteStore(network_activations, execution_results, t_index);
+			}
 	}
 
 public:
-	double* Execute(double* X, size_t t_count = 1, bool delete_memory = true)
+	double* Execute(double* X, size_t t_count = 1, bool delete_memory = true, bool use_multithreading = true)
 	{
 		double* output = new double[output_length * t_count];
 		double* network_activations = new double[t_count * (input_length + neuron_count)];
@@ -121,11 +144,30 @@ public:
 				network_activations[i + per_t_modifier] = X[i + t * input_length];
 			}
 
-			for (size_t i = 0; i < neuron_count; i++)
+			if (use_multithreading)
 			{
-				INeuron* current_neuron = neurons[i];
-				current_neuron->Execute(network_activations, t);
+				auto threads = std::vector<std::thread>();
+				size_t neuron_i = 0;
+				for (size_t i = 1; i < shape_length; i++)
+				{
+					size_t layer_length = shape[i];
+					for (size_t j = 0; j < layer_length; j++, neuron_i++)
+					{
+						threads.push_back(std::thread(&INeuron::Execute, neurons[neuron_i], network_activations, t));
+					}
+					for (size_t j = 0; j < layer_length; j++)
+					{
+						threads[j].join();
+					}
+					threads.clear();
+				}
 			}
+			else
+				for (size_t i = 0; i < neuron_count; i++)
+				{
+					INeuron* current_neuron = neurons[i];
+					current_neuron->Execute(network_activations, t);
+				}
 
 			for (size_t i = 0; i < output_length; i++)
 			{
@@ -181,34 +223,13 @@ public:
 
 		std::vector<std::thread> threads = std::vector<std::thread>();
 
-		// There is a false positive as the warning says that per_t_Y_addition may be null, it must have 0 as a value to properly function
-#pragma warning(push)
-#pragma warning(disable:6385)
-
 		// Inference
 		double cost = 0;
-		if (use_multithreading)
+		for (size_t t = 0; t < t_count; t++)
 		{
-			for (size_t t = 0; t < t_count; t++)
-			{
-				threads.push_back(std::thread(&NN::TrainingInference, this, current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function));
-			}
-			for (size_t t = 0; t < t_count; t++)
-			{
-				threads[t].join();
-			}
-		}
-		else
-		{
-			for (size_t t = 0; t < t_count; t++)
-			{
-				TrainingInference(current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function);
-			}
+			TrainingInference(current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function, use_multithreading);
 		}
 		cost /= t_count;
-		threads.clear();
-
-#pragma warning(pop)
 
 		delete[] current_X;
 		delete[] current_Y;
@@ -218,7 +239,7 @@ public:
 		for (size_t layer_i = shape_length - 1; layer_i >= 1; layer_i--)
 		{
 			size_t layer_trained_neurons = 0;
-			for (size_t i = 0; i < network_shape[i]; i++, neuron_i--)
+			for (size_t i = 0; i < shape[i]; i++, neuron_i--)
 			{
 				if (ValueGeneration::NextDouble() < dropout_rate && ((neuron_count - 1 - i) > output_length))
 					continue;
@@ -259,11 +280,11 @@ public:
 		return cost;
 	}
 
-	void TrainingInference(double* current_X, double* current_Y, double* activations, double* execution_results, double* costs, size_t t, double* cost, Cost::CostFunction cost_function)
+	void TrainingInference(double* current_X, double* current_Y, double* activations, double* execution_results, double* costs, size_t t, double* cost, Cost::CostFunction cost_function, bool use_multiprocessing)
 	{
 		double current_t_cost = 0;
 
-		ExecuteStore(current_X, activations, execution_results, t);
+		ExecuteStore(current_X, activations, execution_results, use_multiprocessing, t);
 
 		size_t per_t_Y_addition = output_length * t;
 
@@ -319,7 +340,7 @@ public:
 			throw std::exception("File cannot be opened");
 		fwrite(&metadata, sizeof(size_t), 6, neuron_type_file);
 		fwrite(neuronTypes, sizeof(int), neuron_count, neuron_type_file);
-		fwrite(network_shape, sizeof(size_t), shape_length, neuron_type_file);
+		fwrite(shape, sizeof(size_t), shape_length, neuron_type_file);
 		fclose(neuron_type_file);
 
 		FILE* nn_file;

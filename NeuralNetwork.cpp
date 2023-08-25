@@ -14,6 +14,8 @@
 int main()
 {
 	srand(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+	// Improve multithreading to assignate more work to each thread
+	bool use_multithreading = false;
 
 	size_t t_count = 2;
 	double* X = new double[t_count];
@@ -28,8 +30,8 @@ int main()
 	size_t shape_length = 4;
 	size_t* shape = new size_t[shape_length];
 	shape[0] = 1;
-	shape[1] = 20;
-	shape[2] = 10;
+	shape[1] = 2048;
+	shape[2] = 1024;
 	shape[3] = 1;
 	
 	size_t neuron_count = 0;
@@ -60,7 +62,7 @@ int main()
 
 	NN* n = new NN(neurons, neuron_count, shape[0], shape[shape_length - 1], shape, shape_length, neurons_id);
 	std::cout << "Before:" << std::endl;
-	double* before_output = n->Execute(X, t_count);
+	double* before_output = n->Execute(X, t_count, true, use_multithreading);
 	for (size_t i = 0; i < t_count; i++)
 	{
 		std::cout << before_output[i] << std::endl;
@@ -73,7 +75,7 @@ int main()
 	n = NN::Load(path);
 
 	std::cout << std::endl << "After being loaded from disk:" << std::endl;
-	double* after_output = n->Execute(X, t_count);
+	double* after_output = n->Execute(X, t_count, true, use_multithreading);
 	for (size_t i = 0; i < t_count; i++)
 	{
 		std::cout << after_output[i] << std::endl;
@@ -84,10 +86,10 @@ int main()
 
 	double* output = 0;
 	bool continue_training = true;
-	for (size_t i = 0; i < 10000/* && continue_training*/; i++)
+	for (size_t i = 0; i < 10/* && continue_training*/; i++)
 	{
 		double* last_output = output;
-		output = n->Execute(X, t_count);
+		output = n->Execute(X, t_count, true, use_multithreading);
 		bool is_same_output = true;
 		for (size_t j = 0; j < t_count; j++)
 		{
@@ -107,7 +109,7 @@ int main()
 		continue_training = !is_same_output;
 
 		double learning_rate = 1;
-		n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean, true, 0, 0, false, .2);
+		n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean, use_multithreading, 0, 0, false, .2);
 
 
 		delete[] last_output;
