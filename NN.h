@@ -2,6 +2,7 @@
 #include <thread>
 #include <vector>
 #include <functional>
+#include <chrono>
 
 #include "INeuron.h"
 #include "Derivatives.h"
@@ -147,6 +148,7 @@ private:
 		for (size_t i = 0; i < input_length; i++)
 		{
 			network_activations[i + (input_length + neuron_count) * t_index] = X[i + t_index * input_length];
+
 		}
 
 		if (use_multiprocessing)
@@ -526,5 +528,11 @@ private:
 	static std::string GetNNFileExtension()
 	{
 		return std::string(".nn");
+	}
+
+public:
+	static void SetValueGenerationSeed()
+	{
+		srand(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 	}
 };
