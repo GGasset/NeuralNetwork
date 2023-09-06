@@ -30,8 +30,8 @@ int main()
 	size_t shape_length = 4;
 	size_t* shape = new size_t[shape_length];
 	shape[0] = 1;
-	shape[1] = 2048;
-	shape[2] = 1024;
+	shape[1] = 20;
+	shape[2] = 10;
 	shape[3] = 1;
 	
 	size_t neuron_count = 0;
@@ -84,9 +84,10 @@ int main()
 	std::cin.get();
 	std::cout << std::endl;
 
+	double* previous_cost = 0;
 	double* output = 0;
 	bool continue_training = true;
-	for (size_t i = 0; i < 10/* && continue_training*/; i++)
+	for (size_t i = 0; i < 1000/* && continue_training*/; i++)
 	{
 		double* last_output = output;
 		output = n->Execute(X, t_count, true, use_multithreading);
@@ -109,8 +110,8 @@ int main()
 		continue_training = !is_same_output;
 
 		double learning_rate = 1;
-		n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean, use_multithreading, 0, 0, false, .2);
-
+		double cost = n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean, NN::None, previous_cost, use_multithreading, 0, 0, false, .2);
+		previous_cost = &cost;
 
 		delete[] last_output;
 	}

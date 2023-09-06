@@ -106,6 +106,8 @@ public:
 
 	double AdjustLearningRate(double original_learning_rate, LearningRateOptimizators optimize_based_of, double* previous_cost, double* current_cost)
 	{
+		// TODO: solve bugs
+		double cost_difference;
 		switch (optimize_based_of)
 		{
 		case NN::None:
@@ -125,18 +127,15 @@ public:
 						Learning_rate should go down based on the difference
 			*/
 
-			double difference = *previous_cost - *current_cost;
-			double new_learning_rate = original_learning_rate + (1 / difference);
-			return new_learning_rate;
+			cost_difference = *previous_cost - *current_cost;
+			return original_learning_rate + ((1 * (-1 * (cost_difference < 0) + 1 * (cost_difference > 0))) / (-1 * (-1 * (cost_difference < 0)) + 1 * (cost_difference > 0) + cost_difference));
 
 		case NN::InverseLearningEffectiveness:
 			if (previous_cost == 0)
 				return original_learning_rate;
 
-			double difference = *current_cost - *previous_cost;
-			double new_learning_rate = original_learning_rate + (1 / difference);
-			return new_learning_rate;
-
+			cost_difference = *current_cost - *previous_cost;
+			return original_learning_rate + ((1 * (-1 * (cost_difference > 0) + 1 * (cost_difference < 0))) / (-1 * (-1 * (cost_difference > 0)) + 1 * (cost_difference < 0) + cost_difference));
 		default:
 			throw std::exception("Learning rate optimizator not implemented");
 		}
@@ -234,7 +233,7 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t. Returns: Mean output cost averaged over t of the average neuron_cost
 	/// </summary>
-	double Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, bool use_multithreading = false, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
+	double Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, LearningRateOptimizators optimizator, double* previous_cost, bool use_multithreading = false, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
 	{
 		size_t current_X_size = input_length * t_count;
 		double* current_X = new double[current_X_size];
@@ -306,9 +305,11 @@ public:
 			threads.clear();
 		}
 
+		double optimized_learning_rate = AdjustLearningRate(learning_rate, optimizator, previous_cost, &cost);
+
 		for (size_t i = 0; i < neuron_count; i++)
 		{
-			neurons[i]->SubtractGradients(gradients, learning_rate, t_count);
+			neurons[i]->SubtractGradients(gradients, optimized_learning_rate, t_count);
 		}
 
 		if (delete_memory)
