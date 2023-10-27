@@ -1,4 +1,5 @@
 #include "ValueGeneration.h"
+#include <stdint.h>
 
 #pragma once
 
@@ -7,20 +8,17 @@
 /// </summary>
 class IConnections
 {
-public:
-	/// <summary>
-	/// direction -1: exclusively negative |  
-	/// direction 0: not exclusive direction | 
-	/// direction 1: exclusively positive
-	/// </summary>
-	int8_t weight_direction_from_0 = 0;
-
 protected:
 	size_t neuron_written_gradient_count = -1;
 	size_t weight_count = -1;
 	double* weights = 0;
 
-	void GenerateWeights()
+	/// <param name="weight_direction_from_0">
+	/// direction -1: exclusively negative |  
+	/// direction 0: not exclusive direction | 
+	/// direction 1: exclusively positive
+	/// </param>
+	void GenerateWeights(int8_t weight_direction_from_0 = 0)
 	{
 		if (weights)
 		{
