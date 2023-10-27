@@ -30,9 +30,11 @@ protected:
 
 		weights = new double[weight_count];
 		double weight_range = 1 / sqrt(weight_count);
+		double min_value = -weight_range * ((weight_direction_from_0 < 0) || !weight_direction_from_0);
+		double max_value = weight_range * ((weight_direction_from_0 > 0) || !weight_direction_from_0);
 		for (size_t i = 0; i < weight_count; i++)
 		{
-			weights[i] = ValueGeneration::GenerateWeight(-weight_range, 0, weight_range);
+			weights[i] = ValueGeneration::GenerateWeight(min_value, 0, max_value);
 		}
 	}
 
