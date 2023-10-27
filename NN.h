@@ -254,7 +254,7 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t. Returns: Mean output cost averaged over t of the average neuron_cost
 	/// </summary>
-	double Supervised_batch(double* X, double* Y, double learning_rate, size_t t_count, Cost::CostFunction cost_function, LearningRateOptimizators optimizator, double* previous_cost, bool use_multithreading = false, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
+	double Supervised_batch(double* X, double* Y, double* learning_rate, bool modify_learning_rate, size_t t_count, Cost::CostFunction cost_function, LearningRateOptimizators optimizator, double* previous_cost, bool use_multithreading = false, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
 	{
 		size_t current_X_size = input_length * t_count;
 		double* current_X = new double[current_X_size];
@@ -326,7 +326,8 @@ public:
 			threads.clear();
 		}
 
-		double optimized_learning_rate = AdjustLearningRate(learning_rate, optimizator, previous_cost, cost);
+		double optimized_learning_rate = AdjustLearningRate(*learning_rate, optimizator, previous_cost, cost);
+		*learning_rate += (optimized_learning_rate - *learning_rate) * modify_learning_rate;
 
 		for (size_t i = 0; i < neuron_count; i++)
 		{
