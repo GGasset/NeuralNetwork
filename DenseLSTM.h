@@ -17,7 +17,12 @@ protected:
 	double first_cell_derivative = 0;
 
 public:
-	DenseLSTM(size_t neuron_i, size_t previous_layer_start_i, size_t previous_layer_length)
+	/// <param name="weight_direction_from_0">
+	/// direction -1: exclusively negative |  
+	/// direction 0: not exclusive direction | 
+	/// direction 1: exclusively positive
+	/// </param>
+	DenseLSTM(size_t neuron_i, size_t previous_layer_start_i, size_t previous_layer_length, int8_t weight_direction_from_0 = 0)
 	{
 		this->neuron_i = neuron_i;
 
@@ -29,7 +34,7 @@ public:
 		tanh_store_weight = ValueGeneration::GenerateWeight(-2, 0.5, 2);
 		output_weight = ValueGeneration::GenerateWeight(-2, 0.5, 2);
 
-		this->connections = new DenseConnections(previous_layer_start_i, previous_layer_length, neuron_written_gradient_count);
+		this->connections = new DenseConnections(previous_layer_start_i, previous_layer_length, neuron_written_gradient_count, weight_direction_from_0);
 	}
 
 	double INeuron::Execute(double* activations, size_t t_index = 0)

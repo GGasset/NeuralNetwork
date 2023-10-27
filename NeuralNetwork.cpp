@@ -13,7 +13,7 @@
 
 int main()
 {
-	srand(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count());
+	NN::SetValueGenerationSeed();
 	// Improve multithreading to assignate more work to each thread
 	bool use_multithreading = false;
 
@@ -44,6 +44,7 @@ int main()
 	INeuron** neurons = new INeuron * [neuron_count];
 	NN::NeuronTypeIdentifier* neurons_id = new NN::NeuronTypeIdentifier[neuron_count];
 
+	int8_t weight_direction = 1;
 	size_t neuron_i = 0;
 	size_t previous_layer_start = 0;
 	// TODO: do a switch case here using neuron_type and modularize main into a single module, saving X_length and that stuff
@@ -52,7 +53,7 @@ int main()
 		size_t prev_layer_length = shape[i - 1];
 		for (size_t j = 0; j < shape[i] && (neuron_i < neuron_count); j++)
 		{
-			neurons[neuron_i] = new DenseLSTM(neuron_i + shape[0], previous_layer_start, prev_layer_length);
+			neurons[neuron_i] = new DenseLSTM(neuron_i + shape[0], previous_layer_start, prev_layer_length, weight_direction);
 			neurons_id[neuron_i] = NN::DenseLSTMId;
 			neuron_i++;
 		}

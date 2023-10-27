@@ -10,11 +10,16 @@ protected:
     size_t previous_layer_start_i;
 
 public:
-	DenseConnections(size_t previous_layer_start_i, size_t previous_layer_length, size_t neuron_written_gradient_count)
+	/// <param name="weight_direction_from_0">
+	/// direction -1: exclusively negative |  
+	/// direction 0: not exclusive direction | 
+	/// direction 1: exclusively positive
+	/// </param>
+	DenseConnections(size_t previous_layer_start_i, size_t previous_layer_length, size_t neuron_written_gradient_count, int8_t weight_direction_from_0 = 0)
 	{
 		this->neuron_written_gradient_count = neuron_written_gradient_count;
 		weight_count = previous_layer_length;
-		GenerateWeights();
+		GenerateWeights(weight_direction_from_0);
 
 		this->previous_layer_start_i = previous_layer_start_i;
 	}
