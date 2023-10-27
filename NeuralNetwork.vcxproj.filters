@@ -69,6 +69,9 @@
     <ClCompile Include="NN_instantiator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NEATConnections.cpp">
+      <Filter>Source Files\Neurons\Connections</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="NN_instantiator.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NEATConnections.h">
+      <Filter>Header Files\Neurons\Connections</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
