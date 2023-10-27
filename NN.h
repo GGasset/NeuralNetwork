@@ -54,11 +54,11 @@ public:
 	/// </summary>
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
+	/// <param name="max_neuron_count">Used as a cap of neurons for neuroevolution</param>
 	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, size_t* network_shape, size_t shape_length,
 		NeuronTypeIdentifier* neuron_types = 0, bool free_neuron_types = true, int* parsed_neuron_types = 0, size_t max_neuron_count = 0, bool populate_values = true)
 	{
-		max_neuron_count += neuron_count * (max_neuron_count == 0);
-
+		max_neuron_count += neuron_count - max_neuron_count * (max_neuron_count < neuron_count);
 		input_length = input_layer_length;
 		output_length = output_layer_length;
 		this->neuron_count = neuron_count;
@@ -470,7 +470,7 @@ public:
 		if (fopen_s(&nn_file, (path_with_no_extension + GetNNFileExtension()).data(), "rb"))
 			throw std::exception("File cannot be opened");
 
-		INeuron** neurons = new INeuron * [neuron_count];
+		INeuron** neurons = new INeuron * [max_neuron_count];
 
 		INeuron* neuron;
 		double* weights;
