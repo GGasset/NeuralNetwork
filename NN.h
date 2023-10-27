@@ -328,6 +328,7 @@ public:
 
 		double optimized_learning_rate = AdjustLearningRate(*learning_rate, optimizator, previous_cost, cost);
 		*learning_rate += (optimized_learning_rate - *learning_rate) * modify_learning_rate;
+		*learning_rate += (-*learning_rate + .001) * (*learning_rate <= 0);
 
 		for (size_t i = 0; i < neuron_count; i++)
 		{
