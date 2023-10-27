@@ -7,6 +7,14 @@
 /// </summary>
 class IConnections
 {
+public:
+	/// <summary>
+	/// direction -1: exclusively negative |  
+	/// direction 0: not exclusive direction | 
+	/// direction 1: exclusively positive
+	/// </summary>
+	int8_t weight_direction_from_0 = 0;
+
 protected:
 	size_t neuron_written_gradient_count = -1;
 	size_t weight_count = -1;
@@ -29,6 +37,7 @@ protected:
 	}
 
 public:
+
 	/// <summary>
 	/// Execution results must have the same values per neuron as gradients per neuron
 	/// Value intialized by NN
