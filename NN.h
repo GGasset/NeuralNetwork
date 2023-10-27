@@ -115,7 +115,7 @@ public:
 		}
 	}
 
-	double AdjustLearningRate(double original_learning_rate, LearningRateOptimizators optimize_based_of, double* previous_cost, double* current_cost)
+	double AdjustLearningRate(double original_learning_rate, LearningRateOptimizators optimize_based_of, double* previous_cost, double current_cost)
 	{
 		// TODO: solve bugs
 		double cost_difference;
@@ -126,6 +126,9 @@ public:
 			break;
 		case NN::LearningEffectiveness:
 			if (previous_cost == 0)
+				return original_learning_rate;
+			
+			if (!current_cost)
 				return original_learning_rate;
 
 			/*
@@ -138,15 +141,21 @@ public:
 						Learning_rate should go down based on the difference
 			*/
 
-			cost_difference = *previous_cost - *current_cost;
-			return original_learning_rate + ((1 * (-1 * (cost_difference < 0) + 1 * (cost_difference > 0))) / (-1 * (-1 * (cost_difference < 0)) + 1 * (cost_difference > 0) + cost_difference));
-
+			cost_difference = *previous_cost - current_cost;
+			current_cost -= (current_cost * 2) * (cost_difference < 0);
+			return original_learning_rate + (*previous_cost / current_cost);
 		case NN::InverseLearningEffectiveness:
 			if (previous_cost == 0)
 				return original_learning_rate;
 
-			cost_difference = *current_cost - *previous_cost;
-			return original_learning_rate + ((1 * (-1 * (cost_difference > 0) + 1 * (cost_difference < 0))) / (-1 * (-1 * (cost_difference > 0)) + 1 * (cost_difference < 0) + cost_difference));
+
+			if (*previous_cost == 0)
+				return original_learning_rate;
+
+			cost_difference = current_cost - *previous_cost;
+			current_cost -= (current_cost * 2) * (cost_difference < 0);
+			return original_learning_rate + (current_cost / *previous_cost);
+
 		default:
 			throw std::exception("Learning rate optimizator not implemented");
 		}
@@ -317,7 +326,7 @@ public:
 			threads.clear();
 		}
 
-		double optimized_learning_rate = AdjustLearningRate(learning_rate, optimizator, previous_cost, &cost);
+		double optimized_learning_rate = AdjustLearningRate(learning_rate, optimizator, previous_cost, cost);
 
 		for (size_t i = 0; i < neuron_count; i++)
 		{

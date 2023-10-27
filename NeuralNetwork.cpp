@@ -110,7 +110,7 @@ int main()
 		continue_training = !is_same_output;
 
 		double learning_rate = 1;
-		double cost = n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean, NN::None, previous_cost, use_multithreading, 0, 0, false, .2);
+		double cost = n->Supervised_batch(X, Y, learning_rate, t_count, Cost::SquaredMean, NN::LearningEffectiveness, previous_cost, use_multithreading, 0, 0, false, .2);
 		previous_cost = &cost;
 
 		delete[] last_output;
