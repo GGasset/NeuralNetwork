@@ -82,12 +82,12 @@ public:
 		delete this;
 	}
 
-	void AdjustToNewNeuron(size_t insert_i, bool add_connection)
+	virtual void AdjustToNewNeuron(size_t insert_i, bool add_connection)
 	{
 
 	}
 
-	void AdjustToDeletedNeuron(size_t deleted_i)
+	virtual void AdjustToDeletedNeuron(size_t deleted_i)
 	{
 
 	}
