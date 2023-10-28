@@ -82,6 +82,16 @@ public:
 		delete this;
 	}
 
+	void AdjustToNewNeuron(size_t insert_i, bool add_connection)
+	{
+
+	}
+
+	void AdjustToDeletedNeuron(size_t deleted_i)
+	{
+
+	}
+
 	virtual double LinearFunction(double* network_activations, size_t t_index = 0) = 0;
 	virtual double CalculateDerivative(double* network_activations, size_t t_index) = 0;
 	virtual void CalculateGradients(double* gradients, double* neuron_activations, double* costs, double* linear_function_gradients, size_t t_count) = 0;
