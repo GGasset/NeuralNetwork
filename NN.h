@@ -13,10 +13,16 @@
 #include "DenseLSTM.h"
 
 #pragma once
+/// <summary>
+/// Note: For proper NEAT algorithm only use NEAT-based neurons, layers after NEAT are symbolical
+/// </summary>
 class NN
 {
 private:
 	INeuron** neurons = 0;
+	/// <summary>
+	/// starting_shape if it contains NeatNeurons
+	/// </summary>
 	size_t* shape = 0;
 	size_t shape_length = -1;
 
