@@ -7,7 +7,22 @@ class NN_instantiator
 	/// <param name="layer_types">| Don't include input layer</param>
 	/// <param name="layer_count">| Input layer is included in the length</param>
 	/// <param name="layer_activations">| There are some neurons like DenseLSTM that don't need this, use None for example</param>
-	static NN* Instantiate(size_t* shape, NN::NeuronTypeIdentifier* layer_types, size_t layer_count, ActivationFunctions::ActivationFunction* layer_activations, bool free_layer_types = true, bool free_layer_activations = true)
+	static NN* Instantiate(size_t* shape, NN::NeuronTypeIdentifier* layer_types, size_t layer_count, ActivationFunctions::ActivationFunction* layer_activations, int8_t weight_direction_from_0 = 0, bool free_layer_types = true, bool free_layer_activations = true)
+	{
+		int8_t* layer_weight_direction = new int8_t[layer_count];
+		for (size_t i = 0; i < layer_count; i++)
+		{
+			layer_weight_direction[i] = weight_direction_from_0;
+		}
+		return Instantiate(shape, layer_types, layer_count, layer_activations, layer_weight_direction, free_layer_types, free_layer_activations);
+	}
+
+
+	/// <param name="shape">| Input layer isn't instantiated</param>
+	/// <param name="layer_types">| Don't include input layer</param>
+	/// <param name="layer_count">| Input layer is included in the length</param>
+	/// <param name="layer_activations">| There are some neurons like DenseLSTM that don't need this, use None for example</param>
+	static NN* Instantiate(size_t* shape, NN::NeuronTypeIdentifier* layer_types, size_t layer_count, ActivationFunctions::ActivationFunction* layer_activations, int8_t* layer_weight_direction_from_0, bool free_layer_types = true, bool free_layer_activations = true)
 	{
 		size_t input_length = shape[0];
 
@@ -30,10 +45,10 @@ class NN_instantiator
 				switch (layer_types[i - 1])	
 				{
 				case NN::DenseNeuronId:
-					neurons[neuron_i] = new DenseNeuron(neuron_i, previous_layer_start_i, shape[i - 1], layer_activations[i]);
+					neurons[neuron_i] = new DenseNeuron(neuron_i, previous_layer_start_i, shape[i - 1], layer_activations[i], layer_weight_direction_from_0[i]);
 					break;
 				case NN::DenseLSTMId:
-					neurons[neuron_i] = new DenseLSTM(neuron_i, previous_layer_start_i, shape[i - 1]);
+					neurons[neuron_i] = new DenseLSTM(neuron_i, previous_layer_start_i, shape[i - 1], layer_weight_direction_from_0[i]);
 					break;
 				default:
 					throw std::exception("Neuron type not implemented for automatic instantiation");
