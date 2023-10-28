@@ -30,10 +30,10 @@ class NN_instantiator
 				switch (layer_types[i - 1])	
 				{
 				case NN::DenseNeuronId:
-					neurons[i] = new DenseNeuron(neuron_i, previous_layer_start_i, shape[i - 1], layer_activations[i]);
+					neurons[neuron_i] = new DenseNeuron(neuron_i, previous_layer_start_i, shape[i - 1], layer_activations[i]);
 					break;
 				case NN::DenseLSTMId:
-					neurons[i] = new DenseLSTM(neuron_i, previous_layer_start_i, shape[i - 1]);
+					neurons[neuron_i] = new DenseLSTM(neuron_i, previous_layer_start_i, shape[i - 1]);
 					break;
 				default:
 					throw std::exception("Neuron type not implemented for automatic instantiation");
