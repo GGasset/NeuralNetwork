@@ -9,13 +9,35 @@ protected:
     std::vector<size_t> connections_indices;
 
 public:
-    void AdjustToNewNeuron(size_t insert_i, bool add_connection) override
+    double IConnections::LinearFunction(double* network_activations, size_t t_index = 0)
+    {
+        size_t activations_t_addition = t_index * network_neuron_count;
+        double linear_function = 0;
+    }
+
+
+    void AdjustToNewNeuron(size_t insert_i, bool add_connection, int8_t weight_direction_from_0 = 0) override
     {
         for (size_t i = 0; i < connections_indices.size(); i++)
             connections_indices[i] += connections_indices[i] >= insert_i;
 
         if (add_connection)
+        {
             connections_indices.push_back(insert_i);
+
+            // Add weight
+            double* new_weights = new double[weight_count + 1];
+            for (size_t i = 0; i < weight_count; i++)
+                new_weights[i] = weights[i];
+
+            double weight_range = 1 / sqrt(weight_count + 1);
+            double min_value = -weight_range * ((weight_direction_from_0 < 0) || !weight_direction_from_0);
+            double max_value = weight_range * ((weight_direction_from_0 > 0) || !weight_direction_from_0);
+
+            double new_weight = ValueGeneration::GenerateWeight(min_value, 0, max_value);
+            new_weights[weight_count] = new_weight;
+            weight_count++;
+        }
     }
 
     void AdjustToDeletedNeuron(size_t deleted_i) override
