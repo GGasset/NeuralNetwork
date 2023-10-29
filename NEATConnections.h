@@ -36,6 +36,9 @@ public:
 
             double new_weight = ValueGeneration::GenerateWeight(min_value, 0, max_value);
             new_weights[weight_count] = new_weight;
+		
+		delete[] weights;
+		SetWeights(new_weights);
             weight_count++;
         }
 
