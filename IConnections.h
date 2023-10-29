@@ -82,7 +82,7 @@ public:
 		delete this;
 	}
 
-	virtual void AdjustToNewNeuron(size_t insert_i, bool add_connection)
+	virtual void AdjustToNewNeuron(size_t insert_i, bool add_connection, int8_t weight_direction_from_0 = 0)
 	{
 
 	}
