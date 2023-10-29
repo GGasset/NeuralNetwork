@@ -15,6 +15,9 @@ public:
 		double linear_function = 0;
 	}
 
+	/// <summary>
+	/// TODO: Set network assigned values again to all neurons
+	/// </summary>
 	void AdjustToNewNeuron(size_t insert_i, bool add_connection, int8_t weight_direction_from_0 = 0) override
 	{
 		for (size_t i = 0; i < connections_indices.size(); i++)
