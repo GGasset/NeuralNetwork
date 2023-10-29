@@ -13,6 +13,10 @@ public:
 	{
 		size_t activations_t_addition = t_index * network_neuron_count;
 		double linear_function = 0;
+		for (size_t i = 0; i < weight_count; i++)
+			linear_function += network_activations[activations_t_addition + connections_indices[i]] * weights[i];
+
+		return linear_function;
 	}
 
 	/// <summary>
