@@ -22,7 +22,10 @@ public:
     {
         size_t connection_i = -1;
         for (size_t i = 0; i < connections_indices.size() && connection_i != -1; i++)
+        {
+            connections_indices[i] -= connections_indices[i] >= deleted_i;
             connection_i += (i - connection_i) * (connections_indices[i] == deleted_i);
+        }
 
         if (connection_i == -1)
             return;
