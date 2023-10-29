@@ -15,14 +15,14 @@ public:
         double linear_function = 0;
     }
 
-
     void AdjustToNewNeuron(size_t insert_i, bool add_connection, int8_t weight_direction_from_0 = 0) override
     {
         for (size_t i = 0; i < connections_indices.size(); i++)
             connections_indices[i] += connections_indices[i] >= insert_i;
 
-        if (add_connection)
-        {
+		if (!add_connection)
+			return;
+
             connections_indices.push_back(insert_i);
 
             // Add weight
@@ -38,7 +38,6 @@ public:
             new_weights[weight_count] = new_weight;
             weight_count++;
         }
-    }
 
     void AdjustToDeletedNeuron(size_t deleted_i) override
     {
