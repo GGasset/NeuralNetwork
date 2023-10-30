@@ -75,34 +75,7 @@ public:
 		this->neurons = neurons;
 		if (populate_values)
 		{
-			size_t network_execution_results_value_count = 0;
-			size_t network_gradients_value_count = 0;
-			for (size_t i = 0; i < neuron_count; i++)
-			{
-				INeuron* current_neuron = neurons[i];
-
-				// Set
-				current_neuron->self_execution_results_start_i = network_execution_results_value_count;
-				current_neuron->self_gradients_start_i = network_gradients_value_count;
-
-				current_neuron->connections->self_gradients_start_i = network_execution_results_value_count;
-				current_neuron->connections->self_gradients_start_i = network_gradients_value_count;
-				current_neuron->connections->network_neuron_count = neuron_count + input_length;
-
-				//Get
-				network_execution_results_value_count += current_neuron->GetNeuronWrittenExecutionResultsCount();
-				network_gradients_value_count += current_neuron->GetNeuronWrittenGradientCount();
-				network_gradients_value_count += current_neuron->connections->GetWeightCount();
-			}
-
-			for (size_t i = 0; i < neuron_count; i++)
-			{
-				neurons[i]->connections->network_execution_results_value_count = network_execution_results_value_count;
-				neurons[i]->connections->network_gradients_value_count = network_gradients_value_count;
-			}
-
-			this->execution_results_value_count = network_execution_results_value_count;
-			this->gradients_value_count = network_gradients_value_count;
+			PopulateAutomaticallySetValues();
 		}
 
 		if (neuron_types)
@@ -119,6 +92,38 @@ public:
 		{
 			this->neuron_types = parsed_neuron_types;
 		}
+	}
+
+	void PopulateAutomaticallySetValues()
+	{
+		size_t network_execution_results_value_count = 0;
+		size_t network_gradients_value_count = 0;
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			INeuron* current_neuron = neurons[i];
+
+			// Set
+			current_neuron->self_execution_results_start_i = network_execution_results_value_count;
+			current_neuron->self_gradients_start_i = network_gradients_value_count;
+
+			current_neuron->connections->self_gradients_start_i = network_execution_results_value_count;
+			current_neuron->connections->self_gradients_start_i = network_gradients_value_count;
+			current_neuron->connections->network_neuron_count = neuron_count + input_length;
+
+			//Get
+			network_execution_results_value_count += current_neuron->GetNeuronWrittenExecutionResultsCount();
+			network_gradients_value_count += current_neuron->GetNeuronWrittenGradientCount();
+			network_gradients_value_count += current_neuron->connections->GetWeightCount();
+		}
+
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			neurons[i]->connections->network_execution_results_value_count = network_execution_results_value_count;
+			neurons[i]->connections->network_gradients_value_count = network_gradients_value_count;
+		}
+
+		this->execution_results_value_count = network_execution_results_value_count;
+		this->gradients_value_count = network_gradients_value_count;
 	}
 
 	double AdjustLearningRate(double original_learning_rate, LearningRateOptimizators optimize_based_of, double* previous_cost, double current_cost)
