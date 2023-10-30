@@ -72,6 +72,12 @@
     <ClCompile Include="NEATConnections.cpp">
       <Filter>Source Files\Neurons\Connections</Filter>
     </ClCompile>
+    <ClCompile Include="LSTMNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
+    <ClCompile Include="NEATLSTM.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -109,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="NEATConnections.h">
       <Filter>Header Files\Neurons\Connections</Filter>
+    </ClInclude>
+    <ClInclude Include="LSTMNeuron.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="NEATLSTM.h">
+      <Filter>Header Files\Neurons</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
