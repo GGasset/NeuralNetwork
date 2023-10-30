@@ -177,7 +177,6 @@ private:
 		for (size_t i = 0; i < input_length; i++)
 		{
 			network_activations[i + (input_length + neuron_count) * t_index] = X[i + t_index * input_length];
-
 		}
 
 		if (use_multiprocessing)
@@ -264,8 +263,12 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t. Returns: Mean output cost averaged over t of the average neuron_cost
 	/// </summary>
-	double Supervised_batch(double* X, double* Y, double* learning_rate, bool modify_learning_rate, size_t t_count, Cost::CostFunction cost_function, LearningRateOptimizators optimizator, double* previous_cost, bool use_multithreading = false, size_t X_start_i = 0, size_t Y_start_i = 0, bool delete_memory = true, double dropout_rate = 0)
+	void SupervisedBatch(double* X, double* Y, size_t t_count, Cost::CostFunction cost_function, double learning_rate, LearningRateOptimizators optimizator, bool modify_learning_rate = false, double* previous_cost = 0, bool use_multithreading = true, double dropout_rate = 0, bool delete_memory = true, size_t X_start_i = 0, size_t Y_start_i = 0)
 	{
+		double* costs, *gradients, *activations, *execution_results;
+		costs = gradients = activations = execution_results = 0;
+		SetupTrainingVariables(&costs, &gradients, &activations, &execution_results, t_count);
+
 		size_t current_X_size = input_length * t_count;
 		double* current_X = new double[current_X_size];
 		for (size_t i = 0; i < current_X_size; i++)
@@ -280,37 +283,33 @@ public:
 			current_Y[i] = Y[i + Y_start_i];
 		}
 
-		size_t total_neurons_count = t_count * (neuron_count + input_length);
-		size_t total_gradient_value_count = t_count * gradients_value_count;
-
-		double* costs = new double[total_neurons_count];
-		double* gradients = new double[total_gradient_value_count];
-		double* activations = new double[total_neurons_count];
-		double* execution_results = new double[t_count * execution_results_value_count];
-
-		for (size_t i = 0; i < total_gradient_value_count; i++)
-		{
-			gradients[i] = 0;
-		}
-
-		for (size_t i = 0; i < total_neurons_count; i++)
-		{
-			costs[i] = activations[i] = 0;
-		}
-
-		std::vector<std::thread> threads = std::vector<std::thread>();
-
-		// Inference
 		double cost = 0;
 		for (size_t t = 0; t < t_count; t++)
-		{
 			TrainingInference(current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function, use_multithreading);
+
+		CalculateGradients(gradients, costs, execution_results, activations, t_count, use_multithreading, delete_memory, dropout_rate);
+
+		SubtractGradients(gradients, t_count, &learning_rate, previous_cost, cost, optimizator, modify_learning_rate);
+	}
+
+	void SubtractGradients(double* gradients, size_t t_count, double* learning_rate, double* previous_cost, double mean_cost, LearningRateOptimizators optimizator, bool modify_learning_rate = false)
+	{
+		double optimized_learning_rate = AdjustLearningRate(*learning_rate, optimizator, previous_cost, mean_cost);
+		*learning_rate += (optimized_learning_rate - *learning_rate) * modify_learning_rate;
+		*learning_rate += (-*learning_rate + .001) * (*learning_rate <= 0);
+
+		for (size_t i = 0; i < neuron_count; i++)
+		{
+			neurons[i]->SubtractGradients(gradients, optimized_learning_rate, t_count);
 		}
-		cost /= t_count;
 
-		delete[] current_X;
-		delete[] current_Y;
+		delete[] gradients;
+	}
 
+	double CalculateGradients(double* gradients, double* costs, double* execution_results, double* activations, size_t t_count,
+		bool use_multithreading = false, bool delete_memory = true, double dropout_rate = 0)
+	{
+		std::vector<std::thread> threads = std::vector<std::thread>();
 		// Gradient calculation
 		size_t neuron_i = neuron_count - 1;
 		for (size_t layer_i = shape_length - 1; layer_i >= 1; layer_i--)
@@ -338,14 +337,6 @@ public:
 			threads.clear();
 		}
 
-		double optimized_learning_rate = AdjustLearningRate(*learning_rate, optimizator, previous_cost, cost);
-		*learning_rate += (optimized_learning_rate - *learning_rate) * modify_learning_rate;
-		*learning_rate += (-*learning_rate + .001) * (*learning_rate <= 0);
-
-		for (size_t i = 0; i < neuron_count; i++)
-		{
-			neurons[i]->SubtractGradients(gradients, optimized_learning_rate, t_count);
-		}
 
 		if (delete_memory)
 			for (size_t i = 0; i < neuron_count; i++)
@@ -354,11 +345,8 @@ public:
 			}
 
 		delete[] costs;
-		delete[] gradients;
-		delete[] activations;
 		delete[] execution_results;
-
-		return cost;
+		delete[] activations;
 	}
 
 	void TrainingInference(double* current_X, double* current_Y, double* activations, double* execution_results, double* costs, size_t t, double* cost, Cost::CostFunction cost_function, bool use_multiprocessing)
@@ -379,6 +367,28 @@ public:
 		}
 		current_t_cost /= output_length;
 		*cost += current_t_cost;
+	}
+
+	void SetupTrainingVariables(double** costs, double** gradients, double** activations, double** execution_results, size_t t_count)
+	{
+		size_t total_neurons_count = t_count * (neuron_count + input_length);
+		size_t total_gradient_value_count = t_count * gradients_value_count;
+
+		*costs = new double[total_neurons_count];
+		*gradients = new double[total_gradient_value_count];
+		*activations = new double[total_neurons_count];
+		*execution_results = new double[t_count * execution_results_value_count];
+
+		for (size_t i = 0; i < total_gradient_value_count; i++)
+		{
+			gradients[i] = 0;
+		}
+
+		for (size_t i = 0; i < total_neurons_count; i++)
+		{
+			costs[i] = activations[i] = 0;
+		}
+
 	}
 
 	void Save(std::string path_with_no_extension)
