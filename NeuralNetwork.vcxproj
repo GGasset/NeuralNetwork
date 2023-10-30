@@ -134,6 +134,7 @@
     <ClCompile Include="Derivatives.cpp" />
     <ClCompile Include="IConnections.cpp" />
     <ClCompile Include="INeuron.cpp" />
+    <ClCompile Include="LSTMNeuron.cpp" />
     <ClCompile Include="NEATConnections.cpp" />
     <ClCompile Include="NEATLSTM.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="IConnections.h" />
     <ClInclude Include="INeuron.h" />
     <ClInclude Include="DenseNeuron.h" />
+    <ClInclude Include="LSTMNeuron.h" />
     <ClInclude Include="NEATConnections.h" />
     <ClInclude Include="NEATLSTM.h" />
     <ClInclude Include="NN.h" />
