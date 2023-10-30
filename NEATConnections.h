@@ -38,6 +38,17 @@ public:
 		}
 	}
 
+	void IConnections::SubtractGradients(double* gradients, size_t t_count, double learning_rate)
+	{
+		for (size_t t = 0; t < t_count; t++)
+		{
+			size_t gradients_start_i = t * network_gradients_value_count + self_gradients_start_i + neuron_written_gradient_count;
+
+			for (size_t i = 0; i < weight_count; i++)
+				weights[i] -= gradients[gradients_start_i + i] * learning_rate;
+		}
+	}
+
 	/// <summary>
 	/// TODO: Set network assigned values again to all neurons
 	/// </summary>
