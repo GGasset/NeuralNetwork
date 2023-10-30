@@ -9,6 +9,28 @@ protected:
 	std::vector<size_t> connections_indices;
 
 public:
+	NEATConnections(size_t connections_start_i, size_t last_connection_i, size_t neuron_written_gradient_count, double chance_of_connection = 1, int8_t weight_direction_from_0 = 0)
+	{
+		this->neuron_written_gradient_count = neuron_written_gradient_count;
+
+		size_t possible_connections_count = last_connection_i - connections_start_i;
+		std::vector<size_t> possible_connections = std::vector<size_t>();
+		for (size_t i = 0; i < possible_connections_count; i++)
+			possible_connections.push_back(i + connections_start_i);
+
+		size_t number_of_connections = round(possible_connections_count * chance_of_connection);
+		weight_count = number_of_connections;
+		GenerateWeights(weight_direction_from_0);
+
+		for (size_t i = 0; i < number_of_connections; i++)
+		{
+			size_t connection_to_add_i = round(ValueGeneration::NextDouble() * possible_connections.size()) - 1;
+			size_t connect_to = possible_connections[connection_to_add_i];
+			connections_indices.push_back(connect_to);
+			possible_connections.erase(possible_connections.begin() + connection_to_add_i);
+		}
+	}
+
 	double IConnections::LinearFunction(double* network_activations, size_t t_index = 0)
 	{
 		size_t activations_t_addition = t_index * network_neuron_count;
