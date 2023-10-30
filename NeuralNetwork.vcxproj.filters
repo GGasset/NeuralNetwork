@@ -60,9 +60,6 @@
     <ClCompile Include="Derivatives.cpp">
       <Filter>Source Files\Static</Filter>
     </ClCompile>
-    <ClCompile Include="NN.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DenseLSTM.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
@@ -76,6 +73,12 @@
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
     <ClCompile Include="NEATLSTM.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
+    <ClCompile Include="NeuronBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NN.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
   </ItemGroup>
@@ -120,6 +123,9 @@
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
     <ClInclude Include="NEATLSTM.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="NeuronBase.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
   </ItemGroup>
