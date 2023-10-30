@@ -280,10 +280,10 @@ public:
 			current_Y[i] = Y[i + Y_start_i];
 		}
 
-		size_t single_value_for_neurons_count = t_count * (neuron_count + input_length);
-		double* costs = new double[single_value_for_neurons_count];
+		size_t total_neurons_count = t_count * (neuron_count + input_length);
+		double* costs = new double[total_neurons_count];
 		double* gradients = new double[t_count * gradients_value_count];
-		double* activations = new double[single_value_for_neurons_count];
+		double* activations = new double[total_neurons_count];
 		double* execution_results = new double[t_count * execution_results_value_count];
 
 		for (size_t i = 0; i < (t_count * gradients_value_count); i++)
@@ -291,7 +291,7 @@ public:
 			gradients[i] = 0;
 		}
 
-		for (size_t i = 0; i < single_value_for_neurons_count; i++)
+		for (size_t i = 0; i < total_neurons_count; i++)
 		{
 			costs[i] = activations[i] = 0;
 		}
