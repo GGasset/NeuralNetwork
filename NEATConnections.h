@@ -19,6 +19,25 @@ public:
 		return linear_function;
 	}
 
+	void IConnections::CalculateGradients(double* gradients, double* neuron_activations, double* costs, double* linear_function_gradients, size_t t_count)
+	{
+		for (size_t t = 0; t < t_count; t++)
+		{
+			double current_linear_function_gradient = linear_function_gradients[t];
+
+			size_t self_gradients_start_i = network_gradients_value_count * t + this->self_gradients_start_i + neuron_written_gradient_count;
+			size_t first_neuron_i = network_neuron_count * t;
+			for (size_t i = 0; i < weight_count; i++)
+			{
+				size_t connected_neuron_i = first_neuron_i + connections_indices[i];
+				size_t gradient_i = self_gradients_start_i + i;
+
+				gradients[self_gradients_start_i + i] = current_linear_function_gradient * neuron_activations[connected_neuron_i];
+				costs[connected_neuron_i] -= current_linear_function_gradient * weights[i];
+			}
+		}
+	}
+
 	/// <summary>
 	/// TODO: Set network assigned values again to all neurons
 	/// </summary>
