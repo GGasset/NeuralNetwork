@@ -281,12 +281,14 @@ public:
 		}
 
 		size_t total_neurons_count = t_count * (neuron_count + input_length);
+		size_t total_gradient_value_count = t_count * gradients_value_count;
+
 		double* costs = new double[total_neurons_count];
-		double* gradients = new double[t_count * gradients_value_count];
+		double* gradients = new double[total_gradient_value_count];
 		double* activations = new double[total_neurons_count];
 		double* execution_results = new double[t_count * execution_results_value_count];
 
-		for (size_t i = 0; i < (t_count * gradients_value_count); i++)
+		for (size_t i = 0; i < total_gradient_value_count; i++)
 		{
 			gradients[i] = 0;
 		}
