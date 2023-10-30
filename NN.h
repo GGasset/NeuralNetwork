@@ -289,19 +289,29 @@ public:
 
 		CalculateGradients(gradients, costs, execution_results, activations, t_count, use_multithreading, delete_memory, dropout_rate);
 
-		SubtractGradients(gradients, t_count, &learning_rate, previous_cost, cost, optimizator, modify_learning_rate);
+		SubtractGradients(gradients, t_count, &learning_rate, previous_cost, cost, optimizator, modify_learning_rate, use_multithreading);
 	}
 
-	void SubtractGradients(double* gradients, size_t t_count, double* learning_rate, double* previous_cost, double mean_cost, LearningRateOptimizators optimizator, bool modify_learning_rate = false)
+	void SubtractGradients(double* gradients, size_t t_count, double* learning_rate, double* previous_cost, double mean_cost, LearningRateOptimizators optimizator, bool modify_learning_rate = false, bool use_multithreading = true)
 	{
 		double optimized_learning_rate = AdjustLearningRate(*learning_rate, optimizator, previous_cost, mean_cost);
 		*learning_rate += (optimized_learning_rate - *learning_rate) * modify_learning_rate;
 		*learning_rate += (-*learning_rate + .001) * (*learning_rate <= 0);
 
-		for (size_t i = 0; i < neuron_count; i++)
+		if (use_multithreading)
 		{
-			neurons[i]->SubtractGradients(gradients, optimized_learning_rate, t_count);
+			std::vector<std::thread> threads = std::vector<std::thread>();
+			for (size_t i = 0; i < neuron_count; i++)
+				threads.push_back(std::thread(&INeuron::SubtractGradients, neurons[i], gradients, optimized_learning_rate, t_count);
+
+			for (size_t i = 0; i < neuron_count; i++)
+				threads[i].join();
 		}
+		else
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				neurons[i]->SubtractGradients(gradients, optimized_learning_rate, t_count);
+			}
 
 		delete[] gradients;
 	}
