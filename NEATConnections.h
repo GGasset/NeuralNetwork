@@ -38,6 +38,18 @@ public:
 		}
 	}
 
+	virtual double CalculateDerivative(double* network_activations, size_t t_index)
+	{
+		double derivative = 0;
+
+		size_t current_t_activations_start_i = network_neuron_count * t_index;
+		for (size_t i = 0; i < weight_count; i++)
+		{
+			derivative += network_activations[current_t_activations_start_i + connections_indices[i]] + weights[i];
+		}
+	}
+
+
 	void IConnections::SubtractGradients(double* gradients, size_t t_count, double learning_rate)
 	{
 		for (size_t t = 0; t < t_count; t++)
