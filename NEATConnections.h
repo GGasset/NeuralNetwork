@@ -44,9 +44,7 @@ public:
 
 		size_t current_t_activations_start_i = network_neuron_count * t_index;
 		for (size_t i = 0; i < weight_count; i++)
-		{
 			derivative += network_activations[current_t_activations_start_i + connections_indices[i]] + weights[i];
-		}
 	}
 
 
