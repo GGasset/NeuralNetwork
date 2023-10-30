@@ -123,7 +123,6 @@ public:
 
 	double AdjustLearningRate(double original_learning_rate, LearningRateOptimizators optimize_based_of, double* previous_cost, double current_cost)
 	{
-		// TODO: solve bugs
 		double cost_difference;
 		switch (optimize_based_of)
 		{
