@@ -81,6 +81,9 @@
     <ClCompile Include="NN.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
+    <ClCompile Include="NEATNeuron.cpp">
+      <Filter>Source Files\Neurons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -126,6 +129,9 @@
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
     <ClInclude Include="NeuronBase.h">
+      <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="NEATNeuron.h">
       <Filter>Header Files\Neurons</Filter>
     </ClInclude>
   </ItemGroup>

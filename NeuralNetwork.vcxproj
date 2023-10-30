@@ -137,6 +137,7 @@
     <ClCompile Include="LSTMNeuron.cpp" />
     <ClCompile Include="NEATConnections.cpp" />
     <ClCompile Include="NEATLSTM.cpp" />
+    <ClCompile Include="NEATNeuron.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="DenseNeuron.cpp" />
     <ClCompile Include="NeuronBase.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="LSTMNeuron.h" />
     <ClInclude Include="NEATConnections.h" />
     <ClInclude Include="NEATLSTM.h" />
+    <ClInclude Include="NEATNeuron.h" />
     <ClInclude Include="NeuronBase.h" />
     <ClInclude Include="NN.h" />
     <ClInclude Include="NN_instantiator.h" />
