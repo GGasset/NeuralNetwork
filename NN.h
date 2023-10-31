@@ -287,6 +287,9 @@ public:
 		for (size_t t = 0; t < t_count; t++)
 			TrainingInference(current_X, current_Y, activations, execution_results, costs, t, &cost, cost_function, use_multithreading);
 
+		delete[] current_X;
+		delete[] current_Y;
+
 		CalculateGradients(gradients, costs, execution_results, activations, t_count, use_multithreading, delete_memory, dropout_rate);
 
 		SubtractGradients(gradients, t_count, &learning_rate, previous_cost, cost, optimizator, modify_learning_rate, use_multithreading);
@@ -302,7 +305,7 @@ public:
 		{
 			std::vector<std::thread> threads = std::vector<std::thread>();
 			for (size_t i = 0; i < neuron_count; i++)
-				threads.push_back(std::thread(&INeuron::SubtractGradients, neurons[i], gradients, optimized_learning_rate, t_count);
+				threads.push_back(std::thread(&INeuron::SubtractGradients, neurons[i], gradients, optimized_learning_rate, t_count));
 
 			for (size_t i = 0; i < neuron_count; i++)
 				threads[i].join();
