@@ -53,8 +53,8 @@ int main()
 		size_t prev_layer_length = shape[i - 1];
 		for (size_t j = 0; j < shape[i] && (neuron_i < neuron_count); j++)
 		{
-			neurons[neuron_i] = new NEATLSTM(neuron_i + shape[0], previous_layer_start, previous_layer_start + prev_layer_length - 1, 1, weight_direction);
-			neurons_id[neuron_i] = NN::DenseLSTMId;
+			neurons[neuron_i] = new NEATLSTM(neuron_i + shape[0], previous_layer_start, previous_layer_start + prev_layer_length - 1, .8 + .2 * (i == 1), weight_direction);
+			neurons_id[neuron_i] = NN::NEATLSTMId;
 			neuron_i++;
 		}
 
