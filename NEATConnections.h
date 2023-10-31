@@ -143,11 +143,18 @@ public:
 
 	void WriteNonInheritedValues(FILE* file) override
 	{
-		fwrite(connections_indices.data())
+		fwrite(connections_indices.data(), sizeof(size_t), connections_indices.size(), file);
 	}
 
 	void ReadNonInheritedValues(FILE* file) override
 	{
+		size_t* connection_indices_data = new size_t[weight_count];
+		fread(connection_indices_data, sizeof(size_t), weight_count, file);
 
+		connections_indices = std::vector<size_t>();
+		for (size_t i = 0; i < weight_count; i++)
+			connections_indices.push_back(connection_indices_data[i]);
+
+		delete[] connection_indices_data;
 	}
 };
