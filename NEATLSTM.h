@@ -9,6 +9,7 @@ class NEATLSTM :
     {
         this->neuron_i = neuron_i;
 
+        connectionsId = IConnections::NEATId;
         neuron_written_gradient_count = 6;
         neuron_written_execution_results_count = 10;
 

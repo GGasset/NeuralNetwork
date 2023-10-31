@@ -5,6 +5,9 @@
 #pragma once
 class INeuron
 {
+public:
+	IConnections::ConnectionId connectionsId = IConnections::DenseId;
+
 protected:
 	size_t neuron_i = 0;
 	size_t neuron_written_gradient_count = 0;

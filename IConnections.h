@@ -8,6 +8,13 @@
 /// </summary>
 class IConnections
 {
+public:
+	enum ConnectionId
+	{
+		DenseId = 0,
+		NEATId = 1
+	};
+
 protected:
 	size_t neuron_written_gradient_count = -1;
 	size_t weight_count = -1;

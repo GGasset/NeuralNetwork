@@ -10,6 +10,7 @@ class NEATNeuron :
         this->neuron_i = neuron_i;
         this->activation_function = activation;
 
+        connectionsId = IConnections::NEATId;
         neuron_written_gradient_count = 1;
         neuron_written_execution_results_count = 1;
 
