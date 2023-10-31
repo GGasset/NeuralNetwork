@@ -267,7 +267,7 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t. Returns: Mean output cost averaged over t of the average neuron_cost
 	/// </summary>
-	void SupervisedBatch(double* X, double* Y, size_t t_count, Cost::CostFunction cost_function, double learning_rate, LearningRateOptimizators optimizator, bool modify_learning_rate = false, double* previous_cost = 0, bool use_multithreading = true, double dropout_rate = 0, bool delete_memory = true, size_t X_start_i = 0, size_t Y_start_i = 0)
+	double SupervisedBatch(double* X, double* Y, size_t t_count, Cost::CostFunction cost_function, double learning_rate, LearningRateOptimizators optimizator, bool modify_learning_rate = false, double* previous_cost = 0, bool use_multithreading = true, double dropout_rate = 0, bool delete_memory = true, size_t X_start_i = 0, size_t Y_start_i = 0)
 	{
 		double* costs, *gradients, *activations, *execution_results;
 		costs = gradients = activations = execution_results = 0;
@@ -297,6 +297,8 @@ public:
 		CalculateGradients(gradients, costs, execution_results, activations, t_count, use_multithreading, delete_memory, dropout_rate);
 
 		SubtractGradients(gradients, t_count, &learning_rate, previous_cost, cost, optimizator, modify_learning_rate, use_multithreading);
+
+		return cost;
 	}
 
 	void SubtractGradients(double* gradients, size_t t_count, double* learning_rate, double* previous_cost, double mean_cost, LearningRateOptimizators optimizator, bool modify_learning_rate = false, bool use_multithreading = true)
