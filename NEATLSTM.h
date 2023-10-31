@@ -5,6 +5,7 @@
 class NEATLSTM :
     public LSTMNeuron
 {
+public:
     NEATLSTM(size_t neuron_i, size_t connections_start_i, size_t last_connection_i, double chance_of_connection = 1, int8_t weight_direction_from_0 = 0)
     {
         this->neuron_i = neuron_i;
