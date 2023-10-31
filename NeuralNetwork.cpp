@@ -53,7 +53,7 @@ int main()
 		size_t prev_layer_length = shape[i - 1];
 		for (size_t j = 0; j < shape[i] && (neuron_i < neuron_count); j++)
 		{
-			neurons[neuron_i] = new DenseLSTM(neuron_i + shape[0], previous_layer_start, prev_layer_length, weight_direction);
+			neurons[neuron_i] = new NEATLSTM(neuron_i + shape[0], previous_layer_start, previous_layer_start + prev_layer_length - 1, 1, weight_direction);
 			neurons_id[neuron_i] = NN::DenseLSTMId;
 			neuron_i++;
 		}
@@ -89,7 +89,7 @@ int main()
 	double* previous_cost = 0;
 	double* output = 0;
 	bool continue_training = true;
-	double learning_rate = 1;
+	double learning_rate = .7;
 	for (size_t i = 0; i < 1000/* && continue_training*/; i++)
 	{
 		double* last_output = output;
@@ -112,7 +112,7 @@ int main()
 
 		continue_training = !is_same_output;
 
-		double cost = n->SupervisedBatch(X, Y, t_count, Cost::SquaredMean, &learning_rate, NN::InverseLearningEffectiveness, false, previous_cost, true, .2);
+		double cost = n->SupervisedBatch(X, Y, t_count, Cost::SquaredMean, &learning_rate, NN::HighCostHighLearning, false, previous_cost, use_multithreading, .2);
 		previous_cost = &cost;
 
 		delete[] last_output;

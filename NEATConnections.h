@@ -12,7 +12,7 @@ public:
 	{
 		this->neuron_written_gradient_count = neuron_written_gradient_count;
 
-		size_t possible_connections_count = last_connection_i - connections_start_i;
+		size_t possible_connections_count = last_connection_i - connections_start_i + 1;
 		std::vector<size_t> possible_connections = std::vector<size_t>();
 		for (size_t i = 0; i < possible_connections_count; i++)
 			possible_connections.push_back(i + connections_start_i);
@@ -23,7 +23,8 @@ public:
 
 		for (size_t i = 0; i < number_of_connections; i++)
 		{
-			size_t connection_to_add_i = round(ValueGeneration::NextDouble() * possible_connections.size()) - 1;
+			long double connection_to_add_i = roundl(ValueGeneration::NextDouble() * possible_connections.size()) - 1;
+			connection_to_add_i += connection_to_add_i < 0;
 			size_t connect_to = possible_connections[connection_to_add_i];
 			connections_indices.push_back(connect_to);
 			possible_connections.erase(possible_connections.begin() + connection_to_add_i);
