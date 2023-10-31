@@ -52,7 +52,8 @@ public:
 	{
 		None,
 		LearningEffectiveness,
-		InverseLearningEffectiveness
+		InverseLearningEffectiveness,
+		HighCostHighLearning
 	};
 
 private:
@@ -133,6 +134,7 @@ public:
 	double AdjustLearningRate(double original_learning_rate, LearningRateOptimizators optimize_based_of, double* previous_cost, double current_cost)
 	{
 		double cost_difference;
+		double optimization;
 		switch (optimize_based_of)
 		{
 		case NN::None:
@@ -166,10 +168,14 @@ public:
 			if (*previous_cost == 0)
 				return original_learning_rate;
 
-			cost_difference = current_cost - *previous_cost;
-			current_cost -= (current_cost * 2) * (cost_difference < 0);
-			return original_learning_rate + (current_cost / *previous_cost);
+			optimization = .5 - (current_cost - *previous_cost);
+			optimization += (-optimization) * (optimization < -original_learning_rate);
 
+			return original_learning_rate + optimization;
+			//return original_learning_rate + (current_cost / *previous_cost);
+		case NN::HighCostHighLearning:
+			return original_learning_rate + current_cost;
+			break;
 		default:
 			throw std::exception("Learning rate optimizator not implemented");
 		}
