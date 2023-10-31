@@ -11,6 +11,8 @@
 // Neurons
 #include "DenseNeuron.h"
 #include "DenseLSTM.h"
+#include "NEATNeuron.h"
+#include "NEATLSTM.h"
 
 #pragma once
 /// <summary>
@@ -463,13 +465,21 @@ public:
 			size_t weight_count = current_neuron->connections->GetWeightCount();
 			switch (neuronTypes[i])
 			{
-			case 0:
+			case DenseNeuronId:
 				neuron_size = sizeof(DenseNeuron);
 				connections_size = sizeof(DenseConnections);
 				break;
-			case 1:
+			case DenseLSTMId:
 				neuron_size = sizeof(DenseLSTM);
 				connections_size = sizeof(DenseConnections);
+				break;
+			case NEATNeuronId:
+				neuron_size = sizeof(NEATNeuron);
+				connections_size = sizeof(NEATConnections);
+				break;
+			case NEATLSTMId:
+				neuron_size = sizeof(NEATLSTM);
+				connections_size = sizeof(NEATConnections);
 				break;
 			default:
 				throw std::exception("NeuronType not implemented");
@@ -534,7 +544,6 @@ public:
 				neuron->connections = (DenseConnections*)malloc(sizeof(DenseConnections));
 				fread(neuron->connections, sizeof(DenseConnections), 1, nn_file);
 
-				neurons[i] = neuron;
 				break;
 
 			case DenseLSTMId:
@@ -543,8 +552,22 @@ public:
 
 				neuron->connections = (DenseConnections*)malloc(sizeof(DenseConnections));
 				fread(neuron->connections, sizeof(DenseConnections), 1, nn_file);
+				break;
+			case NEATNeuronId:
+				neuron = (NEATNeuron*)malloc(sizeof(NEATNeuron));
+				fread(neuron, sizeof(NEATNeuron), 1, nn_file);
 
-				neurons[i] = neuron;
+				neuron->connections = (NEATConnections*)malloc(sizeof(NEATConnections));
+				fread(neuron->connections, sizeof(NEATConnections), 1, nn_file);
+
+				break;
+			case NEATLSTMId:
+				neuron = (NEATLSTM*)malloc(sizeof(NEATLSTM));
+				fread(neuron, sizeof(NEATLSTM), 1, nn_file);
+
+				neuron->connections = (NEATConnections*)malloc(sizeof(NEATConnections));
+				fread(neuron->connections, sizeof(NEATConnections), 1, nn_file);
+
 				break;
 			default:
 				throw std::exception("Neuron not implemented for loading");
@@ -555,6 +578,8 @@ public:
 			fread(weights, sizeof(double), weight_count, nn_file);
 			neuron->connections->SetWeights(weights);
 			weights = 0;
+
+			neurons[i] = neuron;
 		}
 		fclose(nn_file);
 
