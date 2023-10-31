@@ -5,10 +5,9 @@
 class NEATConnections :
 	public IConnections
 {
-protected:
+public:
 	std::vector<size_t> connections_indices;
 
-public:
 	NEATConnections(size_t connections_start_i, size_t last_connection_i, size_t neuron_written_gradient_count, double chance_of_connection = 1, int8_t weight_direction_from_0 = 0)
 	{
 		this->neuron_written_gradient_count = neuron_written_gradient_count;
