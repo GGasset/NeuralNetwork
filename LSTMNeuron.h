@@ -4,10 +4,10 @@ class LSTMNeuron :
     public INeuron
 {
 protected:
-	double forget_weight;
-	double sigmoid_store_weight;
-	double tanh_store_weight;
-	double output_weight;
+	double forget_weight = 0;
+	double sigmoid_store_weight = 0;
+	double tanh_store_weight = 0;
+	double output_weight = 0;
 
 	double hidden_state = 0;
 	double cell_state = 0;
@@ -172,7 +172,7 @@ public:
 		// gradients[3] = store gate sigmoid weight gradient
 		// gradients[4] = forget gate weight gradient
 		// gradients[5] = output gate weight gradient
-		for (int t = t_count - 1; t >= 0; t--)
+		for (int t = (int)t_count - 1; t >= 0; t--)
 		{
 			double current_gradient = costs[t * connections->network_neuron_count + neuron_i];
 

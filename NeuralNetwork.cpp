@@ -70,7 +70,8 @@ int main()
 	}
 	delete[] before_output;
 
-	std::string path = "D:\\NN\\tests\\01";
+	//std::string path = "D:\\NN\\tests\\01";
+	std::string path = "C:\\Users\\GG\\Documents\\NNs";
 	n->Save(path);
 	n->free();
 	n = NN::Load(path);
@@ -88,6 +89,7 @@ int main()
 	double* previous_cost = 0;
 	double* output = 0;
 	bool continue_training = true;
+	double learning_rate = 1;
 	for (size_t i = 0; i < 1000/* && continue_training*/; i++)
 	{
 		double* last_output = output;
@@ -110,8 +112,7 @@ int main()
 
 		continue_training = !is_same_output;
 
-		double learning_rate = 1;
-		double cost = n->Supervised_batch(X, Y, &learning_rate, true, t_count, Cost::SquaredMean, NN::LearningEffectiveness, previous_cost, use_multithreading, 0, 0, false, .2);
+		double cost = n->SupervisedBatch(X, Y, t_count, Cost::SquaredMean, &learning_rate, NN::LearningEffectiveness, true, previous_cost, true, .2);
 		previous_cost = &cost;
 
 		delete[] last_output;

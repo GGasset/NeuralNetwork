@@ -4,6 +4,7 @@
 #pragma once
 class DenseNeuron : public NeuronBase
 {
+public:
 	/// <param name="weight_direction_from_0">
 	/// direction -1: exclusively negative |  
 	/// direction 0: not exclusive direction | 

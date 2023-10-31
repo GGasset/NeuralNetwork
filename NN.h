@@ -267,7 +267,7 @@ public:
 	/// <summary>
 	/// Works as a batch for non-recurrent neurons and for recurrent neurons it works as training over t. Returns: Mean output cost averaged over t of the average neuron_cost
 	/// </summary>
-	double SupervisedBatch(double* X, double* Y, size_t t_count, Cost::CostFunction cost_function, double learning_rate, LearningRateOptimizators optimizator, bool modify_learning_rate = false, double* previous_cost = 0, bool use_multithreading = true, double dropout_rate = 0, bool delete_memory = true, size_t X_start_i = 0, size_t Y_start_i = 0)
+	double SupervisedBatch(double* X, double* Y, size_t t_count, Cost::CostFunction cost_function, double* learning_rate, LearningRateOptimizators optimizator, bool modify_learning_rate = false, double* previous_cost = 0, bool use_multithreading = true, double dropout_rate = 0, bool delete_memory = true, size_t X_start_i = 0, size_t Y_start_i = 0)
 	{
 		double* costs, *gradients, *activations, *execution_results;
 		costs = gradients = activations = execution_results = 0;
@@ -296,7 +296,7 @@ public:
 
 		CalculateGradients(gradients, costs, execution_results, activations, t_count, use_multithreading, delete_memory, dropout_rate);
 
-		SubtractGradients(gradients, t_count, &learning_rate, previous_cost, cost, optimizator, modify_learning_rate, use_multithreading);
+		SubtractGradients(gradients, t_count, learning_rate, previous_cost, cost, optimizator, modify_learning_rate, use_multithreading);
 
 		return cost;
 	}
@@ -325,7 +325,7 @@ public:
 		delete[] gradients;
 	}
 
-	double CalculateGradients(double* gradients, double* costs, double* execution_results, double* activations, size_t t_count,
+	void CalculateGradients(double* gradients, double* costs, double* execution_results, double* activations, size_t t_count,
 		bool use_multithreading = false, bool delete_memory = true, double dropout_rate = 0)
 	{
 		std::vector<std::thread> threads = std::vector<std::thread>();
@@ -400,12 +400,12 @@ public:
 
 		for (size_t i = 0; i < total_gradient_value_count; i++)
 		{
-			gradients[i] = 0;
+			(*gradients)[i] = 0;
 		}
 
 		for (size_t i = 0; i < total_neurons_count; i++)
 		{
-			costs[i] = activations[i] = 0;
+			(*costs)[i] = (*activations)[i] = 0;
 		}
 
 	}

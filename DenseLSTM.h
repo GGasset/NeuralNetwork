@@ -17,8 +17,8 @@ public:
 		neuron_written_gradient_count = 6;
 		neuron_written_execution_results_count = 10;
 
-		double min_value = -2 * ((weight_direction_from_0 < 0) || !weight_direction_from_0);
-		double max_value = 2 * ((weight_direction_from_0 > 0) || !weight_direction_from_0);
+		double min_value = -2.0 * ((weight_direction_from_0 < 0) || !weight_direction_from_0);
+		double max_value = 2.0 * ((weight_direction_from_0 > 0) || !weight_direction_from_0);
 		forget_weight = ValueGeneration::GenerateWeight(min_value, 0.5, max_value);
 		sigmoid_store_weight = ValueGeneration::GenerateWeight(min_value, 0.5, max_value);
 		tanh_store_weight = ValueGeneration::GenerateWeight(min_value, 0.5, max_value);

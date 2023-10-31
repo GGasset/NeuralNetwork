@@ -4,7 +4,7 @@ class NeuronBase :
     public INeuron
 {
 public:
-    ActivationFunctions::ActivationFunction activation_function;
+    ActivationFunctions::ActivationFunction activation_function = ActivationFunctions::None;
 
 	void INeuron::ExecuteStore(double* activations, double* execution_results, size_t t_index = 0)
 	{
