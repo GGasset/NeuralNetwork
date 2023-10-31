@@ -41,7 +41,9 @@ public:
 	enum NeuronTypeIdentifier
 	{
 		DenseNeuronId = 0,
-		DenseLSTMId = 1
+		DenseLSTMId = 1,
+		NEATNeuronId = 2,
+		NEATLSTMId = 3
 	};
 
 	enum LearningRateOptimizators
