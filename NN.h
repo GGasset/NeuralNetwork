@@ -489,6 +489,7 @@ public:
 			fwrite(current_neuron, neuron_size, 1, nn_file);
 			fwrite(current_neuron->connections, connections_size, 1, nn_file);
 			fwrite(current_neuron->connections->GetWeights(), sizeof(double), weight_count, nn_file);
+			neurons[i]->connections->WriteNonInheritedValues(nn_file);
 		}
 		fclose(nn_file);
 	}
@@ -580,6 +581,8 @@ public:
 			fread(weights, sizeof(double), weight_count, nn_file);
 			neuron->connections->SetWeights(weights);
 			weights = 0;
+
+			neuron->connections->ReadNonInheritedValues(nn_file);
 
 			neurons[i] = neuron;
 		}
