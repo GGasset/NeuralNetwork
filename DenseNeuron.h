@@ -15,8 +15,6 @@ public:
 	{
 		this->neuron_i = neuron_i;
 		this->activation_function = activation_function;
-
-		connectionsId = IConnections::DenseId;
 		neuron_written_gradient_count = 1;
 		neuron_written_execution_results_count = 1;
 		connections = new DenseConnections(previous_layer_start_i, previous_layer_length, neuron_written_gradient_count, weight_direction_from_0);
