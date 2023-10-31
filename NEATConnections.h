@@ -140,4 +140,14 @@ public:
 		SetWeights(new_weights);
 		weight_count--;
 	}
+
+	void WriteNonInheritedValues(FILE* file) override
+	{
+		fwrite(connections_indices.data())
+	}
+
+	void ReadNonInheritedValues(FILE* file) override
+	{
+
+	}
 };
