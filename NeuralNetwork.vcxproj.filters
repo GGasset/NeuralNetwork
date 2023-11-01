@@ -84,6 +84,9 @@
     <ClCompile Include="NEATNeuron.cpp">
       <Filter>Source Files\Neurons</Filter>
     </ClCompile>
+    <ClCompile Include="EvolutionMetaData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="INeuron.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="NEATNeuron.h">
       <Filter>Header Files\Neurons</Filter>
+    </ClInclude>
+    <ClInclude Include="EvolutionMetaData.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

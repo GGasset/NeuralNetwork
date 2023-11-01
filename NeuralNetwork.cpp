@@ -17,14 +17,14 @@ int main()
 	// Improve multithreading to assignate more work to each thread
 	bool use_multithreading = false;
 
-	size_t t_count = 2;
+	size_t t_count = 4;
 	double* X = new double[t_count];
 	double* Y = new double[t_count];
 
 	for (size_t t = 0; t < t_count; t++)
 	{
-		X[t] = 2;
-		Y[t] = .5 + .3 * t;
+		X[t] = 0.1 * t;
+		Y[t] = .5 + .1 * t;
 	}
 
 	size_t shape_length = 4;
@@ -70,8 +70,8 @@ int main()
 	}
 	delete[] before_output;
 
-	//std::string path = "D:\\NN\\tests\\01";
-	std::string path = "C:\\Users\\GG\\Documents\\NNs";
+	std::string path = "D:\\NN\\tests\\01";
+	//std::string path = "C:\\Users\\GG\\Documents\\NNs";
 	n->Save(path);
 	n->free();
 	n = NN::Load(path);
@@ -89,7 +89,7 @@ int main()
 	double* previous_cost = 0;
 	double* output = 0;
 	bool continue_training = true;
-	double learning_rate = .7;
+	double learning_rate = .01;
 	for (size_t i = 0; i < 1000/* && continue_training*/; i++)
 	{
 		double* last_output = output;
@@ -112,7 +112,7 @@ int main()
 
 		continue_training = !is_same_output;
 
-		double cost = n->SupervisedBatch(X, Y, t_count, Cost::SquaredMean, &learning_rate, NN::HighCostHighLearning, false, previous_cost, use_multithreading, .2);
+		double cost = n->SupervisedBatch(X, Y, t_count, Cost::SquaredMean, &learning_rate, NN::HighCostHighLearning, false, previous_cost, use_multithreading, .2, false);
 		previous_cost = &cost;
 
 		delete[] last_output;

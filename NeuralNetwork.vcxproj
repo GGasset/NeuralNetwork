@@ -132,6 +132,7 @@
     <ClCompile Include="DenseConnections.cpp" />
     <ClCompile Include="DenseLSTM.cpp" />
     <ClCompile Include="Derivatives.cpp" />
+    <ClCompile Include="EvolutionMetaData.cpp" />
     <ClCompile Include="IConnections.cpp" />
     <ClCompile Include="INeuron.cpp" />
     <ClCompile Include="LSTMNeuron.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="DenseConnections.h" />
     <ClInclude Include="DenseLSTM.h" />
     <ClInclude Include="Derivatives.h" />
+    <ClInclude Include="EvolutionMetaData.h" />
     <ClInclude Include="IConnections.h" />
     <ClInclude Include="INeuron.h" />
     <ClInclude Include="DenseNeuron.h" />
