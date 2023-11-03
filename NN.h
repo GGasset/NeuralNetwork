@@ -3,6 +3,7 @@
 #include <vector>
 #include <functional>
 #include <chrono>
+#include <string>
 
 #include "INeuron.h"
 #include "Derivatives.h"
@@ -416,6 +417,21 @@ public:
 		{
 			(*costs)[i] = (*activations)[i] = 0;
 		}
+
+	}
+
+	void EvolveMetadata()
+	{
+
+	}
+
+	void Evolve()
+	{
+
+	}
+
+	void AugmentTopology()
+	{
 
 	}
 
