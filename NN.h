@@ -70,7 +70,7 @@ public:
 	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
 	/// <param name="max_neuron_count">Used as a cap of neurons for neuroevolution</param>
 	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, size_t* network_shape, size_t shape_length,
-		NeuronTypeIdentifier* neuron_types = 0, bool free_neuron_types = true, int* parsed_neuron_types = 0, size_t max_neuron_count = 0, EvolutionMetaData* evolution_values = 0, bool populate_values = true)
+		bool free_network_shape = false, NeuronTypeIdentifier* neuron_types = 0, int* parsed_neuron_types = 0, bool free_neuron_types = true, size_t max_neuron_count = 0, EvolutionMetaData* evolution_values = 0, bool populate_values = true)
 	{
 		max_neuron_count += neuron_count - max_neuron_count * (max_neuron_count < neuron_count);
 		input_length = input_layer_length;
@@ -89,7 +89,7 @@ public:
 
 		if (neuron_types)
 		{
-			this->neuron_types = new int[neuron_count];
+			this->neuron_types = new int[max_neuron_count];
 			for (size_t i = 0; i < neuron_count; i++)
 			{
 				this->neuron_types[i] = neuron_types[i];
@@ -99,7 +99,13 @@ public:
 		}
 		else if (parsed_neuron_types)
 		{
-			this->neuron_types = parsed_neuron_types;
+			this->neuron_types = new int[max_neuron_count];
+			for (size_t i = 0; i < neuron_count; i++)
+			{
+				this->neuron_types[i] = parsed_neuron_types[i];
+			}
+			if (free_neuron_types)
+				delete[] parsed_neuron_types;
 		}
 	}
 
@@ -422,7 +428,10 @@ public:
 
 	void Evolve()
 	{
+		for (size_t i = 0; i < neuron_count; i++)
+		{
 
+		}
 	}
 
 	void EvolveMetadata()
