@@ -444,7 +444,7 @@ public:
 
 	void Save(std::string path_with_no_extension, int* neuronTypes)
 	{
-		size_t metadata[7]
+		size_t metadata[8]
 		{
 			neuron_count,
 			input_length,
@@ -452,7 +452,8 @@ public:
 			execution_results_value_count,
 			gradients_value_count,
 			shape_length,
-			max_neuron_count
+			max_neuron_count,
+			evolution_metadata != 0
 		};
 
 		FILE* neuron_type_file;
@@ -500,12 +501,16 @@ public:
 			fwrite(current_neuron->connections->GetWeights(), sizeof(double), weight_count, nn_file);
 			neurons[i]->connections->WriteNonInheritedValues(nn_file);
 		}
+
+		if (evolution_metadata != 0)
+			fwrite(evolution_metadata, sizeof(EvolutionMetaData), 1, nn_file);
+
 		fclose(nn_file);
 	}
 
 	static NN* Load(std::string path_with_no_extension)
 	{
-		size_t metadata[7]{};
+		size_t metadata[8]{};
 		//	neuron_count,
 		//	input_length,
 		//	output_length,
@@ -513,6 +518,7 @@ public:
 		//	gradients_value_count
 		//	shape_length
 		//  max_neuron_count
+		//  evolution_metadata exists
 
 		FILE* nt_file;
 		if (fopen_s(&nt_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "rb"))
@@ -527,6 +533,7 @@ public:
 		size_t gradients_value_count = metadata[4];
 		size_t shape_length = metadata[5];
 		size_t max_neuron_count = metadata[6];
+		bool evolution_metadata_written = metadata[7] > 0;
 
 		int* neuron_types = new int[neuron_count];
 		fread(neuron_types, sizeof(int), neuron_count, nt_file);
@@ -595,9 +602,19 @@ public:
 
 			neurons[i] = neuron;
 		}
+		
+		EvolutionMetaData* evolution_values = 0;
+		if (evolution_metadata_written)
+		{
+			evolution_values = (EvolutionMetaData*)malloc(sizeof(EvolutionMetaData));
+			if (evolution_values == 0)
+				throw std::string("System out of memory");
+			fread(evolution_values, sizeof(EvolutionMetaData), 1, nn_file);
+		}
+		
 		fclose(nn_file);
 
-		NN* out = new NN(neurons, neuron_count, input_length, output_length, shape, shape_length, 0, false, neuron_types, max_neuron_count, false);
+		NN* out = new NN(neurons, neuron_count, input_length, output_length, shape, shape_length, 0, false, neuron_types, max_neuron_count, evolution_values, false);
 		out->gradients_value_count = gradients_value_count;
 		out->execution_results_value_count = execution_results_value_count;
 
