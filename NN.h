@@ -7,6 +7,7 @@
 #include "INeuron.h"
 #include "Derivatives.h"
 #include "Cost.h"
+#include "EvolutionMetaData.h"
 
 // Neurons
 #include "DenseNeuron.h"
@@ -58,6 +59,7 @@ public:
 
 private:
 	int* neuron_types = 0;
+	EvolutionMetaData* evolution_metadata = 0;
 
 public:
 	/// <summary>
@@ -67,7 +69,7 @@ public:
 	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
 	/// <param name="max_neuron_count">Used as a cap of neurons for neuroevolution</param>
 	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, size_t* network_shape, size_t shape_length,
-		NeuronTypeIdentifier* neuron_types = 0, bool free_neuron_types = true, int* parsed_neuron_types = 0, size_t max_neuron_count = 0, bool populate_values = true)
+		NeuronTypeIdentifier* neuron_types = 0, bool free_neuron_types = true, int* parsed_neuron_types = 0, size_t max_neuron_count = 0, EvolutionMetaData* evolution_values = 0, bool populate_values = true)
 	{
 		max_neuron_count += neuron_count - max_neuron_count * (max_neuron_count < neuron_count);
 		input_length = input_layer_length;
@@ -76,6 +78,7 @@ public:
 		this->max_neuron_count = max_neuron_count;
 		this->shape = network_shape;
 		this->shape_length = shape_length;
+		this->evolution_metadata = new EvolutionMetaData(*evolution_values);
 
 		this->neurons = neurons;
 		if (populate_values)
