@@ -426,12 +426,33 @@ public:
 
 	}
 
+	/// <summary>
+	/// Use only with all neurons having derived connections from NEATConnections or connections with the proper methods implemented | 
+	/// evolution_metadata must not be equal NULL for non weird unpredictable behaivor
+	/// </summary>
 	void Evolve()
 	{
+		double max_variation = evolution_metadata->max_weight_mutation * 2;
+		double bias = evolution_metadata->max_weight_mutation;
 		for (size_t i = 0; i < neuron_count; i++)
 		{
-
+			INeuron* current_neuron = neurons[i];
+			IConnections* current_connection = current_neuron->connections;
+			
+			current_neuron->SetBias(current_neuron->GetBias() + (ValueGeneration::NextDouble() * max_variation - bias) * (ValueGeneration::NextDouble() < evolution_metadata->weight_mutation_probability));
+			
+			size_t weight_count = current_connection->GetWeightCount();
+			double* weights = current_connection->GetWeights();
+			for (size_t i = 0; i < weight_count; i++)
+				weights[i] += 
+					(ValueGeneration::NextDouble() * max_variation - bias) 
+					* (ValueGeneration::NextDouble() < evolution_metadata->weight_mutation_probability);
 		}
+
+		if (evolution_metadata->new_neuron_chance > ValueGeneration::NextDouble())
+			AugmentTopology();
+
+		EvolveMetadata();
 	}
 
 	void EvolveMetadata()
