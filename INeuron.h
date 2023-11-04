@@ -54,5 +54,16 @@ public:
 	virtual void SubtractGradients(double* gradients, double learning_rate, size_t t_count) = 0;
 	virtual void DeleteMemory() = 0;
 	virtual void Free() = 0;
+
+public:
+	double GetBias()
+	{
+		return bias;
+	}
+
+	void SetBias(double new_bias)
+	{
+		bias = new_bias;
+	}
 };
 
