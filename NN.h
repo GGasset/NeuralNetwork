@@ -468,6 +468,103 @@ public:
 		evolution_metadata->new_neuron_chance +=
 			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
 			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->max_weight_mutation_max_mutation +=
+			(evolution_metadata->max_mutation_of_max_weight_mutation_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_mutation_of_max_weight_mutation_max_mutation)
+			* (evolution_metadata->max_weight_mutation_mutation_chance > ValueGeneration::NextDouble());
+		//
+		evolution_metadata->weight_mutation_probability +=
+			(evolution_metadata->weight_mutation_probabily_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->weight_mutation_probabily_max_mutation)
+			* (evolution_metadata->weight_mutation_probability_mutation_chance > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_neuron_chance +=
+			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
+			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->max_weight_mutation +=
+			(evolution_metadata->max_weight_mutation_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_weight_mutation_max_mutation)
+			* (evolution_metadata->max_weight_mutation_mutation_chance > ValueGeneration::NextDouble());
+		
+		evolution_metadata->weight_mutation_probability +=
+			(evolution_metadata->weight_mutation_probabily_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->weight_mutation_probabily_max_mutation)
+			* (evolution_metadata->weight_mutation_probability_mutation_chance > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_neuron_chance +=
+			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
+			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->max_weight_mutation +=
+			(evolution_metadata->max_weight_mutation_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_weight_mutation_max_mutation)
+			* (evolution_metadata->max_weight_mutation_mutation_chance > ValueGeneration::NextDouble());
+		
+		evolution_metadata->weight_mutation_probability +=
+			(evolution_metadata->weight_mutation_probabily_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->weight_mutation_probabily_max_mutation)
+			* (evolution_metadata->weight_mutation_probability_mutation_chance > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_neuron_chance +=
+			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
+			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->max_weight_mutation +=
+			(evolution_metadata->max_weight_mutation_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_weight_mutation_max_mutation)
+			* (evolution_metadata->max_weight_mutation_mutation_chance > ValueGeneration::NextDouble());
+		
+		evolution_metadata->weight_mutation_probability +=
+			(evolution_metadata->weight_mutation_probabily_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->weight_mutation_probabily_max_mutation)
+			* (evolution_metadata->weight_mutation_probability_mutation_chance > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_neuron_chance +=
+			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
+			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->max_weight_mutation +=
+			(evolution_metadata->max_weight_mutation_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_weight_mutation_max_mutation)
+			* (evolution_metadata->max_weight_mutation_mutation_chance > ValueGeneration::NextDouble());
+		
+		evolution_metadata->weight_mutation_probability +=
+			(evolution_metadata->weight_mutation_probabily_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->weight_mutation_probabily_max_mutation)
+			* (evolution_metadata->weight_mutation_probability_mutation_chance > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_neuron_chance +=
+			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
+			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->max_weight_mutation +=
+			(evolution_metadata->max_weight_mutation_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_weight_mutation_max_mutation)
+			* (evolution_metadata->max_weight_mutation_mutation_chance > ValueGeneration::NextDouble());
+		
+		evolution_metadata->weight_mutation_probability +=
+			(evolution_metadata->weight_mutation_probabily_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->weight_mutation_probabily_max_mutation)
+			* (evolution_metadata->weight_mutation_probability_mutation_chance > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_neuron_chance +=
+			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
+			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->max_weight_mutation +=
+			(evolution_metadata->max_weight_mutation_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_weight_mutation_max_mutation)
+			* (evolution_metadata->max_weight_mutation_mutation_chance > ValueGeneration::NextDouble());
+		
+		evolution_metadata->weight_mutation_probability +=
+			(evolution_metadata->weight_mutation_probabily_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->weight_mutation_probabily_max_mutation)
+			* (evolution_metadata->weight_mutation_probability_mutation_chance > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_neuron_chance +=
+			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
+			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->max_weight_mutation +=
+			(evolution_metadata->max_weight_mutation_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_weight_mutation_max_mutation)
+			* (evolution_metadata->max_weight_mutation_mutation_chance > ValueGeneration::NextDouble());
+		
+		evolution_metadata->weight_mutation_probability +=
+			(evolution_metadata->weight_mutation_probabily_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->weight_mutation_probabily_max_mutation)
+			* (evolution_metadata->weight_mutation_probability_mutation_chance > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_neuron_chance +=
+			(evolution_metadata->new_neuron_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_neuron_chance_max_mutation)
+			* (evolution_metadata->new_neuron_chance_mutation_probability > ValueGeneration::NextDouble());
+
 	}
 
 	void AugmentTopology()
