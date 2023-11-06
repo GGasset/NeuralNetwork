@@ -38,7 +38,7 @@ public:
 		max_mutation_of_weight_mutation_probability_max_mutation = to_copy.max_mutation_of_weight_mutation_probability_max_mutation;
 
 		weight_mutation_probability_mutation_chance = to_copy.weight_mutation_probability_mutation_chance;
-		weight_mutation_probabily_max_mutation = to_copy.weight_mutation_probabily_max_mutation;
+		weight_mutation_probability_max_mutation = to_copy.weight_mutation_probability_max_mutation;
 
 		weight_mutation_probability = to_copy.weight_mutation_probability;
 
@@ -98,7 +98,7 @@ public:
 
 
 	double weight_mutation_probability_mutation_chance = 0;
-	double weight_mutation_probabily_max_mutation = 0;
+	double weight_mutation_probability_max_mutation = 0;
 
 
 	double weight_mutation_probability = 0;
