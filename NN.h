@@ -521,7 +521,7 @@ public:
 	}
 
 	/// <returns>Neuron_i</returns>
-	size_t AddLayerToShape(size_t insert_i)
+	size_t AddLayerToShape(size_t insert_i, size_t insert_layer_neuron_count = 1)
 	{
 		// Move layers
 		for (int i = shape_length - 1; i >= 0; i--)
@@ -529,7 +529,7 @@ public:
 			shape[i + 1] = shape[i];
 		}
 		shape_length++;
-		shape[insert_i] = 1;
+		shape[insert_i] = insert_layer_neuron_count;
 	}
 
 	void Save(std::string path_with_no_extension)
