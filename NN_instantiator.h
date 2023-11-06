@@ -18,7 +18,7 @@ class NN_instantiator
 	}
 
 
-	/// <param name="shape">| Input layer isn't instantiated</param>
+	/// <param name="shape">| Input layer isn't instantiated | For NEAT based Networks set a max layer count when instantiating it, layer_count is only for isntantiated layers</param>
 	/// <param name="layer_types">| Don't include input layer</param>
 	/// <param name="layer_count">| Input layer is included in the length</param>
 	/// <param name="layer_activations">| There are some neurons like DenseLSTM that don't need this, use None for example</param>
