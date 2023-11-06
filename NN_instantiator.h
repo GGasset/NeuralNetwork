@@ -7,14 +7,14 @@ class NN_instantiator
 	/// <param name="layer_types">| Don't include input layer</param>
 	/// <param name="layer_count">| Input layer is included in the length</param>
 	/// <param name="layer_activations">| There are some neurons like DenseLSTM that don't need this, use None for example</param>
-	static NN* Instantiate(size_t* shape, NN::NeuronTypeIdentifier* layer_types, size_t layer_count, ActivationFunctions::ActivationFunction* layer_activations, int8_t weight_direction_from_0 = 0, size_t max_neuron_count = 0, EvolutionMetaData* evolution_values = 0, bool free_layer_types = true, bool free_layer_activations = true)
+	static NN* Instantiate(size_t* shape, NN::NeuronTypeIdentifier* layer_types, size_t layer_count, ActivationFunctions::ActivationFunction* layer_activations, int8_t weight_direction_from_0 = 0, size_t max_neuron_count = 0, size_t max_layer_count = 0, EvolutionMetaData* evolution_values = 0, bool free_layer_types = true, bool free_layer_activations = true)
 	{
 		int8_t* layer_weight_direction = new int8_t[layer_count];
 		for (size_t i = 0; i < layer_count; i++)
 		{
 			layer_weight_direction[i] = weight_direction_from_0;
 		}
-		return Instantiate(shape, layer_types, layer_count, layer_activations, layer_weight_direction, max_neuron_count, evolution_values, free_layer_types, free_layer_activations);
+		return Instantiate(shape, layer_types, layer_count, layer_activations, layer_weight_direction, max_neuron_count, max_layer_count, evolution_values, free_layer_types, free_layer_activations);
 	}
 
 
@@ -22,7 +22,7 @@ class NN_instantiator
 	/// <param name="layer_types">| Don't include input layer</param>
 	/// <param name="layer_count">| Input layer is included in the length</param>
 	/// <param name="layer_activations">| There are some neurons like DenseLSTM that don't need this, use None for example</param>
-	static NN* Instantiate(size_t* shape, NN::NeuronTypeIdentifier* layer_types, size_t layer_count, ActivationFunctions::ActivationFunction* layer_activations, int8_t* layer_weight_direction_from_0, size_t max_neuron_count = 0, EvolutionMetaData* evolution_values = 0, bool free_layer_types = true, bool free_layer_activations = true)
+	static NN* Instantiate(size_t* shape, NN::NeuronTypeIdentifier* layer_types, size_t layer_count, ActivationFunctions::ActivationFunction* layer_activations, int8_t* layer_weight_direction_from_0, size_t max_neuron_count = 0, size_t max_layer_count = 0, EvolutionMetaData* evolution_values = 0, bool free_layer_types = true, bool free_layer_activations = true)
 	{
 		size_t input_length = shape[0];
 
@@ -71,7 +71,7 @@ class NN_instantiator
 		if (free_layer_types)
 			delete[] layer_types;
 
-		NN* out = new NN(neurons, neuron_count, shape[0], shape[layer_count - 1], shape, layer_count, false, neuron_ids, 0, true, max_neuron_count);
+		NN* out = new NN(neurons, neuron_count, shape[0], shape[layer_count - 1], shape, layer_count, false, neuron_ids, 0, true, max_neuron_count, max_layer_count);
 		return out;
 	}
 };

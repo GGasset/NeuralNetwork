@@ -29,6 +29,7 @@ private:
 	/// </summary>
 	size_t* shape = 0;
 	size_t shape_length = -1;
+	size_t max_layer_count = -1;
 
 	/// <summary>
 	/// Used as a cap for the maximum number of neurons for evolution algorithms
@@ -69,16 +70,19 @@ public:
 	/// <param name="input_layer_length">This layer is not instantiated as neurons</param>
 	/// <param name="neuron_types">By leaving the parameter as null you must save neuron types externally in order to save the network, else you don't have to provide it</param>
 	/// <param name="max_neuron_count">Used as a cap of neurons for neuroevolution</param>
-	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, size_t* network_shape, size_t shape_length,
-		bool free_network_shape = false, NeuronTypeIdentifier* neuron_types = 0, int* parsed_neuron_types = 0, bool free_neuron_types = true, size_t max_neuron_count = 0, EvolutionMetaData* evolution_values = 0, bool populate_values = true)
+	NN(INeuron** neurons, size_t neuron_count, size_t input_layer_length, size_t output_layer_length, size_t* network_shape, size_t layer_count,
+		bool free_network_shape = false, NeuronTypeIdentifier* neuron_types = 0, int* parsed_neuron_types = 0, bool free_neuron_types = true, size_t max_neuron_count = 0, size_t max_layer_count = 0, EvolutionMetaData* evolution_values = 0, bool populate_values = true)
 	{
-		max_neuron_count += neuron_count - max_neuron_count * (max_neuron_count < neuron_count);
+		max_neuron_count += (neuron_count - max_neuron_count) * (max_neuron_count < neuron_count);
+		max_layer_count += (layer_count - max_layer_count) * (max_layer_count < layer_count);
+
 		input_length = input_layer_length;
 		output_length = output_layer_length;
 		this->neuron_count = neuron_count;
 		this->max_neuron_count = max_neuron_count;
 		this->shape = network_shape;
-		this->shape_length = shape_length;
+		this->shape_length = layer_count;
+		this->max_layer_count = max_layer_count;
 		this->evolution_metadata = new EvolutionMetaData(*evolution_values);
 
 		this->neurons = neurons;
@@ -514,6 +518,18 @@ public:
 	void AugmentTopology()
 	{
 
+	}
+
+	/// <returns>Neuron_i</returns>
+	size_t AddLayerToShape(size_t insert_i)
+	{
+		// Move layers
+		for (int i = shape_length - 1; i >= 0; i--)
+		{
+			shape[i + 1] = shape[i];
+		}
+		shape_length++;
+		shape[insert_i] = 1;
 	}
 
 	void Save(std::string path_with_no_extension)
