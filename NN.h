@@ -42,13 +42,21 @@ private:
 	size_t input_length = -1;
 	size_t output_length = -1;
 
+	static const size_t metadata_value_count = 9;
+
+
 public:
+	static const int NeuronTypeID_per_connection_type_max_value_count = 1000;
+
+	/// <summary>
+	/// DenseConnections based Neurons: 0-999 | NEATConnections based Neurons: 1000-1999
+	/// </summary>
 	enum NeuronTypeIdentifier
 	{
 		DenseNeuronId = 0,
 		DenseLSTMId = 1,
-		NEATNeuronId = 2,
-		NEATLSTMId = 3
+		NEATNeuronId = 1000,
+		NEATLSTMId = 1001
 	};
 
 	enum LearningRateOptimizators
@@ -557,7 +565,7 @@ public:
 
 	void Save(std::string path_with_no_extension, int* neuronTypes)
 	{
-		size_t metadata[8]
+		size_t metadata[metadata_value_count]
 		{
 			neuron_count,
 			input_length,
@@ -566,6 +574,7 @@ public:
 			gradients_value_count,
 			shape_length,
 			max_neuron_count,
+			max_layer_count,
 			evolution_metadata != 0
 		};
 
@@ -623,21 +632,22 @@ public:
 
 	static NN* Load(std::string path_with_no_extension)
 	{
-		size_t metadata[8]{};
-		//	neuron_count,
-		//	input_length,
-		//	output_length,
-		//	execution_results_value_count,
-		//	gradients_value_count
-		//	shape_length
-		//  max_neuron_count
-		//  evolution_metadata exists
+		size_t metadata[metadata_value_count]{};
+		//neuron_count,
+		//input_length,
+		//output_length,
+		//execution_results_value_count,
+		//gradients_value_count,
+		//shape_length,
+		//max_neuron_count,
+		//max_layer_count,
+		//evolution_metadata != 0
 
 		FILE* nt_file;
 		if (fopen_s(&nt_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "rb"))
 			throw std::exception("File cannot be opened");
 
-		fread(&metadata, sizeof(size_t), 7, nt_file);
+		fread(&metadata, sizeof(size_t), metadata_value_count, nt_file);
 
 		size_t neuron_count = metadata[0];
 		size_t input_length = metadata[1];
@@ -646,7 +656,8 @@ public:
 		size_t gradients_value_count = metadata[4];
 		size_t shape_length = metadata[5];
 		size_t max_neuron_count = metadata[6];
-		bool evolution_metadata_written = metadata[7] > 0;
+		size_t max_layer_count = metadata[7];
+		bool evolution_metadata_written = metadata[8] > 0;
 
 		int* neuron_types = new int[neuron_count];
 		fread(neuron_types, sizeof(int), neuron_count, nt_file);
