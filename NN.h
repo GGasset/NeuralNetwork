@@ -42,7 +42,6 @@ private:
 	size_t input_length = -1;
 	size_t output_length = -1;
 
-	static const size_t metadata_value_count = 9;
 
 
 public:
@@ -440,7 +439,7 @@ public:
 
 	/// <summary>
 	/// Use only with all neurons having derived connections from NEATConnections or connections with the proper methods implemented | 
-	/// evolution_metadata must not be equal NULL for non weird unpredictable behaivor
+	/// evolution_metadata must not be equal NULL to avoid weird unpredictable behaivor
 	/// </summary>
 	void Evolve()
 	{
@@ -525,7 +524,7 @@ public:
 
 	void AugmentTopology()
 	{
-
+		bool in_new_layer = evolution_metadata->new_neuron_in_new_layer_chance > ValueGeneration::NextDouble();
 	}
 
 	/// <returns>Neuron_i</returns>
@@ -539,6 +538,8 @@ public:
 		shape_length++;
 		shape[insert_i] = insert_layer_neuron_count;
 	}
+
+	static const size_t metadata_value_count = 10;
 
 	void Save(std::string path_with_no_extension)
 	{
@@ -575,8 +576,11 @@ public:
 			shape_length,
 			max_neuron_count,
 			max_layer_count,
-			evolution_metadata != 0
+			evolution_metadata != 0,
+			0
 		};
+		if (metadata[8])
+			metadata[9] = evolution_metadata->allowed_new_neuron_IDs.size();
 
 		FILE* neuron_type_file;
 		if (fopen_s(&neuron_type_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "wb"))
@@ -625,7 +629,11 @@ public:
 		}
 
 		if (evolution_metadata != 0)
+		{
 			fwrite(evolution_metadata, sizeof(EvolutionMetaData), 1, nn_file);
+			fwrite(evolution_metadata->allowed_new_neuron_IDs.data(), sizeof(size_t), evolution_metadata->allowed_new_neuron_IDs.size(), nn_file);
+			fwrite(evolution_metadata->neuron_type_probabilities.data(), sizeof(double), evolution_metadata->neuron_type_probabilities.size(), nn_file);
+		}
 
 		fclose(nn_file);
 	}
@@ -642,6 +650,7 @@ public:
 		//max_neuron_count,
 		//max_layer_count,
 		//evolution_metadata != 0
+		//evolution_allowed_neuron_ids_count
 
 		FILE* nt_file;
 		if (fopen_s(&nt_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "rb"))
@@ -657,7 +666,8 @@ public:
 		size_t shape_length = metadata[5];
 		size_t max_neuron_count = metadata[6];
 		size_t max_layer_count = metadata[7];
-		bool evolution_metadata_written = metadata[8] > 0;
+		bool evolution_metadata_written = metadata[8];
+		size_t allowed_neuron_id_count = metadata[9];
 
 		int* neuron_types = new int[neuron_count];
 		fread(neuron_types, sizeof(int), neuron_count, nt_file);
@@ -734,6 +744,24 @@ public:
 			if (evolution_values == 0)
 				throw std::string("System out of memory");
 			fread(evolution_values, sizeof(EvolutionMetaData), 1, nn_file);
+			
+			evolution_values->allowed_new_neuron_IDs = std::vector<size_t>();
+			evolution_values->neuron_type_probabilities = std::vector<double>();
+
+			size_t* allowed_neuron_ids = new size_t[allowed_neuron_id_count];
+			fread(allowed_neuron_ids, sizeof(size_t), allowed_neuron_id_count, nn_file);
+
+			double* per_neuron_probability = new double[allowed_neuron_id_count];
+			fread(per_neuron_probability, sizeof(double), allowed_neuron_id_count, nn_file);
+
+			for (size_t i = 0; i < allowed_neuron_id_count; i++)
+			{
+				evolution_values->allowed_new_neuron_IDs.push_back(allowed_neuron_ids[i]);
+				evolution_values->neuron_type_probabilities.push_back(per_neuron_probability[i]);
+			}
+
+			delete[] allowed_neuron_ids;
+			delete[] per_neuron_probability;
 		}
 		
 		fclose(nn_file);
