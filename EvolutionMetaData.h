@@ -42,19 +42,21 @@ public:
 
 		weight_mutation_probability = to_copy.weight_mutation_probability;
 
-		mutation_chance_of_max_weight_mutation_mutation_chance = mutation_chance_of_max_weight_mutation_mutation_chance;
-		max_mutation_of_max_weight_mutation_mutation_chance = max_mutation_of_max_weight_mutation_mutation_chance;
+		mutation_chance_of_max_weight_mutation_mutation_chance = to_copy.mutation_chance_of_max_weight_mutation_mutation_chance;
+		max_mutation_of_max_weight_mutation_mutation_chance = to_copy.max_mutation_of_max_weight_mutation_mutation_chance;
 
-		mutation_chance_of_max_weight_mutation_max_mutation = mutation_chance_of_max_weight_mutation_max_mutation;
-		max_mutation_of_max_weight_mutation_max_mutation = max_mutation_of_max_weight_mutation_max_mutation;
-
-
-		max_weight_mutation_mutation_chance = max_weight_mutation_mutation_chance;
-		max_weight_mutation_max_mutation = max_weight_mutation_max_mutation;
+		mutation_chance_of_max_weight_mutation_max_mutation = to_copy.mutation_chance_of_max_weight_mutation_max_mutation;
+		max_mutation_of_max_weight_mutation_max_mutation = to_copy.max_mutation_of_max_weight_mutation_max_mutation;
 
 
-		max_weight_mutation = max_weight_mutation;
+		max_weight_mutation_mutation_chance = to_copy.max_weight_mutation_mutation_chance;
+		max_weight_mutation_max_mutation = to_copy.max_weight_mutation_max_mutation;
 
+
+		max_weight_mutation = to_copy.max_weight_mutation;
+
+		allowed_new_neuron_IDs = to_copy.allowed_new_neuron_IDs;
+		neuron_type_probabilities = to_copy.neuron_type_probabilities;
 	}
 
 	// Neuron addition 
@@ -85,6 +87,11 @@ public:
 	double new_neuron_in_new_layer_chance_max_mutation = 0;
 
 	double new_neuron_in_new_layer_chance = 0;
+
+		// * Probability for each neuron type
+
+	std::vector<size_t> allowed_new_neuron_IDs = std::vector <size_t>();
+	std::vector<double> neuron_type_probabilities = std::vector<double>();
 
 
 	// Weight mutation
