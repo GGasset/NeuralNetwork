@@ -767,7 +767,7 @@ public:
 		
 		fclose(nn_file);
 
-		NN* out = new NN(neurons, neuron_count, input_length, output_length, shape, shape_length, 0, false, neuron_types, max_neuron_count, evolution_values, false);
+		NN* out = new NN(neurons, neuron_count, input_length, output_length, shape, shape_length, 0, false, neuron_types, true, max_neuron_count, evolution_values, false);
 		out->gradients_value_count = gradients_value_count;
 		out->execution_results_value_count = execution_results_value_count;
 
