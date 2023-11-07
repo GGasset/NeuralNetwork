@@ -744,7 +744,7 @@ public:
 				throw std::string("System out of memory");
 			fread(evolution_values, sizeof(EvolutionMetaData), 1, nn_file);
 			
-			evolution_values->allowed_new_neuron_IDs = std::vector<size_t>();
+			evolution_values->allowed_new_neuron_IDs = std::vector<int>();
 			evolution_values->neuron_type_probabilities = std::vector<double>();
 
 			int* allowed_neuron_ids = new int[allowed_neuron_id_count];
