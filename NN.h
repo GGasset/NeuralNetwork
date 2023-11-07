@@ -437,6 +437,11 @@ public:
 
 	}
 
+	/*
+		TODO: Add new_connection_probability to evolution_metadata
+	  
+	*/
+
 	/// <summary>
 	/// Use only with all neurons having derived connections from NEATConnections or connections with the proper methods implemented | 
 	/// evolution_metadata must not be equal NULL to avoid weird unpredictable behaivor
