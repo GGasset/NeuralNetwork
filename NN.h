@@ -553,21 +553,27 @@ public:
 
 		MakeSpaceForNeuron(neuron_insert_i);
 
+
+		size_t previous_layer_start_i = shape[0] + GetFirstNeuronI(layer_insert_i);
+		size_t previous_layer_end_i = previous_layer_start_i + shape[layer_insert_i] - 1;
+
 		INeuron* new_neuron = 0;
 		switch (selected_neuron)
 		{
-		case NN::DenseNeuronId:
-			break;
-		case NN::DenseLSTMId:
-			break;
 		case NN::NEATNeuronId:
+			new_neuron = new NEATNeuron(neuron_insert_i, previous_layer_start_i, previous_layer_end_i, ActivationFunctions::Sigmoid);
 			break;
 		case NN::NEATLSTMId:
+			new_neuron = new NEATLSTM(neuron_insert_i, previous_layer_start_i, previous_layer_end_i);
 			break;
 		default:
-			break;
+			throw std::string("Neuron type not implemented for evolution.");
 		}
+		neurons[neuron_insert_i] = new_neuron;
 
+		size_t next_layer_start_i = GetFirstNeuronI(layer_insert_i + 1);
+
+		PopulateAutomaticallySetValues();
 		return true;
 	}
 
