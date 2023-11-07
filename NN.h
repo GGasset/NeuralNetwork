@@ -548,7 +548,7 @@ public:
 	/// <returns>starting Neuron_i of new layer</returns>
 	size_t AddLayerToShape(size_t insert_i, size_t insert_layer_neuron_count = 1)
 	{
-		size_t new_layer_neuron_i = shape[0];
+		size_t new_layer_neuron_i = 0;
 		for (size_t i = 1; i < insert_i + 1; i++)
 		{
 			new_layer_neuron_i += shape[i];
