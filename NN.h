@@ -599,13 +599,13 @@ public:
 		neuron_count++;
 	}
 
+	/// <param name="layer_i">input layer would be layer -1 as it doesn't have any instantiated neurons</param>
 	size_t GetFirstNeuronI(size_t layer_i)
 	{
 		size_t output = 0;
 		for (size_t i = 1; i < layer_i + 1; i++)
-		{
 			output += shape[i];
-		}
+
 		return output;
 	}
 
