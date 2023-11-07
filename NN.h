@@ -580,7 +580,7 @@ public:
 		{
 			shape[i + 1] = shape[i];
 		}
-		shape_length += insert_layer_neuron_count;
+		shape_length++;
 		shape[insert_i] = insert_layer_neuron_count;
 
 		return GetFirstNeuronI(insert_i);;
