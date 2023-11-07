@@ -578,7 +578,10 @@ public:
 		neurons[neuron_insert_i] = new_neuron;
 
 		size_t next_layer_start_i = GetFirstNeuronI(layer_insert_i + 1);
-		size_t next_layer_end_i = shape[layer_insert_i + 1 + 1 * in_new_layer] + next_layer_start_i - 1;
+		size_t next_layer_end_i = shape[shape_insert_i + in_new_layer] + next_layer_start_i - 1;
+		
+		for (size_t i = next_layer_start_i; i <= next_layer_end_i; i++)
+			neurons[i]->connections->AdjustToNewNeuron(neuron_insert_i, true);
 
 		PopulateAutomaticallySetValues();
 		return true;
