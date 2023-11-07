@@ -549,12 +549,13 @@ public:
 		size_t layer_insert_i = (size_t)std::round(ValueGeneration::NextDouble() * (shape_length - 1));
 		size_t shape_insert_i = layer_insert_i + 1;
 		size_t neuron_insert_i = 0;
+
 		if (in_new_layer)
 			neuron_insert_i = AddLayerToShape(layer_insert_i);
 		else
 		{
 			neuron_insert_i = GetFirstNeuronI(layer_insert_i);
-			AddNeuronToShape(layer_insert_i);
+			shape[shape_insert_i]++;
 		}
 
 		MakeSpaceForNeuron(neuron_insert_i);
@@ -585,11 +586,6 @@ public:
 
 		PopulateAutomaticallySetValues();
 		return true;
-	}
-
-	void AddNeuronToShape(size_t layer_i)
-	{
-
 	}
 
 	///<param name="insert_i">insert_i doesn't count input layer so insert_i will insert in shape[insert_i + 1]</param>
