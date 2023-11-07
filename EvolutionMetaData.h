@@ -90,7 +90,7 @@ public:
 
 		// * Probability for each neuron type
 
-	std::vector<size_t> allowed_new_neuron_IDs = std::vector <size_t>();
+	std::vector<int> allowed_new_neuron_IDs = std::vector <int>();
 	std::vector<double> neuron_type_probabilities = std::vector<double>();
 
 

@@ -48,7 +48,7 @@ public:
 	static const int NeuronTypeID_per_connection_type_max_value_count = 1000;
 
 	/// <summary>
-	/// DenseConnections based Neurons: 0-999 | NEATConnections based Neurons: 1000-1999
+	/// must be an integer | DenseConnections based Neurons: 0-999 | NEATConnections based Neurons: 1000-1999
 	/// </summary>
 	enum NeuronTypeIdentifier
 	{
@@ -525,6 +525,7 @@ public:
 	void AugmentTopology()
 	{
 		bool in_new_layer = evolution_metadata->new_neuron_in_new_layer_chance > ValueGeneration::NextDouble();
+
 	}
 
 	/// <returns>Neuron_i</returns>
@@ -629,7 +630,7 @@ public:
 		if (evolution_metadata != 0)
 		{
 			fwrite(evolution_metadata, sizeof(EvolutionMetaData), 1, nn_file);
-			fwrite(evolution_metadata->allowed_new_neuron_IDs.data(), sizeof(size_t), evolution_metadata->allowed_new_neuron_IDs.size(), nn_file);
+			fwrite(evolution_metadata->allowed_new_neuron_IDs.data(), sizeof(int), evolution_metadata->allowed_new_neuron_IDs.size(), nn_file);
 			fwrite(evolution_metadata->neuron_type_probabilities.data(), sizeof(double), evolution_metadata->neuron_type_probabilities.size(), nn_file);
 		}
 
@@ -746,8 +747,8 @@ public:
 			evolution_values->allowed_new_neuron_IDs = std::vector<size_t>();
 			evolution_values->neuron_type_probabilities = std::vector<double>();
 
-			size_t* allowed_neuron_ids = new size_t[allowed_neuron_id_count];
-			fread(allowed_neuron_ids, sizeof(size_t), allowed_neuron_id_count, nn_file);
+			int* allowed_neuron_ids = new int[allowed_neuron_id_count];
+			fread(allowed_neuron_ids, sizeof(int), allowed_neuron_id_count, nn_file);
 
 			double* per_neuron_probability = new double[allowed_neuron_id_count];
 			fread(per_neuron_probability, sizeof(double), allowed_neuron_id_count, nn_file);
