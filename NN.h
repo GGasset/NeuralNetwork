@@ -538,22 +538,43 @@ public:
 		}
 		NeuronTypeIdentifier selected_neuron = (NeuronTypeIdentifier)evolution_metadata->allowed_new_neuron_IDs[highest_fitness_i];
 
+		size_t layer_insert_i = (size_t)std::round(ValueGeneration::NextDouble() * (shape_length - 1));
+		size_t neuron_insert_i = 0;
 		if (in_new_layer)
+			neuron_insert_i = AddLayerToShape(layer_insert_i);
+		else
 		{
-			size_t layer_insert_i = (size_t)std::round(ValueGeneration::NextDouble() * (shape_length - 1));
+			neuron_insert_i = GetFirstNeuronI(layer_insert_i);
+			AddNeuronToShape(layer_insert_i);
 		}
+
+		MakeSpaceForNeuron(neuron_insert_i);
+
+		INeuron* new_neuron = 0;
+		switch (selected_neuron)
+		{
+		case NN::DenseNeuronId:
+			break;
+		case NN::DenseLSTMId:
+			break;
+		case NN::NEATNeuronId:
+			break;
+		case NN::NEATLSTMId:
+			break;
+		default:
+			break;
+		}
+	}
+
+	void AddNeuronToShape(size_t layer_i)
+	{
+
 	}
 
 	///<param name="insert_i">insert_i doesn't count input layer so insert_i will insert in shape[insert_i + 1]</param>
 	/// <returns>starting Neuron_i of new layer</returns>
 	size_t AddLayerToShape(size_t insert_i, size_t insert_layer_neuron_count = 1)
 	{
-		size_t new_layer_neuron_i = 0;
-		for (size_t i = 1; i < insert_i + 1; i++)
-		{
-			new_layer_neuron_i += shape[i];
-		}
-
 		// Move layers
 		for (int i = shape_length - 1; i >= insert_i; i--)
 		{
@@ -562,7 +583,22 @@ public:
 		shape_length += insert_layer_neuron_count;
 		shape[insert_i] = insert_layer_neuron_count;
 
-		return new_layer_neuron_i;
+		return GetFirstNeuronI(insert_i);;
+	}
+
+	void MakeSpaceForNeuron(size_t insert_i)
+	{
+
+	}
+
+	size_t GetFirstNeuronI(size_t layer_i)
+	{
+		size_t output = 0;
+		for (size_t i = 1; i < layer_i + 1; i++)
+		{
+			output += shape[i];
+		}
+		return output;
 	}
 
 	static const size_t metadata_value_count = 10;
