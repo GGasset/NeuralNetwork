@@ -572,6 +572,7 @@ public:
 		neurons[neuron_insert_i] = new_neuron;
 
 		size_t next_layer_start_i = GetFirstNeuronI(layer_insert_i + 1);
+		size_t next_layer_end_i = shape[layer_insert_i + 1 + 1 * in_new_layer] + next_layer_start_i - 1;
 
 		PopulateAutomaticallySetValues();
 		return true;
@@ -587,14 +588,14 @@ public:
 	size_t AddLayerToShape(size_t insert_i, size_t insert_layer_neuron_count = 1)
 	{
 		// Move layers
-		for (int i = shape_length - 1; i >= insert_i; i--)
+		for (int i = shape_length - 1; i > insert_i; i--)
 		{
 			shape[i + 1] = shape[i];
 		}
 		shape_length++;
-		shape[insert_i] = insert_layer_neuron_count;
+		shape[insert_i + 1] = insert_layer_neuron_count;
 
-		return GetFirstNeuronI(insert_i);;
+		return GetFirstNeuronI(insert_i);
 	}
 
 	void MakeSpaceForNeuron(size_t insert_i)
