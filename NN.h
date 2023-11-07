@@ -577,10 +577,8 @@ public:
 			max_neuron_count,
 			max_layer_count,
 			evolution_metadata != 0,
-			0
+			evolution_metadata != 0? evolution_metadata->allowed_new_neuron_IDs.size() : 0
 		};
-		if (metadata[8])
-			metadata[9] = evolution_metadata->allowed_new_neuron_IDs.size();
 
 		FILE* neuron_type_file;
 		if (fopen_s(&neuron_type_file, (path_with_no_extension + GetNeuronTypeFileExtension()).data(), "wb"))
