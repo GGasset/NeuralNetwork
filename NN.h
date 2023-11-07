@@ -525,19 +525,44 @@ public:
 	void AugmentTopology()
 	{
 		bool in_new_layer = evolution_metadata->new_neuron_in_new_layer_chance > ValueGeneration::NextDouble();
+		
+		int highest_fitness_i = -1;
+		double highest_fitness = -1;
+		for (size_t i = 0; i < evolution_metadata->allowed_new_neuron_IDs.size(); i++)
+		{
+			double current_neuron_fitness = ValueGeneration::NextDouble() * evolution_metadata->neuron_type_probabilities[i];
+			bool is_highest_fitness = current_neuron_fitness > highest_fitness;
 
+			highest_fitness_i += (i - highest_fitness_i) * is_highest_fitness;
+			highest_fitness += (current_neuron_fitness - highest_fitness) * is_highest_fitness;
+		}
+		NeuronTypeIdentifier selected_neuron = (NeuronTypeIdentifier)evolution_metadata->allowed_new_neuron_IDs[highest_fitness_i];
+
+		if (in_new_layer)
+		{
+			size_t layer_insert_i = (size_t)std::round(ValueGeneration::NextDouble() * (shape_length - 1));
+		}
 	}
 
-	/// <returns>Neuron_i</returns>
+	///<param name="insert_i">insert_i doesn't count input layer so insert_i will insert in shape[insert_i + 1]</param>
+	/// <returns>starting Neuron_i of new layer</returns>
 	size_t AddLayerToShape(size_t insert_i, size_t insert_layer_neuron_count = 1)
 	{
+		size_t new_layer_neuron_i = shape[0];
+		for (size_t i = 1; i < insert_i + 1; i++)
+		{
+			new_layer_neuron_i += shape[i];
+		}
+
 		// Move layers
 		for (int i = shape_length - 1; i >= 0; i--)
 		{
 			shape[i + 1] = shape[i];
 		}
-		shape_length++;
+		shape_length += insert_layer_neuron_count;
 		shape[insert_i] = insert_layer_neuron_count;
+
+		return new_layer_neuron_i;
 	}
 
 	static const size_t metadata_value_count = 10;
