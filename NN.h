@@ -542,6 +542,7 @@ public:
 		NeuronTypeIdentifier selected_neuron = (NeuronTypeIdentifier)evolution_metadata->allowed_new_neuron_IDs[highest_fitness_i];
 
 		size_t layer_insert_i = (size_t)std::round(ValueGeneration::NextDouble() * (shape_length - 1));
+		size_t shape_insert_i = layer_insert_i + 1;
 		size_t neuron_insert_i = 0;
 		if (in_new_layer)
 			neuron_insert_i = AddLayerToShape(layer_insert_i);
