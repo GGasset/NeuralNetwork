@@ -522,8 +522,11 @@ public:
 
 	}
 
-	void AugmentTopology()
+	bool AugmentTopology()
 	{
+		if (neuron_count == max_neuron_count || shape_length == max_layer_count)
+			return false;
+
 		bool in_new_layer = evolution_metadata->new_neuron_in_new_layer_chance > ValueGeneration::NextDouble();
 		
 		int highest_fitness_i = -1;
@@ -564,6 +567,8 @@ public:
 		default:
 			break;
 		}
+
+		return true;
 	}
 
 	void AddNeuronToShape(size_t layer_i)
@@ -588,7 +593,10 @@ public:
 
 	void MakeSpaceForNeuron(size_t insert_i)
 	{
+		for (int i = neuron_count - 1; i >= insert_i; i--)
+			neurons[i + 1] = neurons[i];
 
+		neuron_count++;
 	}
 
 	size_t GetFirstNeuronI(size_t layer_i)
