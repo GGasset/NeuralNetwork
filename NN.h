@@ -438,8 +438,7 @@ public:
 	}
 
 	/*
-		TODO: Add new_connection_probability to evolution_metadata
-	  
+		TODO: Add evolution_metadata and evolve it in new_connection_probability	  
 	*/
 
 	/// <summary>
@@ -568,10 +567,10 @@ public:
 		switch (selected_neuron)
 		{
 		case NN::NEATNeuronId:
-			new_neuron = new NEATNeuron(neuron_insert_i, previous_layer_start_i, previous_layer_end_i, ActivationFunctions::Sigmoid);
+			new_neuron = new NEATNeuron(neuron_insert_i, previous_layer_start_i, previous_layer_end_i, ActivationFunctions::Sigmoid, evolution_metadata->new_connection_chance);
 			break;
 		case NN::NEATLSTMId:
-			new_neuron = new NEATLSTM(neuron_insert_i, previous_layer_start_i, previous_layer_end_i);
+			new_neuron = new NEATLSTM(neuron_insert_i, previous_layer_start_i, previous_layer_end_i, evolution_metadata->new_connection_chance);
 			break;
 		default:
 			throw std::string("Neuron type not implemented for evolution.");
@@ -579,10 +578,32 @@ public:
 		neurons[neuron_insert_i] = new_neuron;
 
 		size_t next_layer_start_i = GetFirstNeuronI(layer_insert_i + 1);
-		size_t next_layer_end_i = shape[shape_insert_i + in_new_layer] + next_layer_start_i - 1;
+		size_t next_layer_length = shape[shape_insert_i + in_new_layer];
+		size_t next_layer_end_i = next_layer_length + next_layer_start_i - 1;
+
+		bool* is_connected = new bool[next_layer_length];
+		auto possible_new_connections = std::vector<size_t>();
+
+		for (size_t i = 0; i < next_layer_length; i++)
+		{
+			is_connected[i] = false;
+			possible_new_connections.push_back(next_layer_start_i + i);
+		}
+
+		size_t connection_count = (size_t)std::round(next_layer_length * evolution_metadata->new_connection_chance);
+		connection_count += next_layer_length * (connection_count == 0);
+
+		for (size_t i = 0; i < connection_count; i++)
+		{
+			size_t new_connection_i = (size_t)std::round(possible_new_connections.size() * ValueGeneration::NextDouble());
+			possible_new_connections.erase(possible_new_connections.begin() + new_connection_i);
+			is_connected[new_connection_i] = true;
+		}
 		
 		for (size_t i = next_layer_start_i; i <= next_layer_end_i; i++)
-			neurons[i]->connections->AdjustToNewNeuron(neuron_insert_i, true);
+			neurons[i]->connections->AdjustToNewNeuron(neuron_insert_i, is_connected[i - next_layer_start_i]);
+
+		delete[] is_connected;
 
 		PopulateAutomaticallySetValues();
 		return true;

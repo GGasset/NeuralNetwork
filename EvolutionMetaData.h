@@ -88,10 +88,16 @@ public:
 
 	double new_neuron_in_new_layer_chance = 0;
 
+	
 		// * Probability for each neuron type
 
 	std::vector<int> allowed_new_neuron_IDs = std::vector <int>();
 	std::vector<double> neuron_type_probabilities = std::vector<double>();
+
+
+		// * Probability for new connections
+
+	double new_connection_chance = 0;
 
 
 	// Weight mutation
