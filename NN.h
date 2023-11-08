@@ -524,6 +524,17 @@ public:
 			(evolution_metadata->max_mutation_of_new_neuron_in_new_layer_chance_mutation_probability * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_mutation_of_new_neuron_in_new_layer_chance_mutation_probability)
 			* (evolution_metadata->mutation_chance_of_new_neuron_in_new_layer_chance_mutation_probability > ValueGeneration::NextDouble());
 
+		evolution_metadata->new_connection_chance +=
+			(evolution_metadata->new_connection_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->new_connection_chance_max_mutation)
+			* (evolution_metadata->new_connection_chance_mutation_probability > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_connection_chance_max_mutation +=
+			(evolution_metadata->max_mutation_of_new_connection_chance_max_mutation * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_mutation_of_new_connection_chance_max_mutation)
+			* (evolution_metadata->mutation_chance_of_new_connection_chance_max_mutation > ValueGeneration::NextDouble());
+
+		evolution_metadata->new_connection_chance_mutation_probability +=
+			(evolution_metadata->max_mutation_of_new_connection_chance_mutation_probability * 2 * ValueGeneration::NextDouble() - evolution_metadata->max_mutation_of_new_connection_chance_mutation_probability)
+			* (evolution_metadata->mutation_chance_of_new_connection_chance_mutation_probability > ValueGeneration::NextDouble());
 	}
 
 	bool AugmentTopology()
