@@ -97,6 +97,14 @@ public:
 
 		// * Probability for new connections
 
+	double max_mutation_of_new_connection_chance_mutation_probability = 0;
+	double mutation_chance_of_new_connection_chance_mutation_probability = 0;
+	double max_mutation_of_new_connection_chance_max_mutation = 0;
+	double mutation_chance_of_new_connection_chance_max_mutation = 0;
+
+	double new_connection_chance_mutation_probability = 0;
+	double new_connection_chance_max_mutation = 0;
+
 	double new_connection_chance = 0;
 
 
